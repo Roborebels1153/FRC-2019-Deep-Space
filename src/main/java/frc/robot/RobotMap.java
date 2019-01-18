@@ -16,7 +16,7 @@ package frc.robot;
 public class RobotMap {
 	
 	
-	
+	//Drivetrain Talons/Victors
 	public static final int LEFT_MASTER = 1;
 	public static final int LEFT_FOLLOWER_1 = 2;
 	public static final int LEFT_FOLLOWER_2 = 3;

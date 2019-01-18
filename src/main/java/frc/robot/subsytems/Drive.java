@@ -14,13 +14,20 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.OI;
+
+import frc.robot.lib.RebelDriveHelper;
+import frc.robot.lib.DriveSignal;
+
 
 /**
- * Add your docs here.
+ * Drivetrain subsystem
  */
 public class Drive extends Subsystem {
 
+  //Drivetrain Motor Controllers
   private WPI_TalonSRX leftMaster;
   private VictorSPX leftFollower1;
   private VictorSPX leftFollower2;
@@ -28,6 +35,9 @@ public class Drive extends Subsystem {
   private WPI_TalonSRX rightMaster;
   private VictorSPX rightFollower1;
   private VictorSPX rightFollower2;
+
+  //Rebel Drive Helper (Cheesy Drive)
+  private RebelDriveHelper driveHelper;
 
   public Drive() {
     leftMaster = new WPI_TalonSRX(RobotMap.LEFT_MASTER);
@@ -37,6 +47,8 @@ public class Drive extends Subsystem {
     rightMaster = new WPI_TalonSRX(RobotMap.RIGHT_MASTER);
     rightFollower1 = new VictorSPX(RobotMap.RIGHT_FOLLOWER_1);
     rightFollower2 = new VictorSPX(RobotMap.RIGHT_FOLLOWER_2);
+    
+    driveHelper = new RebelDriveHelper();
 
   }
 
@@ -57,13 +69,6 @@ public class Drive extends Subsystem {
 
   }
 
-  // set both master talons to the preferred control mode and feed the values for
-  // both talons
-  public void setControlMode(ControlMode controlMode, double leftValue, double rightValue) {
-    leftMaster.set(controlMode, leftValue);
-    rightMaster.set(controlMode, rightValue);
-  }
-
   //start master talon configurations
   public void configMasterTalons() {
     leftMaster.set(ControlMode.PercentOutput, 0);
@@ -79,6 +84,75 @@ public class Drive extends Subsystem {
     leftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
     leftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
   }
+
+  /**
+	 * Below is drive code which is used in the cheesy Drive Command
+	 */
+	public void configDrive(ControlMode controlMode, double left, double right) {
+		leftMaster.set(controlMode, left);
+		rightMaster.set(controlMode, -right);
+	}
+
+	/**
+	 * Adjusting cheesy drive
+	 * @param value
+	 * @param deadband
+	 * @return
+	 */
+	protected double applyDeadband(double value, double deadband) {
+		if (Math.abs(value) > deadband) {
+			if (value > 0.0) {
+				return (value - deadband) / (1.0 - deadband);
+			} else {
+				return (value + deadband) / (1.0 - deadband);
+			}
+		} else {
+			return 0.0;
+		}
+	}
+
+	public void createDriveSignal(boolean squaredInputs) {
+		boolean quickTurn = Robot.drive.quickTurnController();
+		double rawMoveValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
+		double rawRotateValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
+
+		double moveValue = 0;
+		double rotateValue = 0;
+		if (squaredInputs == true) {
+			double deadBandMoveValue = applyDeadband(rawMoveValue, 0.02);
+			double deadBandRotateValue = applyDeadband(rawRotateValue, 0.02);
+			moveValue = Math.copySign(deadBandMoveValue * deadBandMoveValue, deadBandMoveValue);
+			rotateValue = Math.copySign(deadBandRotateValue * deadBandRotateValue, deadBandRotateValue);
+		} else {
+			rawMoveValue = moveValue;
+			rotateValue = rawRotateValue;
+		}
+
+    DriveSignal driveSignal = driveHelper.rebelDrive(-1 * Constants.k_drive_coefficient * moveValue, 
+                                                      Constants.k_turn_coefficient * rotateValue, quickTurn, false);
+		Robot.drive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
+
+	}
+
+	public void driveWithHelper(ControlMode controlMode, DriveSignal driveSignal) {
+		this.configDrive(controlMode, driveSignal.getLeft(), driveSignal.getRight());
+	}
+
+	public boolean quickTurnController() {
+		if (Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y) < 0.2
+				&& Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y) > -0.2) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void cheesyDriveWithoutJoysticks(double move, double rotate) {
+		double moveValue = move;
+		double rotateValue = rotate;
+		DriveSignal driveSignal = driveHelper.rebelDrive(-1 * moveValue, rotateValue, true, false);
+		Robot.drive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
+	}
 
   //set mag encoders as feedback device for taloms
   public void configTalonFeedback() {
