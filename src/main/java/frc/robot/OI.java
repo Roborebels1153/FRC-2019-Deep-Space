@@ -11,7 +11,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-
+import frc.robot.command.CargoCollectForwardCommand;
+import frc.robot.command.CargoCollectReverseCommand;
+import frc.robot.command.CargoCollectStopCommand;
 import frc.robot.lib.RebelTrigger;
 
 /**
@@ -54,8 +56,11 @@ public class OI {
 	public Button opBumperR = new JoystickButton(opStick, 6);
 
 	public OI() {
+		opTriggerL.whenPressed(new CargoCollectForwardCommand());
+		opTriggerL.whenReleased(new CargoCollectStopCommand());
 
-
+		opTriggerR.whenPressed(new CargoCollectReverseCommand());
+		opTriggerR.whenReleased(new CargoCollectStopCommand());
 	}
 	
 

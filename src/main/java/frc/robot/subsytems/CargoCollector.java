@@ -18,10 +18,26 @@ public class CargoCollector extends Subsystem {
     private WPI_TalonSRX collectorA;
     private WPI_TalonSRX collectorB;
 
+    private static final double kCollectPowerForward = 1;
+    private static final double kCollectPowerReverse = -1;
+    private static final double kCollectPowerStop = 0;
+
     public CargoCollector(){
         collectorA = new WPI_TalonSRX(RobotMap.CARGO_TALON_A);
         collectorB = new WPI_TalonSRX(RobotMap.CARGO_TALON_B);
         configCollectorMotorOutput();
+    }
+
+    public void collectForward() {
+        setMotorPower(kCollectPowerForward, kCollectPowerForward);
+    }
+
+    public void collectReverse() {
+        setMotorPower(kCollectPowerReverse, kCollectPowerReverse);
+    }
+
+    public void collectStop() {
+        setMotorPower(kCollectPowerStop, kCollectPowerStop);
     }
 
     public void setMotorPower(double a, double b){
