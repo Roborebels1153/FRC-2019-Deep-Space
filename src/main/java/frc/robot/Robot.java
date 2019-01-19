@@ -11,7 +11,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsytems.Drive;
+import frc.robot.subsytems.HatchCollector;
 import frc.robot.OI;
+import frc.robot.subsytems.CargoCollector;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,6 +31,8 @@ public class Robot extends TimedRobot {
 
   public static OI oi;
   public static Drive drive;
+  public static CargoCollector cargoCollector;
+  public static HatchCollector hatchCollector;
 
   public static enum RobotID {
     PROTO, FINAL
@@ -47,6 +52,8 @@ public class Robot extends TimedRobot {
 
     drive = new Drive();
     oi = new OI();
+    cargoCollector = new CargoCollector();
+    hatchCollector = new HatchCollector();
 
   }
 
