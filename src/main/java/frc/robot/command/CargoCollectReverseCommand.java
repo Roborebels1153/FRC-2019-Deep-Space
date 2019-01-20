@@ -12,13 +12,13 @@ import frc.robot.Robot;
 
 public class CargoCollectReverseCommand extends Command {
   public CargoCollectReverseCommand() {
-    requires(Robot.cargoCollector);
+    //requires(Robot.cargoCollector);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.cargoCollector.collectReverse();
+    //Robot.cargoCollector.collectReverse();
   }
 
   // Called repeatedly when this Command is scheduled to run

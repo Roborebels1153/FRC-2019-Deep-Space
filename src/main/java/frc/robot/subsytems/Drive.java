@@ -9,6 +9,7 @@ package frc.robot.subsytems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -55,6 +56,7 @@ public class Drive extends Subsystem {
     robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
     configMasterTalons();
+    setFollowers();
   }
 
   @Override
@@ -75,7 +77,7 @@ public class Drive extends Subsystem {
   }
 
   public void arcadeDrive() {
-    robotDrive.arcadeDrive(Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X));
+    robotDrive.arcadeDrive(0.8 * Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), -0.8 *Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X));
 
   }
 
@@ -93,6 +95,13 @@ public class Drive extends Subsystem {
     leftMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
     leftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
     leftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
+    leftMaster.setNeutralMode(NeutralMode.Coast);
+    rightMaster.setNeutralMode(NeutralMode.Coast);
+    leftFollower1.setNeutralMode(NeutralMode.Coast);
+    leftFollower2.setNeutralMode(NeutralMode.Coast);
+    rightFollower1.setNeutralMode(NeutralMode.Coast);
+    rightFollower1.setNeutralMode(NeutralMode.Coast);
   }
 
   /**
