@@ -123,11 +123,11 @@ public class Robot extends TimedRobot {
   
    if (oi.getDriverStick().getRawButtonPressed(1)) {
     collectorTestA.set(-1);
-    collectorTestB.set(1);
-   } else if (oi.getDriverStick().getRawButtonPressed(2)) {
-    collectorTestA.set(1);
     collectorTestB.set(-1);
-   } else if (oi.getDriverStick().getRawButtonReleased(1) && oi.getDriverStick().getRawButtonReleased(2)) {
+   } else if (oi.getDriverStick().getRawButtonPressed(2)) {
+    collectorTestA.set(0.8);
+    collectorTestB.set(0.8);
+   } else if (oi.getDriverStick().getRawButtonReleased(1) || oi.getDriverStick().getRawButtonReleased(2)) {
     collectorTestB.set(0);
     collectorTestA.set(0);
 
