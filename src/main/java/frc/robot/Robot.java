@@ -8,12 +8,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsytems.Drive;
-//import frc.robot.subsytems.HatchCollector;
+import frc.robot.subsytems.HatchCollector;
 import frc.robot.OI;
-//import frc.robot.subsytems.CargoCollector;
+import frc.robot.subsytems.CargoCollector;
 
 
 /**
@@ -33,6 +34,9 @@ public class Robot extends TimedRobot {
   public static Drive drive;
  // public static CargoCollector cargoCollector;
   //public static HatchCollector hatchCollector;
+
+  private Victor collectorTestA;
+  private Victor collectorTestB;
 
   public static enum RobotID {
     PROTO, FINAL
@@ -55,6 +59,8 @@ public class Robot extends TimedRobot {
    // cargoCollector = new CargoCollector();
     //hatchCollector = new HatchCollector();
 
+    collectorTestA = new Victor(0);
+    collectorTestB = new Victor(1);
   }
 
   /**
@@ -114,6 +120,18 @@ public class Robot extends TimedRobot {
     //tele-op driving method
    // drive.createDriveSignal(true);
    drive.arcadeDrive();
+
+   if (oi.getDriverStick().getRawButtonPressed(1)) {
+    collectorTestA.set(-1);
+    collectorTestB.set(1);
+   } else if (oi.getDriverStick().getRawButtonPressed(2)) {
+    collectorTestA.set(1);
+    collectorTestB.set(-1);
+   } else if (oi.getDriverStick().getRawButtonReleased(1) && oi.getDriverStick().getRawButtonReleased(2)) {
+    collectorTestB.set(0);
+    collectorTestA.set(0);
+
+   }
   }
 
   /**
