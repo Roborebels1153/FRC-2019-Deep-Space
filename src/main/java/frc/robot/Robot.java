@@ -120,7 +120,7 @@ public class Robot extends TimedRobot {
     //tele-op driving method
    // drive.createDriveSignal(true);
    drive.arcadeDrive();
-    //kyle test
+  
    if (oi.getDriverStick().getRawButtonPressed(1)) {
     collectorTestA.set(-1);
     collectorTestB.set(1);
