@@ -121,13 +121,13 @@ public class Robot extends TimedRobot {
    // drive.createDriveSignal(true);
    drive.arcadeDrive();
   
-   if (oi.getDriverStick().getRawButtonPressed(1)) {
+   if (oi.getOpStick().getRawButtonPressed(1)) {
     collectorTestA.set(-1);
     collectorTestB.set(-1);
-   } else if (oi.getDriverStick().getRawButtonPressed(2)) {
+   } else if (oi.getOpStick().getRawButtonPressed(2)) {
     collectorTestA.set(0.8);
     collectorTestB.set(0.8);
-   } else if (oi.getDriverStick().getRawButtonReleased(1) || oi.getDriverStick().getRawButtonReleased(2)) {
+   } else if (oi.getOpStick().getRawButtonReleased(1) || oi.getOpStick().getRawButtonReleased(2)) {
     collectorTestB.set(0);
     collectorTestA.set(0);
 
