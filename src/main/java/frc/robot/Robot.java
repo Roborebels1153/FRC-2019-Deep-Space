@@ -38,6 +38,8 @@ public class Robot extends TimedRobot {
   private Victor collectorTestA;
   private Victor collectorTestB;
 
+  private Victor hatchTesterA;
+
   public static enum RobotID {
     PROTO, FINAL
   }
@@ -61,6 +63,7 @@ public class Robot extends TimedRobot {
 
     collectorTestA = new Victor(0);
     collectorTestB = new Victor(1);
+    hatchTesterA  = new Victor(2);
   }
 
   /**
@@ -131,6 +134,14 @@ public class Robot extends TimedRobot {
     collectorTestB.set(0);
     collectorTestA.set(0);
 
+   }
+
+   if (oi.getOpStick().getRawButtonPressed(5)) {
+    hatchTesterA.set(1);
+   } else if (oi.getOpStick().getRawButtonPressed(6)) {
+    hatchTesterA.set(-1);
+   } else if (oi.getOpStick().getRawButtonReleased(5) || oi.getOpStick().getRawButtonReleased(6)) {
+     hatchTesterA.set(0);
    }
   }
 
