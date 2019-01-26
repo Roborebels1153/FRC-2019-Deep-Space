@@ -40,6 +40,8 @@ public class Robot extends TimedRobot {
 
   private Victor hatchTesterA;
 
+  private Victor armTester;
+
   public static enum RobotID {
     PROTO, FINAL
   }
@@ -64,6 +66,7 @@ public class Robot extends TimedRobot {
     collectorTestA = new Victor(0);
     collectorTestB = new Victor(1);
     hatchTesterA  = new Victor(2);
+    armTester = new Victor(3);
   }
 
   /**
@@ -143,6 +146,12 @@ public class Robot extends TimedRobot {
    } else if (oi.getOpStick().getRawButtonReleased(5) || oi.getOpStick().getRawButtonReleased(6)) {
      hatchTesterA.set(0);
    }
+
+   armTester.set(oi.getOpStick().getY());
+
+   if (Math.abs(oi.getOpStick().getY()) > .1 ) {
+    
+   } 
   }
 
   /**
