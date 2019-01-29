@@ -35,6 +35,6 @@ public class Constants {
 	 * Use these values to tune up or tune down the drive and turn values.
 	 * Call these variables in the cheesy drive methods
 	 */
-	public static final double k_drive_coefficient  = -1;
-	public static final double k_turn_coefficient  = -1;
+	public static final double k_drive_coefficient  = .8;
+	public static final double k_turn_coefficient  = .8;
 }

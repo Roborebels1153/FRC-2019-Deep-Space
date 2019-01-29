@@ -41,7 +41,9 @@ public class Drive extends Subsystem {
   // Rebel Drive Helper (Cheesy Drive)
   private RebelDriveHelper driveHelper;
 
-  private DifferentialDrive robotDrive;
+  //private DifferentialDrive robotDrive;
+
+  public int teleOpDriveSide;   //this is a global variable which determines which side is the front of the bot
 
   public Drive() {
     leftMaster = new WPI_TalonSRX(RobotMap.LEFT_MASTER);
@@ -53,7 +55,9 @@ public class Drive extends Subsystem {
     rightFollower2 = new WPI_TalonSRX(RobotMap.RIGHT_FOLLOWER_2);
 
     driveHelper = new RebelDriveHelper();
-    robotDrive = new DifferentialDrive(leftMaster, rightMaster);
+    //robotDrive = new DifferentialDrive(leftMaster, rightMaster);
+
+    teleOpDriveSide = -1;  //at the start of the match, set one side to be the front
 
     configMasterTalons();
     setFollowers();
@@ -76,10 +80,11 @@ public class Drive extends Subsystem {
 
   }
 
+  /* 
   public void arcadeDrive() {
     robotDrive.arcadeDrive(0.8 * Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), -0.8 *Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X));
-
   }
+    */
 
   // start master talon configurations
   public void configMasterTalons() {
@@ -148,8 +153,8 @@ public class Drive extends Subsystem {
       rotateValue = rawRotateValue;
     }
 
-    DriveSignal driveSignal = driveHelper.rebelDrive(-1 * Constants.k_drive_coefficient * moveValue,
-        Constants.k_turn_coefficient * rotateValue, quickTurn, false);
+    DriveSignal driveSignal = driveHelper.rebelDrive(teleOpDriveSide * Constants.k_drive_coefficient * moveValue,
+                                                      Constants.k_turn_coefficient * rotateValue, quickTurn, false);
     Robot.drive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
 
   }

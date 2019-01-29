@@ -122,10 +122,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    /**
+     * When both bumper buttons of the drive controllers are pressed, inverse the tele-op drive control.
+     */
+    if (oi.getDriverStick().getRawButtonPressed(5) && oi.getDriverStick().getRawButtonPressed(6)) {
+      drive.teleOpDriveSide = 1;
+    } else {
+      drive.teleOpDriveSide = -1;
+    }
 
     //tele-op driving method
-   // drive.createDriveSignal(true);
-   drive.arcadeDrive();
+   drive.createDriveSignal(true);
   
    if (oi.getOpStick().getRawButtonPressed(1)) {
     collectorTestA.set(-1);
