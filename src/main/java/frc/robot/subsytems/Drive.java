@@ -10,8 +10,8 @@ package frc.robot.subsytems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -186,6 +186,41 @@ public class Drive extends Subsystem {
     leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
         Constants.kTimeoutMs);
   }
+
+  public void configRightMotionMagic(double rightCoefficient) {
+		/* Set relevant frame periods to be at least as fast as periodic rate */
+		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+    rightMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+    
+		/* set acceleration and vcruise velocity - see documentation */
+		int cruiseVelocity = (int) (rightCoefficient * Constants.kMotionMagicCruiseVelocity);
+		System.out.println("Setting right cruiseVelocity to " + cruiseVelocity);
+		rightMaster.configMotionCruiseVelocity(cruiseVelocity, Constants.kTimeoutMs);
+		rightMaster.configMotionAcceleration(Constants.kMotionMagicAcceleration, Constants.kTimeoutMs);
+	}
+
+	public void configLeftMotionMagic(double leftCoefficient) {
+		/* Set relevant frame periods to be at least as fast as periodic rate */
+		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+    leftMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+    
+		/* set acceleration and vcruise velocity - see documentation */
+		int cruiseVelocity = (int) (leftCoefficient * Constants.kMotionMagicCruiseVelocity);
+		System.out.println("Setting left cruiseVelocity to " + cruiseVelocity);
+		leftMaster.configMotionCruiseVelocity(cruiseVelocity, Constants.kTimeoutMs);
+		leftMaster.configMotionAcceleration(Constants.kMotionMagicAcceleration, Constants.kTimeoutMs);
+  }
+  
+  public void enactRightMotorMotionMagic(double targetPos) {
+		rightMaster.set(ControlMode.MotionMagic, targetPos);
+	}
+
+  public void enactLeftMotorMotionMagic(double targetPos) {
+		leftMaster.set(ControlMode.MotionMagic, targetPos);
+	}
+
 
   // reset daaa enkodurs
   public void resetEncoders() {

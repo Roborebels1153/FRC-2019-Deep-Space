@@ -37,4 +37,15 @@ public class Constants {
 	 */
 	public static final double k_drive_coefficient  = .8;
 	public static final double k_turn_coefficient  = .8;
+
+	/**
+	 * Use these constants for motion magic configuration
+	 */
+	public static final int kMotionMagicCruiseVelocity = 1800;
+	public static final int kMotionMagicAcceleration = 1800;
+
+	public static final double kLeftTicksPerInch = 100;
+	public static final double kRightTicksPerInch = 100;
+
+
 }
