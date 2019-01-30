@@ -134,23 +134,23 @@ public class Robot extends TimedRobot {
     //tele-op driving method
    drive.createDriveSignal(true);
   
-   if (oi.getOpStick().getRawButtonPressed(1)) {
-    collectorTestA.set(-1);
-    collectorTestB.set(-1);
-   } else if (oi.getOpStick().getRawButtonPressed(2)) {
-    collectorTestA.set(0.8);
-    collectorTestB.set(0.8);
-   } else if (oi.getOpStick().getRawButtonReleased(1) || oi.getOpStick().getRawButtonReleased(2)) {
+   if (oi.getOpStick().getRawAxis(3) > 0.1) {
+    collectorTestA.set(oi.getOpStick().getRawAxis(3));
+    collectorTestB.set(oi.getOpStick().getRawAxis(3));
+   } else if (oi.getOpStick().getRawAxis(2) > 0.1) {
+    collectorTestA.set(oi.getOpStick().getRawAxis(2));
+    collectorTestB.set(oi.getOpStick().getRawAxis(2));
+   } else {
     collectorTestB.set(0);
     collectorTestA.set(0);
 
    }
 
-   if (oi.getOpStick().getRawButtonPressed(5)) {
+   if (oi.getOpStick().getRawButtonPressed(1)) {
     hatchTesterA.set(1);
-   } else if (oi.getOpStick().getRawButtonPressed(6)) {
+   } else if (oi.getOpStick().getRawButtonPressed(2)) {
     hatchTesterA.set(-1);
-   } else if (oi.getOpStick().getRawButtonReleased(5) || oi.getOpStick().getRawButtonReleased(6)) {
+   } else if (oi.getOpStick().getRawButtonReleased(1) || oi.getOpStick().getRawButtonReleased(2)) {
      hatchTesterA.set(0);
    }
 
