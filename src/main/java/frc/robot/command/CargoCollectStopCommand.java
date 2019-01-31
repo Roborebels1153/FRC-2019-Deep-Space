@@ -18,6 +18,7 @@ public class CargoCollectStopCommand extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    System.out.println("Collect stop");
     Robot.cargoCollector.collectStop();
   }
 

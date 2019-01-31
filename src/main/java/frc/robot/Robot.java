@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsytems.Drive;
@@ -58,8 +59,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     drive = new Drive();
-    oi = new OI();
     cargoCollector = new CargoCollector();
+    oi = new OI();
     //hatchCollector = new HatchCollector();
 
     hatchTesterA  = new Victor(2);
@@ -103,6 +104,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    Scheduler.getInstance().run();
     switch (m_autoSelected) {
     case kCustomAuto:
       // Put custom auto code here
@@ -119,6 +121,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    Scheduler.getInstance().run();
     /**
      * When both bumper buttons of the drive controllers are pressed, inverse the tele-op drive control.
      */
