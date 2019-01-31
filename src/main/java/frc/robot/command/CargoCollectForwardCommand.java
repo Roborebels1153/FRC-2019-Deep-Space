@@ -12,13 +12,13 @@ import frc.robot.Robot;
 
 public class CargoCollectForwardCommand extends Command {
   public CargoCollectForwardCommand() {
-    //requires(Robot.cargoCollector);
+    requires(Robot.cargoCollector);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    //Robot.cargoCollector.collectForward();
+    Robot.cargoCollector.collectForward();
   }
 
   // Called repeatedly when this Command is scheduled to run

@@ -8,6 +8,8 @@
 package frc.robot.subsytems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.Victor;
+
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -15,47 +17,42 @@ import frc.robot.Constants;
 
  
 public class CargoCollector extends Subsystem {
-    private WPI_TalonSRX collectorA;
-    private WPI_TalonSRX collectorB;
+    //private WPI_TalonSRX articulator;
+    private Victor collector;
 
-    private static final double kCollectPowerForward = 1;
-    private static final double kCollectPowerReverse = -1;
+    private static final double kCollectPowerForward = -1;
+    private static final double kCollectPowerReverse = 0.8;
     private static final double kCollectPowerStop = 0;
 
     public CargoCollector(){
-        collectorA = new WPI_TalonSRX(RobotMap.CARGO_TALON_A);
-        collectorB = new WPI_TalonSRX(RobotMap.CARGO_TALON_B);
+        //articulator = new WPI_TalonSRX(RobotMap.CARGO_TALON_A);
+        collector = new Victor(0);
         configCollectorMotorOutput();
     }
 
     public void collectForward() {
-        setMotorPower(kCollectPowerForward, kCollectPowerForward);
+        setMotorPower(kCollectPowerForward);
     }
 
     public void collectReverse() {
-        setMotorPower(kCollectPowerReverse, kCollectPowerReverse);
+        setMotorPower(kCollectPowerReverse);
     }
 
     public void collectStop() {
-        setMotorPower(kCollectPowerStop, kCollectPowerStop);
+        setMotorPower(kCollectPowerStop);
     }
 
-    public void setMotorPower(double a, double b){
-        collectorA.set(ControlMode.PercentOutput, a);
-        collectorB.set(ControlMode.PercentOutput, b);
+    public void setMotorPower(double b){
+        collector.set(b);
     }
 
     public void configCollectorMotorOutput() {
-		collectorA.configNominalOutputForward(0, Constants.kTimeoutMs);
-		collectorA.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		collectorA.configPeakOutputForward(1, Constants.kTimeoutMs);
-        collectorA.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-        
-        collectorB.configNominalOutputForward(0, Constants.kTimeoutMs);
-		collectorB.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		collectorB.configPeakOutputForward(1, Constants.kTimeoutMs);
-		collectorB.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-		
+        /*
+		articulator.configNominalOutputForward(0, Constants.kTimeoutMs);
+		articulator.configNominalOutputReverse(0, Constants.kTimeoutMs);
+		articulator.configPeakOutputForward(1, Constants.kTimeoutMs);
+        articulator.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+		*/
 	}
 
     @Override
@@ -65,13 +62,8 @@ public class CargoCollector extends Subsystem {
     }
 
     public void getMotorAOutputPercent(){
-        collectorA.getMotorOutputPercent();
+        //articulator.getMotorOutputPercent();
     }
-
-    public void getMotorBOutputPercent(){
-        collectorB.getMotorOutputPercent();
-    }
-
 
 
 }

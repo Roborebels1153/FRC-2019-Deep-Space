@@ -32,11 +32,8 @@ public class Robot extends TimedRobot {
 
   public static OI oi;
   public static Drive drive;
- // public static CargoCollector cargoCollector;
+  public static CargoCollector cargoCollector;
   //public static HatchCollector hatchCollector;
-
-  private Victor collectorTestA;
-  private Victor collectorTestB;
 
   private Victor hatchTesterA;
 
@@ -60,11 +57,9 @@ public class Robot extends TimedRobot {
 
     drive = new Drive();
     oi = new OI();
-   // cargoCollector = new CargoCollector();
+    cargoCollector = new CargoCollector();
     //hatchCollector = new HatchCollector();
 
-    collectorTestA = new Victor(0);
-    collectorTestB = new Victor(1);
     hatchTesterA  = new Victor(2);
     armTester = new Victor(3);
   }
@@ -133,18 +128,6 @@ public class Robot extends TimedRobot {
 
     //tele-op driving method
    drive.createDriveSignal(true);
-  
-   if (oi.getOpStick().getRawAxis(3) > 0.1) {
-    collectorTestA.set(oi.getOpStick().getRawAxis(3));
-    collectorTestB.set(oi.getOpStick().getRawAxis(3));
-   } else if (oi.getOpStick().getRawAxis(2) > 0.1) {
-    collectorTestA.set(oi.getOpStick().getRawAxis(2));
-    collectorTestB.set(oi.getOpStick().getRawAxis(2));
-   } else {
-    collectorTestB.set(0);
-    collectorTestA.set(0);
-
-   }
 
    if (oi.getOpStick().getRawButtonPressed(1)) {
     hatchTesterA.set(1);
