@@ -45,6 +45,8 @@ public class Robot extends TimedRobot {
 
   public static final RobotID robotID = RobotID.PROTO;
 
+  private boolean mLastToggleState = false;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -120,11 +122,11 @@ public class Robot extends TimedRobot {
     /**
      * When both bumper buttons of the drive controllers are pressed, inverse the tele-op drive control.
      */
-    if (oi.getDriverStick().getRawButtonPressed(5) && oi.getDriverStick().getRawButtonPressed(6)) {
-      drive.teleOpDriveSide = 1;
-    } else {
-      drive.teleOpDriveSide = -1;
+    boolean bothPressed = oi.getDriverStick().getRawButton(5) && oi.getDriverStick().getRawButton(6);
+    if (bothPressed && !mLastToggleState) {
+      drive.teleOpDriveSide = (drive.teleOpDriveSide > 0 ? -1 : 1);
     }
+    mLastToggleState = bothPressed;
 
     //tele-op driving method
    drive.createDriveSignal(true);
