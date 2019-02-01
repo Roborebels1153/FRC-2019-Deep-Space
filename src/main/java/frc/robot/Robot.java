@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
   private Victor hatchTesterA;
 
   private Victor armTester;
-  private Victor armArticulator;
+  private Victor hatchArticulator;
 
   public static enum RobotID {
     PROTO, FINAL
@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
 
     hatchTesterA  = new Victor(2);
     armTester = new Victor(3);
-    armArticulator = new Victor(4);
+    hatchArticulator = new Victor(4);
   }
 
   /**
@@ -146,7 +146,7 @@ public class Robot extends TimedRobot {
 
    armTester.set(-1 * oi.getOpStick().getY());
 
-   armArticulator.set (oi.getOpStick().getRawAxis(5));
+   hatchArticulator.set (oi.getOpStick().getRawAxis(5));
    
   }
 
