@@ -17,7 +17,6 @@ import frc.robot.subsytems.HatchCollector;
 import frc.robot.OI;
 import frc.robot.subsytems.CargoCollector;
 
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -34,7 +33,7 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static Drive drive;
   public static CargoCollector cargoCollector;
-  //public static HatchCollector hatchCollector;
+  // public static HatchCollector hatchCollector;
 
   private Victor hatchTesterA;
 
@@ -62,11 +61,16 @@ public class Robot extends TimedRobot {
     drive = new Drive();
     cargoCollector = new CargoCollector();
     oi = new OI();
-    //hatchCollector = new HatchCollector();
+    // hatchCollector = new HatchCollector();
 
-    hatchTesterA  = new Victor(2);
+    hatchTesterA = new Victor(2);
     armTester = new Victor(3);
     hatchArticulator = new Victor(4);
+  }
+
+  private void updateDashboard() {
+    // Call updateDashboard() for each individual subsystem
+    drive.updateDashboard();
   }
 
   /**
@@ -124,8 +128,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    updateDashboard();
+
     /**
-     * When both bumper buttons of the drive controllers are pressed, inverse the tele-op drive control.
+     * When both bumper buttons of the drive controllers are pressed, inverse the
+     * tele-op drive control.
      */
     boolean bothPressed = oi.getDriverStick().getRawButton(5) && oi.getDriverStick().getRawButton(6);
     if (bothPressed && !mLastToggleState) {
@@ -133,21 +140,20 @@ public class Robot extends TimedRobot {
     }
     mLastToggleState = bothPressed;
 
-    //tele-op driving method
-   drive.createDriveSignal(true);
+    // tele-op driving method
+    drive.createDriveSignal(true);
 
-   if (oi.getOpStick().getRawButtonPressed(1)) {
-    hatchTesterA.set(1);
-   } else if (oi.getOpStick().getRawButtonPressed(2)) {
-    hatchTesterA.set(-1);
-   } else if (oi.getOpStick().getRawButtonReleased(1) || oi.getOpStick().getRawButtonReleased(2)) {
-     hatchTesterA.set(0);
-   }
+    if (oi.getOpStick().getRawButtonPressed(1)) {
+      hatchTesterA.set(1);
+    } else if (oi.getOpStick().getRawButtonPressed(2)) {
+      hatchTesterA.set(-1);
+    } else if (oi.getOpStick().getRawButtonReleased(1) || oi.getOpStick().getRawButtonReleased(2)) {
+      hatchTesterA.set(0);
+    }
 
-   armTester.set(-1 * oi.getOpStick().getY());
+    armTester.set(-1 * oi.getOpStick().getY());
 
-   hatchArticulator.set (oi.getOpStick().getRawAxis(5));
-   
+    hatchArticulator.set(oi.getOpStick().getRawAxis(5));
   }
 
   /**

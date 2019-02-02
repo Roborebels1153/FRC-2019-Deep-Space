@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -183,7 +184,7 @@ public class Drive extends Subsystem {
   public void configTalonFeedback() {
     leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
         Constants.kTimeoutMs);
-    leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
+    rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
         Constants.kTimeoutMs);
   }
 
@@ -228,29 +229,33 @@ public class Drive extends Subsystem {
     rightMaster.setSelectedSensorPosition(0);
   }
 
-  public void getLeftEncoderCount() {
-    leftMaster.getSelectedSensorPosition();
+  public int getLeftEncoderCount() {
+    return leftMaster.getSelectedSensorPosition();
   }
 
-  public void getLeftMotorOutput() {
-    leftMaster.getMotorOutputPercent();
+  public double getLeftMotorOutput() {
+    return leftMaster.getMotorOutputPercent();
   }
 
-  public void getLeftMotorSpeed() {
-    leftMaster.getSelectedSensorVelocity();
+  public int getLeftMotorSpeed() {
+    return leftMaster.getSelectedSensorVelocity();
   }
 
-  public void getRightEncoderCount() {
-    rightMaster.getSelectedSensorPosition();
+  public int getRightEncoderCount() {
+    return rightMaster.getSelectedSensorPosition();
   }
 
-  public void getRightMotorOutput() {
-    rightMaster.getMotorOutputPercent();
+  public double getRightMotorOutput() {
+    return rightMaster.getMotorOutputPercent();
   }
 
-  public void getRightMotorSpeed() {
-    rightMaster.getSelectedSensorVelocity();
+  public int getRightMotorSpeed() {
+    return rightMaster.getSelectedSensorVelocity();
   }
 
+  public void updateDashboard() {
+    SmartDashboard.putNumber("Left Encoder", getLeftEncoderCount());
+    SmartDashboard.putNumber("Right Encoder", getRightEncoderCount());
+  }
   
 }
