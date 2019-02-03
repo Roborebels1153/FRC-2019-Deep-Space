@@ -19,6 +19,8 @@ public class HatchCollector extends Subsystem {
     public HatchCollector() {
         mRoller = new Victor(RobotMap.HATCH_ROLLER);
         mArticulator = new Victor(RobotMap.HATCH_ARTICULATOR);
+        mRoller.setInverted(true);
+        mArticulator.setInverted(true);
     }
 
     public void setArticulatorPower(double value) {
