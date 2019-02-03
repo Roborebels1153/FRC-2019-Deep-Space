@@ -16,6 +16,10 @@ public class HatchCollector extends Subsystem {
     private Victor mRoller;
     private Victor mArticulator;
 
+    private static final double kCollectPowerForward = -1;
+    private static final double kCollectPowerReverse = 1;
+    private static final double kCollectPowerStop = 0;
+
     public HatchCollector() {
         mRoller = new Victor(RobotMap.HATCH_ROLLER);
         mArticulator = new Victor(RobotMap.HATCH_ARTICULATOR);
@@ -29,6 +33,18 @@ public class HatchCollector extends Subsystem {
 
     public void setRollerPower(double value) {
         mRoller.set(value);
+    }
+
+    public void collectForward() {
+        setRollerPower(kCollectPowerForward);
+    }
+
+    public void collectReverse() {
+        setRollerPower(kCollectPowerReverse);
+    }
+
+    public void collectStop() {
+        setRollerPower(kCollectPowerStop);
     }
 
     @Override

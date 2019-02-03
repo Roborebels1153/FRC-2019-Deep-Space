@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.command.CargoCollectForwardCommand;
 import frc.robot.command.CargoCollectReverseCommand;
 import frc.robot.command.CargoCollectStopCommand;
+import frc.robot.command.HatchCollectForwardCommand;
+import frc.robot.command.HatchCollectReverseCommand;
+import frc.robot.command.HatchCollectStopCommand;
 import frc.robot.lib.RebelTrigger;
 
 /**
@@ -61,6 +64,12 @@ public class OI {
 
 		opTriggerR.whenPressed(new CargoCollectReverseCommand());
 		opTriggerR.whenReleased(new CargoCollectStopCommand());
+
+		opButtonA.whenPressed(new HatchCollectForwardCommand());
+		opButtonA.whenReleased(new HatchCollectStopCommand());
+
+		opButtonB.whenPressed(new HatchCollectReverseCommand());
+		opButtonB.whenReleased(new HatchCollectStopCommand());
 	}
 	
 

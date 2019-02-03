@@ -10,15 +10,15 @@ package frc.robot.command;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class CargoCollectStopCommand extends Command {
-  public CargoCollectStopCommand() {
-    requires(Robot.cargoCollector);
+public class HatchCollectStopCommand extends Command {
+  public HatchCollectStopCommand() {
+    requires(Robot.hatchCollector);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.cargoCollector.collectStop();
+    Robot.hatchCollector.collectStop();
   }
 
   // Called repeatedly when this Command is scheduled to run

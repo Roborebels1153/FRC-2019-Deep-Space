@@ -134,15 +134,6 @@ public class Robot extends TimedRobot {
     // tele-op driving method
     drive.createDriveSignal(true);
 
-    // TODO: Convert to commands and move to OI
-    if (oi.getOpStick().getRawButtonPressed(1)) {
-      hatchCollector.setRollerPower(1);
-    } else if (oi.getOpStick().getRawButtonPressed(2)) {
-      hatchCollector.setRollerPower(-1);
-    } else if (oi.getOpStick().getRawButtonReleased(1) || oi.getOpStick().getRawButtonReleased(2)) {
-      hatchCollector.setRollerPower(0);
-    }
-
     cargoCollector.setArticulatorPower(-1 * oi.getOpStick().getY());
     hatchCollector.setArticulatorPower(oi.getOpStick().getRawAxis(5));
   }
