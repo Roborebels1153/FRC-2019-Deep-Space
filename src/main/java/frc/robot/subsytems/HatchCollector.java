@@ -7,25 +7,29 @@
 
 package frc.robot.subsytems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
 public class HatchCollector extends Subsystem {
 
-    private WPI_TalonSRX intakeMotor;
+    private Victor mRoller;
+    private Victor mArticulator;
 
     public HatchCollector() {
-        intakeMotor = new WPI_TalonSRX(RobotMap.HATCH_MOTOR);
+        mRoller = new Victor(RobotMap.HATCH_ROLLER);
+        mArticulator = new Victor(RobotMap.HATCH_ARTICULATOR);
     }
 
-    public void setMotorSpeed(double value) {
-        intakeMotor.set(ControlMode.PercentOutput, value);
+    public void setArticulatorPower(double value) {
+        mArticulator.set(value);
     }
+
+    public void setRollerPower(double value) {
+        mRoller.set(value);
+    }
+
     @Override
     public void initDefaultCommand() {
-
     }
-
 }

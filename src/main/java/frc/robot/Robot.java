@@ -33,12 +33,7 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static Drive drive;
   public static CargoCollector cargoCollector;
-  // public static HatchCollector hatchCollector;
-
-  private Victor hatchTesterA;
-
-  private Victor armTester;
-  private Victor hatchArticulator;
+  public static HatchCollector hatchCollector;
 
   public static enum RobotID {
     PROTO, FINAL
@@ -60,12 +55,8 @@ public class Robot extends TimedRobot {
 
     drive = new Drive();
     cargoCollector = new CargoCollector();
+    hatchCollector = new HatchCollector();
     oi = new OI();
-    // hatchCollector = new HatchCollector();
-
-    hatchTesterA = new Victor(2);
-    armTester = new Victor(3);
-    hatchArticulator = new Victor(4);
   }
 
   private void updateDashboard() {
@@ -143,17 +134,17 @@ public class Robot extends TimedRobot {
     // tele-op driving method
     drive.createDriveSignal(true);
 
+    // TODO: Convert to commands and move to OI
     if (oi.getOpStick().getRawButtonPressed(1)) {
-      hatchTesterA.set(1);
+      hatchCollector.setRollerPower(1);
     } else if (oi.getOpStick().getRawButtonPressed(2)) {
-      hatchTesterA.set(-1);
+      hatchCollector.setRollerPower(-1);
     } else if (oi.getOpStick().getRawButtonReleased(1) || oi.getOpStick().getRawButtonReleased(2)) {
-      hatchTesterA.set(0);
+      hatchCollector.setRollerPower(0);
     }
 
-    armTester.set(-1 * oi.getOpStick().getY());
-
-    hatchArticulator.set(oi.getOpStick().getRawAxis(5));
+    cargoCollector.setArticulatorPower(-1 * oi.getOpStick().getY());
+    hatchCollector.setArticulatorPower(oi.getOpStick().getRawAxis(5));
   }
 
   /**

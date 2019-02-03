@@ -6,65 +6,70 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsytems;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.Victor;
-
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.robot.Constants;
 
- 
 public class CargoCollector extends Subsystem {
-    //private WPI_TalonSRX articulator;
-    private Victor collector;
+
+    private WPI_TalonSRX mArticulatorA;
+    private WPI_TalonSRX mArticulatorB;
+    private Victor mRoller;
 
     private static final double kCollectPowerForward = -1;
     private static final double kCollectPowerReverse = 0.8;
     private static final double kCollectPowerStop = 0;
 
-    public CargoCollector(){
-        //articulator = new WPI_TalonSRX(RobotMap.CARGO_TALON_A);
-        collector = new Victor(0);
+    public CargoCollector() {
+        mArticulatorA = new WPI_TalonSRX(RobotMap.CARGO_TALON_A);
+        mArticulatorB = new WPI_TalonSRX(RobotMap.CARGO_TALON_B);
+        mRoller = new Victor(RobotMap.CARGO_ROLLER);
         configCollectorMotorOutput();
     }
 
     public void collectForward() {
-        setMotorPower(kCollectPowerForward);
+        setRollerPower(kCollectPowerForward);
     }
 
     public void collectReverse() {
-        setMotorPower(kCollectPowerReverse);
+        setRollerPower(kCollectPowerReverse);
     }
 
     public void collectStop() {
-        setMotorPower(kCollectPowerStop);
+        setRollerPower(kCollectPowerStop);
     }
 
-    public void setMotorPower(double b){
-        collector.set(b);
+    public void setRollerPower(double b) {
+        mRoller.set(b);
     }
 
     public void configCollectorMotorOutput() {
-        /*
-		articulator.configNominalOutputForward(0, Constants.kTimeoutMs);
-		articulator.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		articulator.configPeakOutputForward(1, Constants.kTimeoutMs);
-        articulator.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-		*/
-	}
+        mArticulatorA.set(ControlMode.PercentOutput, 0);
+
+        mArticulatorA.configNominalOutputForward(0, Constants.kTimeoutMs);
+        mArticulatorA.configNominalOutputReverse(0, Constants.kTimeoutMs);
+        mArticulatorA.configPeakOutputForward(1, Constants.kTimeoutMs);
+        mArticulatorA.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
+        mArticulatorB.follow(mArticulatorA);
+        mArticulatorB.setInverted(true);
+    }
 
     @Override
     public void initDefaultCommand() {
 
-        
     }
 
-    public void getMotorAOutputPercent(){
-        //articulator.getMotorOutputPercent();
+    public void getMotorAOutputPercent() {
+        // articulator.getMotorOutputPercent();
     }
 
-
+    public void setArticulatorPower(double value) {
+        mArticulatorA.set(ControlMode.PercentOutput, value);
+    }
 }
-

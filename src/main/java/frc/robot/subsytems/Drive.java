@@ -42,9 +42,9 @@ public class Drive extends Subsystem {
   // Rebel Drive Helper (Cheesy Drive)
   private RebelDriveHelper driveHelper;
 
-  //private DifferentialDrive robotDrive;
+  // private DifferentialDrive robotDrive;
 
-  public int teleOpDriveSide;   //this is a global variable which determines which side is the front of the bot
+  public int teleOpDriveSide; // this is a global variable which determines which side is the front of the bot
 
   public Drive() {
     leftMaster = new WPI_TalonSRX(RobotMap.LEFT_MASTER);
@@ -56,9 +56,9 @@ public class Drive extends Subsystem {
     rightFollower2 = new WPI_TalonSRX(RobotMap.RIGHT_FOLLOWER_2);
 
     driveHelper = new RebelDriveHelper();
-    //robotDrive = new DifferentialDrive(leftMaster, rightMaster);
+    // robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
-    teleOpDriveSide = -1;  //at the start of the match, set one side to be the front
+    teleOpDriveSide = -1; // at the start of the match, set one side to be the front
 
     configMasterTalons();
     setFollowers();
@@ -81,11 +81,11 @@ public class Drive extends Subsystem {
 
   }
 
-  /* 
-  public void arcadeDrive() {
-    robotDrive.arcadeDrive(0.8 * Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), -0.8 *Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X));
-  }
-    */
+  /*
+   * public void arcadeDrive() { robotDrive.arcadeDrive(0.8 *
+   * Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), -0.8
+   * *Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X)); }
+   */
 
   // start master talon configurations
   public void configMasterTalons() {
@@ -155,7 +155,7 @@ public class Drive extends Subsystem {
     }
 
     DriveSignal driveSignal = driveHelper.rebelDrive(teleOpDriveSide * Constants.k_drive_coefficient * moveValue,
-                                                      Constants.k_turn_coefficient * rotateValue, quickTurn, false);
+        Constants.k_turn_coefficient * rotateValue, quickTurn, false);
     Robot.drive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
 
   }
@@ -189,39 +189,38 @@ public class Drive extends Subsystem {
   }
 
   public void configRightMotionMagic(double rightCoefficient) {
-		/* Set relevant frame periods to be at least as fast as periodic rate */
-		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
-		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+    /* Set relevant frame periods to be at least as fast as periodic rate */
+    rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+    rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
     rightMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-    
-		/* set acceleration and vcruise velocity - see documentation */
-		int cruiseVelocity = (int) (rightCoefficient * Constants.kMotionMagicCruiseVelocity);
-		System.out.println("Setting right cruiseVelocity to " + cruiseVelocity);
-		rightMaster.configMotionCruiseVelocity(cruiseVelocity, Constants.kTimeoutMs);
-		rightMaster.configMotionAcceleration(Constants.kMotionMagicAcceleration, Constants.kTimeoutMs);
-	}
 
-	public void configLeftMotionMagic(double leftCoefficient) {
-		/* Set relevant frame periods to be at least as fast as periodic rate */
-		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
-		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
-    leftMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-    
-		/* set acceleration and vcruise velocity - see documentation */
-		int cruiseVelocity = (int) (leftCoefficient * Constants.kMotionMagicCruiseVelocity);
-		System.out.println("Setting left cruiseVelocity to " + cruiseVelocity);
-		leftMaster.configMotionCruiseVelocity(cruiseVelocity, Constants.kTimeoutMs);
-		leftMaster.configMotionAcceleration(Constants.kMotionMagicAcceleration, Constants.kTimeoutMs);
+    /* set acceleration and vcruise velocity - see documentation */
+    int cruiseVelocity = (int) (rightCoefficient * Constants.kMotionMagicCruiseVelocity);
+    System.out.println("Setting right cruiseVelocity to " + cruiseVelocity);
+    rightMaster.configMotionCruiseVelocity(cruiseVelocity, Constants.kTimeoutMs);
+    rightMaster.configMotionAcceleration(Constants.kMotionMagicAcceleration, Constants.kTimeoutMs);
   }
-  
+
+  public void configLeftMotionMagic(double leftCoefficient) {
+    /* Set relevant frame periods to be at least as fast as periodic rate */
+    leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+    leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+    leftMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+
+    /* set acceleration and vcruise velocity - see documentation */
+    int cruiseVelocity = (int) (leftCoefficient * Constants.kMotionMagicCruiseVelocity);
+    System.out.println("Setting left cruiseVelocity to " + cruiseVelocity);
+    leftMaster.configMotionCruiseVelocity(cruiseVelocity, Constants.kTimeoutMs);
+    leftMaster.configMotionAcceleration(Constants.kMotionMagicAcceleration, Constants.kTimeoutMs);
+  }
+
   public void enactRightMotorMotionMagic(double targetPos) {
-		rightMaster.set(ControlMode.MotionMagic, targetPos);
-	}
+    rightMaster.set(ControlMode.MotionMagic, targetPos);
+  }
 
   public void enactLeftMotorMotionMagic(double targetPos) {
-		leftMaster.set(ControlMode.MotionMagic, targetPos);
-	}
-
+    leftMaster.set(ControlMode.MotionMagic, targetPos);
+  }
 
   // reset daaa enkodurs
   public void resetEncoders() {
@@ -257,5 +256,5 @@ public class Drive extends Subsystem {
     SmartDashboard.putNumber("Left Encoder", getLeftEncoderCount());
     SmartDashboard.putNumber("Right Encoder", getRightEncoderCount());
   }
-  
+
 }
