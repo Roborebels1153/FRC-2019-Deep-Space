@@ -9,6 +9,7 @@ package frc.robot.subsytems;
 
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 public class HatchCollector extends Subsystem {
@@ -25,6 +26,11 @@ public class HatchCollector extends Subsystem {
         mArticulator = new Victor(RobotMap.HATCH_ARTICULATOR);
         mRoller.setInverted(true);
         mArticulator.setInverted(true);
+    }
+
+    public void updateDashboard() {
+        SmartDashboard.putNumber("Roller Speed Value", getRollerPower());
+        SmartDashboard.putNumber("Articulator Speed Value", getArticulatorPower());
     }
 
     public void setArticulatorPower(double value) {
@@ -45,6 +51,14 @@ public class HatchCollector extends Subsystem {
 
     public void collectStop() {
         setRollerPower(kCollectPowerStop);
+    }
+
+    public double getRollerPower() {
+        return mRoller.get();
+    }
+
+    public double getArticulatorPower() {
+        return mArticulator.get();
     }
 
     @Override

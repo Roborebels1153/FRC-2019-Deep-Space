@@ -8,6 +8,7 @@
 package frc.robot.subsytems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.Victor;
 
@@ -32,6 +33,10 @@ public class CargoCollector extends Subsystem {
         configCollectorMotorOutput();
     }
 
+    public void updateDashboard() {
+        SmartDashboard.putNumber("Cargo Roller Power", getRollerPower());
+        SmartDashboard.putNumber("Cargo Articulator Power", getArticulatorPower());
+    }
     public void collectForward() {
         setRollerPower(kCollectPowerForward);
     }
@@ -56,6 +61,11 @@ public class CargoCollector extends Subsystem {
         mArticulatorA.configPeakOutputForward(1, Constants.kTimeoutMs);
         mArticulatorA.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
+        mArticulatorB.configNominalOutputForward(0, Constants.kTimeoutMs);
+        mArticulatorB.configNominalOutputReverse(0, Constants.kTimeoutMs);
+        mArticulatorB.configPeakOutputForward(1, Constants.kTimeoutMs);
+        mArticulatorB.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
         mArticulatorB.follow(mArticulatorA);
         mArticulatorB.setInverted(true);
     }
@@ -65,11 +75,16 @@ public class CargoCollector extends Subsystem {
 
     }
 
-    public void getMotorAOutputPercent() {
-        // articulator.getMotorOutputPercent();
-    }
-
     public void setArticulatorPower(double value) {
         mArticulatorA.set(ControlMode.PercentOutput, value);
+        mArticulatorB.set(ControlMode.PercentOutput, value);
+    }
+
+    public double getRollerPower() {
+        return mRoller.get();
+    }
+
+    public double getArticulatorPower() {
+        return mArticulatorA.getMotorOutputPercent();
     }
 }

@@ -60,8 +60,9 @@ public class Robot extends TimedRobot {
   }
 
   private void updateDashboard() {
-    // Call updateDashboard() for each individual subsystem
     drive.updateDashboard();
+    hatchCollector.updateDashboard();
+    cargoCollector.updateDashboard();
   }
 
   /**

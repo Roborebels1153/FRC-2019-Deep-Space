@@ -253,8 +253,11 @@ public class Drive extends Subsystem {
   }
 
   public void updateDashboard() {
-    SmartDashboard.putNumber("Left Encoder", getLeftEncoderCount());
-    SmartDashboard.putNumber("Right Encoder", getRightEncoderCount());
+    SmartDashboard.putNumber("Left Encoder Count", getLeftEncoderCount());
+    SmartDashboard.putNumber("Right Encoder Count", getRightEncoderCount());
+
+    SmartDashboard.putNumber("Left Motor Velocity", getLeftMotorSpeed());
+    SmartDashboard.putNumber("Right Motor Velocity", getRightMotorSpeed());
   }
 
 }
