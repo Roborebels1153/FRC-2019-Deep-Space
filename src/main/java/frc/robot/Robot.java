@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.subsytems.Drive;
 import frc.robot.subsytems.HatchCollector;
 import frc.robot.OI;
@@ -137,6 +138,19 @@ public class Robot extends TimedRobot {
 
     cargoCollector.setArticulatorPower(-1 * oi.getOpStick().getY());
     hatchCollector.setArticulatorPower(oi.getOpStick().getRawAxis(5));
+
+    //rumble controllers when cargo Light Sensor detects cargo
+    if(cargoCollector.getLightSensor()){
+      oi.getOpStick().setRumble(RumbleType.kLeftRumble, 1);
+      oi.getOpStick().setRumble(RumbleType.kRightRumble, 1);
+      oi.getDriverStick().setRumble(RumbleType.kLeftRumble, 1);
+      oi.getDriverStick().setRumble(RumbleType.kRightRumble, 1);
+    } else {
+      oi.getOpStick().setRumble(RumbleType.kLeftRumble, 0);
+      oi.getOpStick().setRumble(RumbleType.kRightRumble, 0);
+      oi.getDriverStick().setRumble(RumbleType.kLeftRumble, 0);
+      oi.getDriverStick().setRumble(RumbleType.kRightRumble, 0);
+    }
   }
 
   /**

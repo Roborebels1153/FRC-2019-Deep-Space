@@ -10,6 +10,7 @@ package frc.robot.subsytems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Victor;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -22,6 +23,8 @@ public class CargoCollector extends Subsystem {
     private WPI_TalonSRX mArticulatorB;
     private Victor mRoller;
 
+    private DigitalInput cargoLightSensor;
+
     private static final double kCollectPowerForward = -1;
     private static final double kCollectPowerReverse = 0.8;
     private static final double kCollectPowerStop = 0;
@@ -30,12 +33,19 @@ public class CargoCollector extends Subsystem {
         mArticulatorA = new WPI_TalonSRX(RobotMap.CARGO_TALON_A);
         mArticulatorB = new WPI_TalonSRX(RobotMap.CARGO_TALON_B);
         mRoller = new Victor(RobotMap.CARGO_ROLLER);
+        cargoLightSensor = new DigitalInput(RobotMap.CARGO_LIGHT_SENSOR);
+
         configCollectorMotorOutput();
     }
 
     public void updateDashboard() {
         SmartDashboard.putNumber("Cargo Roller Power", getRollerPower());
         SmartDashboard.putNumber("Cargo Articulator Power", getArticulatorPower());
+        SmartDashboard.putBoolean("Cargo Light Sensor Status", getLightSensor());
+    }
+
+    public boolean getLightSensor() {
+        return cargoLightSensor.get();
     }
     public void collectForward() {
         setRollerPower(kCollectPowerForward);

@@ -35,4 +35,6 @@ public class RobotMap {
 	// Hatch ground intake motor controllor
 	public static final int HATCH_ARTICULATOR = 4;
 	public static final int HATCH_ROLLER = 2;
+
+	public static final int CARGO_LIGHT_SENSOR = 0;
 }
