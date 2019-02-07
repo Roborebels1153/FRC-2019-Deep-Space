@@ -15,7 +15,7 @@ public class RebelRumble {
     private int mPatternFrame = 0;
 
     private static final long WARNING_TOLERANCE = 250;
-    private static final long FRAME_LENGTH = 500;
+    private static final long FRAME_LENGTH = 250;
 
     private static final int[][][] FRAMES = {
         {
