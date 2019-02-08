@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.subsytems.Drive;
 import frc.robot.subsytems.HatchCollector;
 import frc.robot.OI;
+import frc.robot.lib.RebelRumble;
 import frc.robot.subsytems.CargoCollector;
 
 /**
@@ -30,6 +31,11 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
+  private boolean mLastLightSensorValue = false;
+
+  private RebelRumble mDriverVibrate;
+  private RebelRumble mOpVibrate;
 
   public static OI oi;
   public static Drive drive;
@@ -58,6 +64,9 @@ public class Robot extends TimedRobot {
     cargoCollector = new CargoCollector();
     hatchCollector = new HatchCollector();
     oi = new OI();
+
+    mDriverVibrate = new RebelRumble(oi.getDriverStick());
+    mOpVibrate = new RebelRumble(oi.getOpStick());
   }
 
   private void updateDashboard() {
@@ -124,6 +133,8 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
     updateDashboard();
+    mDriverVibrate.loop();
+    mOpVibrate.loop();
 
     /**
      * When both bumper buttons of the drive controllers are pressed, inverse the
@@ -142,17 +153,15 @@ public class Robot extends TimedRobot {
     hatchCollector.setArticulatorPower(oi.getOpStick().getRawAxis(5));
 
     //rumble controllers when cargo Light Sensor detects cargo
-    if(cargoCollector.getLightSensor()){
-      oi.getOpStick().setRumble(RumbleType.kLeftRumble, 1);
+    if (!mLastLightSensorValue && cargoCollector.getLightSensor()) {
+      /*oi.getOpStick().setRumble(RumbleType.kLeftRumble, 1);
       oi.getOpStick().setRumble(RumbleType.kRightRumble, 1);
       oi.getDriverStick().setRumble(RumbleType.kLeftRumble, 1);
-      oi.getDriverStick().setRumble(RumbleType.kRightRumble, 1);
-    } else {
-      oi.getOpStick().setRumble(RumbleType.kLeftRumble, 0);
-      oi.getOpStick().setRumble(RumbleType.kRightRumble, 0);
-      oi.getDriverStick().setRumble(RumbleType.kLeftRumble, 0);
-      oi.getDriverStick().setRumble(RumbleType.kRightRumble, 0);
+      oi.getDriverStick().setRumble(RumbleType.kRightRumble, 1);*/
+      mDriverVibrate.rumble(RebelRumble.PATTERN_PULSE);
+      mOpVibrate.rumble(RebelRumble.PATTERN_PULSE);
     }
+    mLastLightSensorValue = cargoCollector.getLightSensor();
   }
 
   /**
