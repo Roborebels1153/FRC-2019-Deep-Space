@@ -7,6 +7,7 @@
 
 package frc.robot.subsytems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,6 +17,7 @@ public class HatchCollector extends Subsystem {
 
     private Victor mRoller;
     private Victor mArticulator;
+    private DigitalInput limitSwitch;
 
     private static final double kCollectPowerForward = 1;
     private static final double kCollectPowerReverse = -1;
@@ -26,11 +28,17 @@ public class HatchCollector extends Subsystem {
         mArticulator = new Victor(RobotMap.HATCH_ARTICULATOR);
         mRoller.setInverted(true);
         mArticulator.setInverted(true);
+        limitSwitch = new DigitalInput(RobotMap.HATCH_LIMIT_SWITCH);
     }
 
     public void updateDashboard() {
         SmartDashboard.putNumber("Roller Speed Value", getRollerPower());
         SmartDashboard.putNumber("Articulator Speed Value", getArticulatorPower());
+        SmartDashboard.putBoolean("Hatch Limit Switch", getHatchLimitSwitch());
+    }
+
+    public boolean getHatchLimitSwitch() {
+        return limitSwitch.get();
     }
 
     public void setArticulatorPower(double value) {

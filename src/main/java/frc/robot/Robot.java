@@ -10,12 +10,16 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.subsytems.Drive;
 import frc.robot.subsytems.HatchCollector;
+import frc.robot.subsytems.LimelightVision;
 import frc.robot.OI;
+import frc.robot.command.StopRobotCommand;
+import frc.robot.command.VisionDrive;
 import frc.robot.lib.RebelRumble;
 import frc.robot.subsytems.CargoCollector;
 
@@ -33,6 +37,8 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private boolean mLastLightSensorValue = false;
+  private boolean mLastLimitSwitchValue = false;
+  private Command autoCommand;
 
   private RebelRumble mDriverVibrate;
   private RebelRumble mOpVibrate;
@@ -41,6 +47,7 @@ public class Robot extends TimedRobot {
   public static Drive drive;
   public static CargoCollector cargoCollector;
   public static HatchCollector hatchCollector;
+  public static LimelightVision vision;
 
   public static enum RobotID {
     PROTO, FINAL
@@ -63,6 +70,7 @@ public class Robot extends TimedRobot {
     drive = new Drive();
     cargoCollector = new CargoCollector();
     hatchCollector = new HatchCollector();
+    vision = new LimelightVision();
     oi = new OI();
 
     mDriverVibrate = new RebelRumble(oi.getDriverStick());
@@ -106,6 +114,9 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+
+    autoCommand = new VisionDrive(1);
+    autoCommand.start();
   }
 
   /**
@@ -116,15 +127,14 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
     updateDashboard();
 
-    switch (m_autoSelected) {
-    case kCustomAuto:
-      // Put custom auto code here
-      break;
-    case kDefaultAuto:
-    default:
-      // Put default auto code here
-      break;
+    if (oi.getDriverStick().getRawButtonPressed(1)) {
+      autoCommand = new StopRobotCommand();
+      autoCommand.start();
+    } else if (oi.getDriverStick().getRawButtonReleased(1)){
+      autoCommand = new VisionDrive(1);
+      autoCommand.start();
     }
+    
   }
 
   /**
@@ -155,14 +165,17 @@ public class Robot extends TimedRobot {
 
     //rumble controllers when cargo Light Sensor detects cargo
     if (mLastLightSensorValue && !cargoCollector.getLightSensor()) {
-      /*oi.getOpStick().setRumble(RumbleType.kLeftRumble, 1);
-      oi.getOpStick().setRumble(RumbleType.kRightRumble, 1);
-      oi.getDriverStick().setRumble(RumbleType.kLeftRumble, 1);
-      oi.getDriverStick().setRumble(RumbleType.kRightRumble, 1);*/
-      //mDriverVibrate.rumble(RebelRumble.PATTERN_PULSE);
-      mOpVibrate.rumble(RebelRumble.PATTERN_PULSE);
+      mDriverVibrate.rumble(RebelRumble.PATTERN_RIGHT_TO_LEFT);
+      mOpVibrate.rumble(RebelRumble.PATTERN_RIGHT_TO_LEFT);
     }
+
+    if (mLastLimitSwitchValue && !hatchCollector.getHatchLimitSwitch()) {
+      mDriverVibrate.rumble(RebelRumble.PATTERN_LEFT_TO_RIGHT);
+      mOpVibrate.rumble(RebelRumble.PATTERN_LEFT_TO_RIGHT);
+    }
+
     mLastLightSensorValue = cargoCollector.getLightSensor();
+    mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitch();
   }
 
   /**
