@@ -86,6 +86,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    updateDashboard();
   }
 
   /**
@@ -149,16 +150,16 @@ public class Robot extends TimedRobot {
     // tele-op driving method
     drive.createDriveSignal(true);
 
-    cargoCollector.setArticulatorPower(-1 * oi.getOpStick().getY());
+    cargoCollector.setArticulatorPower(oi.getOpStick().getY());
     hatchCollector.setArticulatorPower(oi.getOpStick().getRawAxis(5));
 
     //rumble controllers when cargo Light Sensor detects cargo
-    if (!mLastLightSensorValue && cargoCollector.getLightSensor()) {
+    if (mLastLightSensorValue && !cargoCollector.getLightSensor()) {
       /*oi.getOpStick().setRumble(RumbleType.kLeftRumble, 1);
       oi.getOpStick().setRumble(RumbleType.kRightRumble, 1);
       oi.getDriverStick().setRumble(RumbleType.kLeftRumble, 1);
       oi.getDriverStick().setRumble(RumbleType.kRightRumble, 1);*/
-      mDriverVibrate.rumble(RebelRumble.PATTERN_PULSE);
+      //mDriverVibrate.rumble(RebelRumble.PATTERN_PULSE);
       mOpVibrate.rumble(RebelRumble.PATTERN_PULSE);
     }
     mLastLightSensorValue = cargoCollector.getLightSensor();

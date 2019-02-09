@@ -47,6 +47,7 @@ public class CargoCollector extends Subsystem {
     public boolean getLightSensor() {
         return cargoLightSensor.get();
     }
+    
     public void collectForward() {
         setRollerPower(kCollectPowerForward);
     }

@@ -17,8 +17,8 @@ public class HatchCollector extends Subsystem {
     private Victor mRoller;
     private Victor mArticulator;
 
-    private static final double kCollectPowerForward = -1;
-    private static final double kCollectPowerReverse = 1;
+    private static final double kCollectPowerForward = 1;
+    private static final double kCollectPowerReverse = -1;
     private static final double kCollectPowerStop = 0;
 
     public HatchCollector() {
