@@ -59,17 +59,17 @@ public class OI {
 	public Button opBumperR = new JoystickButton(opStick, 6);
 
 	public OI() {
-		opTriggerL.whenPressed(new CargoCollectForwardCommand());
-		opTriggerL.whenReleased(new CargoCollectStopCommand());
-
-		opTriggerR.whenPressed(new CargoCollectReverseCommand());
+		opTriggerR.whenPressed(new CargoCollectForwardCommand());
 		opTriggerR.whenReleased(new CargoCollectStopCommand());
 
-		opButtonA.whenPressed(new HatchCollectForwardCommand());
-		opButtonA.whenReleased(new HatchCollectStopCommand());
+		opTriggerL.whenPressed(new CargoCollectReverseCommand());
+		opTriggerL.whenReleased(new CargoCollectStopCommand());
 
-		opButtonB.whenPressed(new HatchCollectReverseCommand());
-		opButtonB.whenReleased(new HatchCollectStopCommand());
+		opBumperR.whenPressed(new HatchCollectForwardCommand());
+		opBumperR.whenReleased(new HatchCollectStopCommand());
+
+		opBumperL.whenPressed(new HatchCollectReverseCommand());
+		opBumperL.whenReleased(new HatchCollectStopCommand());
 	}
 	
 
