@@ -177,7 +177,7 @@ public class Robot extends TimedRobot {
     // tele-op driving method
     drive.createDriveSignal(true);
 
-    cargoCollector.setArticulatorPower(oi.getOpStick().getY());
+    cargoCollector.setArticulatorPower(0.75 * oi.getOpStick().getY());
     hatchCollector.setArticulatorPower(oi.getOpStick().getRawAxis(5));
 
     //rumble controllers when cargo Light Sensor detects cargo
