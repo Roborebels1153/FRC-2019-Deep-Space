@@ -70,6 +70,11 @@ public class Drive extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
+  public void stopSubystem() {
+    rightMaster.set(ControlMode.PercentOutput, 0);
+    leftMaster.set(ControlMode.PercentOutput, 0);
+  }
+
   public void setFollowers() {
     // configure left side followers
     leftFollower1.follow(leftMaster);

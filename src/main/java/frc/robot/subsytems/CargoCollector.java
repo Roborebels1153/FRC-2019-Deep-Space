@@ -45,6 +45,12 @@ public class CargoCollector extends Subsystem {
         SmartDashboard.putBoolean("Cargo Light Sensor Status", getLightSensor());
     }
 
+    public void stopSubsystem() {
+        mRoller.set(0);
+        mArticulatorA.set(ControlMode.PercentOutput, 0);
+        mArticulatorB.set(ControlMode.PercentOutput, 0);
+    }
+
     public boolean getLightSensor() {
         return cargoLightSensor.get();
     }

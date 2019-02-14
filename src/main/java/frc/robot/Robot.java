@@ -56,6 +56,7 @@ public class Robot extends TimedRobot {
   public static final RobotID robotID = RobotID.PROTO;
 
   private boolean mLastToggleState = false;
+  private boolean isAutoKilled = false;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -115,8 +116,10 @@ public class Robot extends TimedRobot {
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
 
+    /*
     autoCommand = new VisionDrive(1);
     autoCommand.start();
+    */
   }
 
   /**
@@ -127,12 +130,13 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
     updateDashboard();
 
-    if (oi.getDriverStick().getRawButtonPressed(1)) {
-      autoCommand = new StopRobotCommand();
-      autoCommand.start();
-    } else if (oi.getDriverStick().getRawButtonReleased(1)){
-      autoCommand = new VisionDrive(1);
-      autoCommand.start();
+    if (oi.getDriverStick().getRawButton(6)) {
+      autoCommand.cancel();
+      isAutoKilled = true;
+    }
+
+    if (isAutoKilled) {
+      driverControl();
     }
     
   }
@@ -144,6 +148,17 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
     updateDashboard();
+    driverControl();
+  }
+
+  /**
+   * This function is called periodically during test mode.
+   */
+  @Override
+  public void testPeriodic() {
+  }
+
+  public void driverControl() {
     mDriverVibrate.loop();
     mOpVibrate.loop();
 
@@ -178,10 +193,4 @@ public class Robot extends TimedRobot {
     mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitch();
   }
 
-  /**
-   * This function is called periodically during test mode.
-   */
-  @Override
-  public void testPeriodic() {
-  }
 }

@@ -37,6 +37,11 @@ public class HatchCollector extends Subsystem {
         SmartDashboard.putBoolean("Hatch Limit Switch", getHatchLimitSwitch());
     }
 
+    public void stopSubsystem() {
+        mRoller.set(0);
+        mArticulator.set(0);
+    }
+
     public boolean getHatchLimitSwitch() {
         return limitSwitch.get();
     }
