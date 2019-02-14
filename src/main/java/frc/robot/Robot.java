@@ -76,6 +76,7 @@ public class Robot extends TimedRobot {
 
     mDriverVibrate = new RebelRumble(oi.getDriverStick());
     mOpVibrate = new RebelRumble(oi.getOpStick());
+    drive.calibrateGyro();
   }
 
   private void updateDashboard() {
@@ -129,6 +130,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
     updateDashboard();
+    vision.updateLimelightData();
 
     if (oi.getDriverStick().getRawButton(6)) {
       autoCommand.cancel();

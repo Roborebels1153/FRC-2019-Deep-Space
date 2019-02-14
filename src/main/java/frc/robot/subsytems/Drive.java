@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -42,6 +43,8 @@ public class Drive extends Subsystem {
   // Rebel Drive Helper (Cheesy Drive)
   private RebelDriveHelper driveHelper;
 
+  private ADXRS450_Gyro gyro;
+
   // private DifferentialDrive robotDrive;
 
   public int teleOpDriveSide; // this is a global variable which determines which side is the front of the bot
@@ -58,6 +61,7 @@ public class Drive extends Subsystem {
     driveHelper = new RebelDriveHelper();
     // robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
+    gyro = new ADXRS450_Gyro();
     teleOpDriveSide = -1; // at the start of the match, set one side to be the front
 
     configMasterTalons();
@@ -68,6 +72,23 @@ public class Drive extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+  }
+
+  public void updateDashboard() {
+    SmartDashboard.putNumber("Left Encoder Count", getLeftEncoderCount());
+    SmartDashboard.putNumber("Right Encoder Count", getRightEncoderCount());
+
+    SmartDashboard.putNumber("Left Motor Velocity", getLeftMotorSpeed());
+    SmartDashboard.putNumber("Right Motor Velocity", getRightMotorSpeed());
+    SmartDashboard.putNumber("Gyro Value", getGyro());
+  }
+
+  public void calibrateGyro() {
+    gyro.calibrate();
+  }
+
+  public double getGyro() {
+    return gyro.getAngle();
   }
 
   public void stopSubystem() {
@@ -255,14 +276,6 @@ public class Drive extends Subsystem {
 
   public int getRightMotorSpeed() {
     return rightMaster.getSelectedSensorVelocity();
-  }
-
-  public void updateDashboard() {
-    SmartDashboard.putNumber("Left Encoder Count", getLeftEncoderCount());
-    SmartDashboard.putNumber("Right Encoder Count", getRightEncoderCount());
-
-    SmartDashboard.putNumber("Left Motor Velocity", getLeftMotorSpeed());
-    SmartDashboard.putNumber("Right Motor Velocity", getRightMotorSpeed());
   }
 
 }
