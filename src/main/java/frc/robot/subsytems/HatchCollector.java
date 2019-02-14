@@ -17,7 +17,8 @@ public class HatchCollector extends Subsystem {
 
     private Victor mRoller;
     private Victor mArticulator;
-    private DigitalInput limitSwitch;
+    private DigitalInput limitSwitchA;
+    private DigitalInput limitSwitchB;
 
     private static final double kCollectPowerForward = 1;
     private static final double kCollectPowerReverse = -1;
@@ -28,13 +29,14 @@ public class HatchCollector extends Subsystem {
         mArticulator = new Victor(RobotMap.HATCH_ARTICULATOR);
         mRoller.setInverted(true);
         mArticulator.setInverted(true);
-        limitSwitch = new DigitalInput(RobotMap.HATCH_LIMIT_SWITCH);
+        limitSwitchA = new DigitalInput(RobotMap.HATCH_LIMIT_SWITCH_A);
+        limitSwitchB = new DigitalInput(RobotMap.HATCH_LIMIT_SWITCH_B);
     }
 
     public void updateDashboard() {
         SmartDashboard.putNumber("Roller Speed Value", getRollerPower());
         SmartDashboard.putNumber("Articulator Speed Value", getArticulatorPower());
-        SmartDashboard.putBoolean("Hatch Limit Switch", getHatchLimitSwitch());
+        SmartDashboard.putBoolean("Hatch Limit Switch", getHatchLimitSwitchA());
     }
 
     public void stopSubsystem() {
@@ -42,8 +44,12 @@ public class HatchCollector extends Subsystem {
         mArticulator.set(0);
     }
 
-    public boolean getHatchLimitSwitch() {
-        return limitSwitch.get();
+    public boolean getHatchLimitSwitchA() {
+        return limitSwitchA.get();
+    }
+
+    public boolean getHatchLimitSwitchB() {
+        return limitSwitchB.get();
     }
 
     public void setArticulatorPower(double value) {
