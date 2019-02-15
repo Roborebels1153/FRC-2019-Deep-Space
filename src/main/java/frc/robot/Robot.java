@@ -186,13 +186,13 @@ public class Robot extends TimedRobot {
       mOpVibrate.rumble(RebelRumble.PATTERN_RIGHT_TO_LEFT);
     }
 
-    if (mLastLimitSwitchValue && !hatchCollector.getHatchLimitSwitch()) {
+    if (mLastLimitSwitchValue && !hatchCollector.getHatchLimitSwitchA()) {
       mDriverVibrate.rumble(RebelRumble.PATTERN_LEFT_TO_RIGHT);
       mOpVibrate.rumble(RebelRumble.PATTERN_LEFT_TO_RIGHT);
     }
 
     mLastLightSensorValue = cargoCollector.getLightSensor();
-    mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitch();
+    mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitchA();
   }
 
 }

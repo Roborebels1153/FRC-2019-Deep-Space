@@ -37,5 +37,6 @@ public class RobotMap {
 	public static final int HATCH_ROLLER = 2;
 
 	public static final int CARGO_LIGHT_SENSOR = 0;
-	public static final int HATCH_LIMIT_SWITCH = 1;
+	public static final int HATCH_LIMIT_SWITCH_A = 1;
+	public static final int HATCH_LIMIT_SWITCH_B = 2;
 }
