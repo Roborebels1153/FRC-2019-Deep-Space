@@ -36,7 +36,7 @@ public class Constants {
 	 * Call these variables in the cheesy drive methods
 	 */
 	public static final double k_drive_coefficient  = .8;
-	public static final double k_turn_coefficient  = -.8;
+	public static final double k_turn_coefficient  = -.75;
 
 	/**
 	 * Use these constants for motion magic configuration

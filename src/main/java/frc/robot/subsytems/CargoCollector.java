@@ -27,7 +27,7 @@ public class CargoCollector extends Subsystem {
     private DigitalInput cargoLightSensor;
 
     private static final double kCollectPowerForward = 1;
-    private static final double kCollectPowerReverse = -0.8;
+    private static final double kCollectPowerReverse = -0.75;
     private static final double kCollectPowerStop = 0;
 
     public CargoCollector() {
