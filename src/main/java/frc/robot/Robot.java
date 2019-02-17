@@ -99,6 +99,15 @@ public class Robot extends TimedRobot {
     updateDashboard();
   }
 
+  @Override
+  public void disabledInit() {
+  }
+
+  @Override
+  public void disabledPeriodic() {
+    Scheduler.getInstance().run();
+  }
+
   /**
    * This autonomous (along with the chooser code above) shows how to select
    * between different autonomous modes using the dashboard. The sendable chooser
@@ -117,10 +126,10 @@ public class Robot extends TimedRobot {
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
 
-    /*
-    autoCommand = new VisionDrive(1);
+    
+    autoCommand = new VisionDrive(4);
     autoCommand.start();
-    */
+    
   }
 
   /**
@@ -141,6 +150,11 @@ public class Robot extends TimedRobot {
       driverControl();
     }
     
+  }
+
+  @Override
+  public void teleopInit() {
+    if(autoCommand != null) autoCommand.cancel();
   }
 
   /**

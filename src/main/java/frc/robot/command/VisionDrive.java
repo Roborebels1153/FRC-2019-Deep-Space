@@ -16,6 +16,8 @@ public class VisionDrive extends Command {
 	private static final double A1 = 0;   //camera angle
 
 	private double lidarStopDistance;
+
+	private Target target;
 	
 	boolean bApproachedTarget = false;
 	long startTime;
@@ -25,6 +27,10 @@ public class VisionDrive extends Command {
 	double distanceToSwitch;
 	double distanceFromSwitch;
 	double distance;
+
+	boolean canFinishCommand = false;
+
+	int counter = 1;
 
 	
     public VisionDrive(int pipelineNumber) {
@@ -43,13 +49,25 @@ public class VisionDrive extends Command {
     
 
     protected void execute() {
-		Target target = Robot.vision.getTargetValues();
-		if (target != null) {
-			Robot.drive.cheesyDriveWithoutJoysticks(-0.6, Robot.vision.getHorizontalAlignOutput() * -1);
-			System.out.println("Executing Limelight vision");
-
-		} else {
+		target = Robot.vision.getTargetValues();
+		System.out.println(Robot.vision.getTargetV());
+		System.out.println(target);
+		if(Robot.drive.stopMotion()){
 			Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
+		} else {
+			if (target != null) {
+				Robot.drive.cheesyDriveWithoutJoysticks(-0.3, Robot.vision.getHorizontalAlignOutput() * 1);
+				System.out.println("Executing Limelight vision");
+
+				//System.out.println("targety: " + target.y);
+
+				} else {
+					if (counter % 20 == 0) {
+						canFinishCommand = true;
+					}
+					counter ++;
+					Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
+			}
 		}
 
     }
@@ -71,10 +89,12 @@ public class VisionDrive extends Command {
 		}
 		*/
 
-		return false;
+		return canFinishCommand;
     }
 
     protected void end() {
+		Robot.vision.setPipeline(0);
+		Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
     }
 
 

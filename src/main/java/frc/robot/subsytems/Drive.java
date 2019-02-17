@@ -278,4 +278,8 @@ public class Drive extends Subsystem {
     return rightMaster.getSelectedSensorVelocity();
   }
 
+  public boolean stopMotion(){
+    return Robot.oi.getDriverStick().getRawButton(1);
+  }
+
 }
