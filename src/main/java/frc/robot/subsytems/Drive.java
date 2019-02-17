@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.Robot.RobotID;
 import frc.robot.OI;
 
 import frc.robot.lib.RebelDriveHelper;
@@ -62,7 +63,7 @@ public class Drive extends Subsystem {
     // robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
     gyro = new ADXRS450_Gyro();
-    teleOpDriveSide = -1; // at the start of the match, set one side to be the front
+    teleOpDriveSide = (Robot.robotID == RobotID.PROTO ? -1 : 1); // at the start of the match, set one side to be the front
 
     configMasterTalons();
     setFollowers();
