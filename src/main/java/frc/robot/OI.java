@@ -32,6 +32,8 @@ public class OI {
 	public static final int JOYSTICK_LEFT_Y = 1;
 	public static final int JOYSTICK_RIGHT_X = 4;
 	public static final int JOYSTICK_RIGHT_Y = 5;
+	public static final int JOYSTICK_TRIGGER_LEFT = 2;
+	public static final int JOYSTICK_TRIGGER_RIGHT = 3;
 
 	private Joystick opStick = new Joystick(OPERATOR_STICK);
 	private Joystick driverStick = new Joystick(DRIVER_JOYSTICK);

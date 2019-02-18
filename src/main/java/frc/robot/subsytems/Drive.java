@@ -188,9 +188,20 @@ public class Drive extends Subsystem {
 
   }
 
+  public void createHybridDriveSignal(boolean squaredInputs) {
+    double rawLeftValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_TRIGGER_LEFT);
+    double rawRightValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_TRIGGER_RIGHT);
+
+    if (rawLeftValue > 0 || rawRightValue > 0) {
+      createTankDriveSignal(squaredInputs);
+    } else {
+      createDriveSignal(squaredInputs);
+    }
+  }
+
   public void createTankDriveSignal(boolean squaredInputs) {
-    double rawLeftValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
-    double rawRightValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_Y);
+    double rawLeftValue = -Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_TRIGGER_LEFT);
+    double rawRightValue = -Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_TRIGGER_RIGHT);
 
     double leftValue = 0;
     double rightValue = 0;
