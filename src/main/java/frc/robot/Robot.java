@@ -69,12 +69,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     drive = new Drive();
-    // Temporarily removed CargoCollector for the final because these talons have not been
-    // installed yet
-    // TODO: Re-implement once talons have been installed
-    if (robotID == RobotID.PROTO) {
-      cargoCollector = new CargoCollector();
-    } 
+    cargoCollector = new CargoCollector();
     hatchCollector = new HatchCollector();
     vision = new LimelightVision();
     oi = new OI();
@@ -87,9 +82,8 @@ public class Robot extends TimedRobot {
   private void updateDashboard() {
     drive.updateDashboard();
     hatchCollector.updateDashboard();
-    if (robotID == RobotID.PROTO) {
-      cargoCollector.updateDashboard();
-    }
+    cargoCollector.updateDashboard();
+    
   }
 
   /**
@@ -198,27 +192,24 @@ public class Robot extends TimedRobot {
     // tele-op driving method
     drive.createDriveSignal(true);
 
-    if (robotID == RobotID.PROTO) {
-      cargoCollector.setArticulatorPower(0.75 * oi.getOpStick().getY());
-    }
+
+    cargoCollector.setArticulatorPower(0.75 * oi.getOpStick().getY());
     hatchCollector.setArticulatorPower(oi.getOpStick().getRawAxis(5));
 
     //rumble controllers when cargo Light Sensor detects cargo
-    if (robotID == RobotID.PROTO) {
-      if (mLastLightSensorValue && !cargoCollector.getLightSensor()) {
-        mDriverVibrate.rumble(RebelRumble.PATTERN_RIGHT_TO_LEFT);
-        mOpVibrate.rumble(RebelRumble.PATTERN_RIGHT_TO_LEFT);
-      }
+    if (mLastLightSensorValue && !cargoCollector.getLightSensor()) {
+      mDriverVibrate.rumble(RebelRumble.PATTERN_RIGHT_TO_LEFT);
+      mOpVibrate.rumble(RebelRumble.PATTERN_RIGHT_TO_LEFT);
     }
+  
 
     if (mLastLimitSwitchValue && !hatchCollector.getHatchLimitSwitchA()) {
       mDriverVibrate.rumble(RebelRumble.PATTERN_LEFT_TO_RIGHT);
       mOpVibrate.rumble(RebelRumble.PATTERN_LEFT_TO_RIGHT);
     }
 
-    if (robotID == RobotID.PROTO) {
       mLastLightSensorValue = cargoCollector.getLightSensor();
-    }
+
     mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitchA();
   }
 

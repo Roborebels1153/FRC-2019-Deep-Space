@@ -60,16 +60,13 @@ public class OI {
 	public Button opBumperR = new JoystickButton(opStick, 6);
 
 	public OI() {
-		// Temporarily removed CargoCollector for the final because these talons have not been
-    	// installed yet
-    	// TODO: Re-implement once talons have been installed
-    	if (Robot.robotID == RobotID.PROTO) {
-			opTriggerR.whenPressed(new CargoCollectForwardCommand());
-			opTriggerR.whenReleased(new CargoCollectStopCommand());
+		
+		opTriggerR.whenPressed(new CargoCollectForwardCommand());
+		opTriggerR.whenReleased(new CargoCollectStopCommand());
 
-			opTriggerL.whenPressed(new CargoCollectReverseCommand());
-			opTriggerL.whenReleased(new CargoCollectStopCommand());
-		}
+		opTriggerL.whenPressed(new CargoCollectReverseCommand());
+		opTriggerL.whenReleased(new CargoCollectStopCommand());
+		
 
 		opBumperR.whenPressed(new HatchCollectForwardCommand());
 		opBumperR.whenReleased(new HatchCollectStopCommand());

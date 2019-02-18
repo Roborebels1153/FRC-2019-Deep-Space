@@ -22,7 +22,8 @@ public class CargoCollector extends Subsystem {
 
     private WPI_TalonSRX mArticulatorA;
     private WPI_TalonSRX mArticulatorB;
-    private Victor mRoller;
+   // private Victor mRoller;
+    private WPI_TalonSRX mRoller;
 
     private DigitalInput cargoLightSensor;
 
@@ -33,7 +34,8 @@ public class CargoCollector extends Subsystem {
     public CargoCollector() {
         mArticulatorA = new WPI_TalonSRX(RobotMap.CARGO_TALON_A);
         mArticulatorB = new WPI_TalonSRX(RobotMap.CARGO_TALON_B);
-        mRoller = new Victor(RobotMap.CARGO_ROLLER);
+       // mRoller = new Victor(RobotMap.CARGO_ROLLER);
+        mRoller = new WPI_TalonSRX(RobotMap.CARGO_ROLLER_TALON);
         cargoLightSensor = new DigitalInput(RobotMap.CARGO_LIGHT_SENSOR);
 
         configCollectorMotorOutput();
@@ -87,6 +89,7 @@ public class CargoCollector extends Subsystem {
         mArticulatorB.follow(mArticulatorA);
         mArticulatorB.setInverted(true);
 
+        mRoller.set(ControlMode.PercentOutput, 0);
         setBrakeMode();
     }
 

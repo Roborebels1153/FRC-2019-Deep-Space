@@ -32,6 +32,8 @@ public class RobotMap {
 	public static final int CARGO_TALON_B = 8;
 	public static final int CARGO_ROLLER = 3;
 
+	public static final int CARGO_ROLLER_TALON = 9;
+
 	// Hatch ground intake motor controllor
 	public static final int HATCH_ARTICULATOR = 4;
 	public static final int HATCH_ROLLER = 2;
