@@ -20,6 +20,7 @@ import frc.robot.subsytems.LimelightVision;
 import frc.robot.OI;
 import frc.robot.command.StopRobotCommand;
 import frc.robot.command.VisionDrive;
+import frc.robot.commandGroups.LimelightCommandGroup;
 import frc.robot.lib.RebelRumble;
 import frc.robot.subsytems.CargoCollector;
 
@@ -128,7 +129,7 @@ public class Robot extends TimedRobot {
     System.out.println("Auto selected: " + m_autoSelected);
 
     
-    autoCommand = new VisionDrive(4);
+    autoCommand = new LimelightCommandGroup();
     autoCommand.start();
     
   }
