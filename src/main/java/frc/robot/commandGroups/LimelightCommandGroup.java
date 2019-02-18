@@ -9,12 +9,14 @@ package frc.robot.commandGroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.command.VisionDrive;
+import frc.robot.command.HatchDownTimedCommand;
 
 public class LimelightCommandGroup extends CommandGroup {
   /**
    * Add your docs here.
    */
   public LimelightCommandGroup() {
-    addSequential(new VisionDrive(4));
+    addSequential(new HatchDownTimedCommand(0.5, 0.5));
+    addSequential(new VisionDrive(6));
   }
 }

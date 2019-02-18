@@ -315,5 +315,4 @@ public class Drive extends Subsystem {
   public boolean stopMotion() {
     return Robot.oi.getDriverStick().getRawButton(1);
   }
-
 }
