@@ -17,13 +17,15 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.Robot.RobotID;
 
 public class CargoCollector extends Subsystem {
 
     private WPI_TalonSRX mArticulatorA;
     private WPI_TalonSRX mArticulatorB;
-   // private Victor mRoller;
-    private WPI_TalonSRX mRoller;
+    private Victor mRollerVictor;
+    private WPI_TalonSRX mRollerTalon;
 
     private DigitalInput cargoLightSensor;
 
@@ -34,8 +36,13 @@ public class CargoCollector extends Subsystem {
     public CargoCollector() {
         mArticulatorA = new WPI_TalonSRX(RobotMap.CARGO_TALON_A);
         mArticulatorB = new WPI_TalonSRX(RobotMap.CARGO_TALON_B);
-       // mRoller = new Victor(RobotMap.CARGO_ROLLER);
-        mRoller = new WPI_TalonSRX(RobotMap.CARGO_ROLLER_TALON);
+        
+       if(Robot.robotID == RobotID.FINAL){
+        mRollerTalon = new WPI_TalonSRX(RobotMap.CARGO_ROLLER_TALON);  
+       }else{
+        mRollerVictor = new Victor(RobotMap.CARGO_ROLLER);  
+       }
+        
         cargoLightSensor = new DigitalInput(RobotMap.CARGO_LIGHT_SENSOR);
 
         configCollectorMotorOutput();
@@ -48,7 +55,12 @@ public class CargoCollector extends Subsystem {
     }
 
     public void stopSubsystem() {
-        mRoller.set(0);
+        if(Robot.robotID == RobotID.FINAL){
+            mRollerTalon.set(0); 
+        }else{
+            mRollerVictor.set(0); 
+        }
+        
         mArticulatorA.set(ControlMode.PercentOutput, 0);
         mArticulatorB.set(ControlMode.PercentOutput, 0);
     }
@@ -70,7 +82,11 @@ public class CargoCollector extends Subsystem {
     }
 
     public void setRollerPower(double b) {
-        mRoller.set(b);
+        if(Robot.robotID == RobotID.FINAL){
+            mRollerTalon.set(ControlMode.PercentOutput, b); 
+        }else{
+            mRollerVictor.set(b); 
+        }
     }
 
     public void configCollectorMotorOutput() {
@@ -88,8 +104,12 @@ public class CargoCollector extends Subsystem {
 
         mArticulatorB.follow(mArticulatorA);
         mArticulatorB.setInverted(true);
-
-        mRoller.set(ControlMode.PercentOutput, 0);
+        if(Robot.robotID == RobotID.FINAL){
+            mRollerTalon.set(ControlMode.PercentOutput, 0);  
+        }else{
+            mRollerVictor.set(0);  
+        }
+        
         setBrakeMode();
     }
 
@@ -109,7 +129,11 @@ public class CargoCollector extends Subsystem {
     }
 
     public double getRollerPower() {
-        return mRoller.get();
+        if(Robot.robotID == RobotID.FINAL){
+            return mRollerTalon.get();  
+        }else{
+            return mRollerVictor.get();  
+        }
     }
 
     public double getArticulatorPower() {
