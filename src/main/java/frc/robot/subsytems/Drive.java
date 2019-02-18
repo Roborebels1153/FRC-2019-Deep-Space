@@ -63,7 +63,8 @@ public class Drive extends Subsystem {
     // robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
     gyro = new ADXRS450_Gyro();
-    teleOpDriveSide = (Robot.robotID == RobotID.PROTO ? -1 : 1); // at the start of the match, set one side to be the front
+    teleOpDriveSide = (Robot.robotID == RobotID.PROTO ? -1 : 1); // at the start of the match, set one side to be the
+                                                                 // front
 
     configMasterTalons();
     setFollowers();
@@ -187,6 +188,38 @@ public class Drive extends Subsystem {
 
   }
 
+  public void createHybridDriveSignal(boolean squaredInputs) {
+    double rawLeftValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_TRIGGER_LEFT);
+    double rawRightValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_TRIGGER_RIGHT);
+
+    if (rawLeftValue > 0 || rawRightValue > 0) {
+      createTankDriveSignal(squaredInputs);
+    } else {
+      createDriveSignal(squaredInputs);
+    }
+  }
+
+  public void createTankDriveSignal(boolean squaredInputs) {
+    double rawLeftValue = -Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_TRIGGER_LEFT);
+    double rawRightValue = -Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_TRIGGER_RIGHT);
+
+    double leftValue = 0;
+    double rightValue = 0;
+    if (squaredInputs == true) {
+      double deadBandLeftValue = applyDeadband(rawLeftValue, 0.02);
+      double deadBandRightValue = applyDeadband(rawRightValue, 0.02);
+      leftValue = Math.copySign(deadBandLeftValue * deadBandLeftValue, deadBandLeftValue);
+      rightValue = Math.copySign(deadBandRightValue * deadBandRightValue, deadBandRightValue);
+    } else {
+      leftValue = rawLeftValue;
+      rightValue = rawRightValue;
+    }
+
+    DriveSignal driveSignal = driveHelper.tankDrive(teleOpDriveSide * Constants.k_drive_coefficient * (teleOpDriveSide == -1 ? rightValue : leftValue),
+        teleOpDriveSide * Constants.k_drive_coefficient * (teleOpDriveSide == -1 ? leftValue : rightValue));
+    Robot.drive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
+  }
+
   public void driveWithHelper(ControlMode controlMode, DriveSignal driveSignal) {
     this.configDrive(controlMode, driveSignal.getLeft(), driveSignal.getRight());
   }
@@ -279,7 +312,7 @@ public class Drive extends Subsystem {
     return rightMaster.getSelectedSensorVelocity();
   }
 
-  public boolean stopMotion(){
+  public boolean stopMotion() {
     return Robot.oi.getDriverStick().getRawButton(1);
   }
 

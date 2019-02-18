@@ -130,6 +130,10 @@ public class RebelDriveHelper {
         return new DriveSignal(leftPwm, rightPwm);
     }
 
+    public DriveSignal tankDrive(double left, double right) {
+        return new DriveSignal(left, right);
+    }
+
     public double handleDeadband(double val, double deadband) {
         return (Math.abs(val) > Math.abs(deadband)) ? val : 0.0;
     }

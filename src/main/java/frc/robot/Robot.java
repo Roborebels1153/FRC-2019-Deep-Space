@@ -191,8 +191,7 @@ public class Robot extends TimedRobot {
     mLastToggleState = bothPressed;
 
     // tele-op driving method
-    drive.createDriveSignal(true);
-
+    drive.createHybridDriveSignal(true);
 
     cargoCollector.setArticulatorPower(0.75 * oi.getOpStick().getY());
     hatchCollector.setArticulatorPower(oi.getOpStick().getRawAxis(5));
