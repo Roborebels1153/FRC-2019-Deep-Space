@@ -204,8 +204,8 @@ public class Drive extends Subsystem {
       rightValue = rawRightValue;
     }
 
-    DriveSignal driveSignal = driveHelper.tankDrive(teleOpDriveSide * Constants.k_drive_coefficient * leftValue,
-        teleOpDriveSide * Constants.k_drive_coefficient * rightValue);
+    DriveSignal driveSignal = driveHelper.tankDrive(teleOpDriveSide * Constants.k_drive_coefficient * (teleOpDriveSide == -1 ? rightValue : leftValue),
+        teleOpDriveSide * Constants.k_drive_coefficient * (teleOpDriveSide == -1 ? leftValue : rightValue));
     Robot.drive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
   }
 
