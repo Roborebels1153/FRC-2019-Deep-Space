@@ -69,8 +69,10 @@ public class Drive extends Subsystem {
     // robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
     gyro = new ADXRS450_Gyro();
-
-    mLidar = new LidarLitePWM(new DigitalInput(RobotMap.LIDAR));
+    
+    if(Robot.robotID == RobotID.PROTO){
+      mLidar = new LidarLitePWM(new DigitalInput(RobotMap.LIDAR));
+    }
 
     teleOpDriveSide = (Robot.robotID == RobotID.PROTO ? -1 : 1); // at the start of the match, set one side to be the
                                                                  // front
@@ -97,7 +99,12 @@ public class Drive extends Subsystem {
   }
 
   public double getLidarDistance() {
-    return mLidar.getDistance();
+    if(Robot.robotID == RobotID.PROTO){
+      return mLidar.getDistance();
+    }else{
+      return 0;
+    }
+    
   }
 
   public void calibrateGyro() {
