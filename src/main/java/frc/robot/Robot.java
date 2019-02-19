@@ -32,10 +32,9 @@ import frc.robot.subsytems.CargoCollector;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  
+  private final SendableChooser<Integer> mLevelChooser = new SendableChooser<>();
+  private final SendableChooser<Integer> mPositionChooser = new SendableChooser<>();
 
   private boolean mLastLightSensorValue = false;
   private boolean mLastLimitSwitchValue = false;
@@ -65,9 +64,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    mLevelChooser.setDefaultOption("Level 1", LimelightCommandGroup.L1);
+    mLevelChooser.addOption("Level 2", LimelightCommandGroup.L2);
+    SmartDashboard.putData("Level", mLevelChooser);
+
+    mPositionChooser.setDefaultOption("Right", LimelightCommandGroup.RIGHT);
+    mPositionChooser.addOption("Center", LimelightCommandGroup.CENTER);
+    mPositionChooser.addOption("Left", LimelightCommandGroup.LEFT);
+    SmartDashboard.putData("Position", mPositionChooser);
 
     drive = new Drive();
     cargoCollector = new CargoCollector();
@@ -124,14 +128,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
-
-    
-    autoCommand = new LimelightCommandGroup();
+    int level = mLevelChooser.getSelected();
+    int position = mPositionChooser.getSelected();
+    autoCommand = new LimelightCommandGroup(level, position);
     autoCommand.start();
-    
   }
 
   /**
