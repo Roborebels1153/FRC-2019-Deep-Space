@@ -10,29 +10,25 @@ package frc.robot.command;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class HatchDownTimedCommand extends Command {
+public class WaitCommand extends Command {
   long startTime;
   private double time;
-  private double speed;
 
-  public HatchDownTimedCommand(double driveTime, double driveSpeed) {
+  public WaitCommand(double waitTime) {
     requires(Robot.hatchCollector);
-    time = driveTime;
-    speed = driveSpeed;
+    time = waitTime;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.out.println("Starting robot drive");
+    System.out.println("Starting robot Wait");
     startTime = System.currentTimeMillis();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.hatchCollector.setArticulatorPower(speed);
-    System.out.println("Executing");
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -45,7 +41,6 @@ public class HatchDownTimedCommand extends Command {
   @Override
   protected void end() {
     System.out.println("Command Ended");
-    Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
   }
 
   // Called when another command which requires one or more of the same

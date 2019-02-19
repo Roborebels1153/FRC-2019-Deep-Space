@@ -7,16 +7,23 @@
 
 package frc.robot.subsytems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.Robot.RobotID;
 
 public class HatchCollector extends Subsystem {
 
     private Victor mRoller;
     private Victor mArticulator;
+    private WPI_TalonSRX mRollerTalon;
+    private WPI_TalonSRX mArticulatorTalon;
     private DigitalInput limitSwitchA;
     private DigitalInput limitSwitchB;
 
@@ -25,10 +32,17 @@ public class HatchCollector extends Subsystem {
     private static final double kCollectPowerStop = 0;
 
     public HatchCollector() {
-        mRoller = new Victor(RobotMap.HATCH_ROLLER);
-        mArticulator = new Victor(RobotMap.HATCH_ARTICULATOR);
-        mRoller.setInverted(true);
-        mArticulator.setInverted(true);
+        if (Robot.robotID  == RobotID.FINAL) {
+            mRollerTalon = new WPI_TalonSRX(RobotMap.HATCH_ROLLER_TALON);
+            mArticulatorTalon = new WPI_TalonSRX(RobotMap.HATCH_ARTICULATOR_TALON);
+            mRollerTalon.setInverted(true);
+            mArticulatorTalon.setInverted(true);
+        } else {
+            mRoller = new Victor(RobotMap.HATCH_ROLLER);
+            mArticulator = new Victor(RobotMap.HATCH_ARTICULATOR);
+            mRoller.setInverted(true);
+            mArticulator.setInverted(true);
+        }
         limitSwitchA = new DigitalInput(RobotMap.HATCH_LIMIT_SWITCH_A);
         limitSwitchB = new DigitalInput(RobotMap.HATCH_LIMIT_SWITCH_B);
     }
@@ -40,8 +54,8 @@ public class HatchCollector extends Subsystem {
     }
 
     public void stopSubsystem() {
-        mRoller.set(0);
-        mArticulator.set(0);
+        setRollerPower(0);
+        setArticulatorPower(0);
     }
 
     public boolean getHatchLimitSwitchA() {
@@ -53,11 +67,19 @@ public class HatchCollector extends Subsystem {
     }
 
     public void setArticulatorPower(double value) {
-        mArticulator.set(value);
+        if (Robot.robotID == RobotID.FINAL) {
+            mArticulatorTalon.set(ControlMode.PercentOutput, value);
+        } else {
+            mArticulator.set(value);
+        }
     }
 
     public void setRollerPower(double value) {
-        mRoller.set(value);
+        if (Robot.robotID == RobotID.FINAL) {
+            mRollerTalon.set(ControlMode.PercentOutput, value);
+        } else {
+            mRoller.set(value);
+        }   
     }
 
     public void collectForward() {
@@ -73,11 +95,19 @@ public class HatchCollector extends Subsystem {
     }
 
     public double getRollerPower() {
-        return mRoller.get();
+        if (Robot.robotID == RobotID.FINAL) {
+            return mRollerTalon.getMotorOutputPercent();
+        } else {
+            return mRoller.get();
+        }   
     }
 
     public double getArticulatorPower() {
-        return mArticulator.get();
+        if (Robot.robotID == RobotID.FINAL) {
+            return mArticulatorTalon.getMotorOutputPercent();
+        } else {
+            return mArticulator.get();
+        }   
     }
 
     @Override
