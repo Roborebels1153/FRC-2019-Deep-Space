@@ -32,7 +32,6 @@ public class DriveDistanceTimeCommand extends Command {
   @Override
   protected void execute() {
     Robot.drive.cheesyDriveWithoutJoysticks(-speed, 0);
-    System.out.println("Executing");
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -44,7 +43,7 @@ public class DriveDistanceTimeCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    System.out.println("Command Ended");
+    System.out.println("Timed Drive Ended");
     Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
   }
 

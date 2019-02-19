@@ -41,8 +41,9 @@ public class RobotMap {
 	public static final int HATCH_ARTICULATOR_TALON = 11;
 	public static final int HATCH_ROLLER_TALON = 10;
 
+	public static final int LIDAR = 0;
 
-	public static final int CARGO_LIGHT_SENSOR = 0;
+	public static final int CARGO_LIGHT_SENSOR = 3;
 	public static final int HATCH_LIMIT_SWITCH_A = 1;
 	public static final int HATCH_LIMIT_SWITCH_B = 2;
 }

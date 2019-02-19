@@ -23,6 +23,9 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.Robot.RobotID;
 import frc.robot.OI;
+import frc.robot.lib.LidarLitePWM;
+import edu.wpi.first.wpilibj.DigitalInput;
+
 
 import frc.robot.lib.RebelDriveHelper;
 import frc.robot.lib.DriveSignal;
@@ -46,6 +49,9 @@ public class Drive extends Subsystem {
 
   private ADXRS450_Gyro gyro;
 
+  private LidarLitePWM mLidar;
+
+
   // private DifferentialDrive robotDrive;
 
   public int teleOpDriveSide; // this is a global variable which determines which side is the front of the bot
@@ -63,6 +69,9 @@ public class Drive extends Subsystem {
     // robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
     gyro = new ADXRS450_Gyro();
+
+    mLidar = new LidarLitePWM(new DigitalInput(RobotMap.LIDAR));
+
     teleOpDriveSide = (Robot.robotID == RobotID.PROTO ? -1 : 1); // at the start of the match, set one side to be the
                                                                  // front
 
@@ -83,6 +92,12 @@ public class Drive extends Subsystem {
     SmartDashboard.putNumber("Left Motor Velocity", getLeftMotorSpeed());
     SmartDashboard.putNumber("Right Motor Velocity", getRightMotorSpeed());
     SmartDashboard.putNumber("Gyro Value", getGyro());
+
+    SmartDashboard.putNumber("Lidar Distance", getLidarDistance());
+  }
+
+  public double getLidarDistance() {
+    return mLidar.getDistance();
   }
 
   public void calibrateGyro() {

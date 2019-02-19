@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -21,6 +22,7 @@ import frc.robot.OI;
 import frc.robot.command.StopRobotCommand;
 import frc.robot.command.VisionDrive;
 import frc.robot.commandGroups.LimelightCommandGroup;
+import frc.robot.lib.LidarLitePWM;
 import frc.robot.lib.RebelRumble;
 import frc.robot.subsytems.CargoCollector;
 

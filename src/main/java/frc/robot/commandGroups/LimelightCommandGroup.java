@@ -25,7 +25,7 @@ public class LimelightCommandGroup extends CommandGroup {
   public LimelightCommandGroup(int level, int position) {
     if (level == L2) {
       addSequential(new DriveDistanceTimeCommand(0.5, 0.5));
-      addSequential(new WaitCommand(0.5));
+      addSequential(new WaitCommand(1));
     }
     int pipeline;
     switch (position) {
@@ -36,7 +36,7 @@ public class LimelightCommandGroup extends CommandGroup {
         pipeline = 7;
         break;
     }
-    addSequential(new VisionDrive(pipeline));
+    addSequential(new VisionDrive(pipeline, 70, 5));
     addSequential(new HatchDownTimedCommand(1, 0.4));
   }
 }
