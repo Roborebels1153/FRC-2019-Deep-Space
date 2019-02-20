@@ -17,6 +17,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.Robot.RobotID;
+import frc.robot.Constants;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 public class HatchCollector extends Subsystem {
 
@@ -45,6 +48,8 @@ public class HatchCollector extends Subsystem {
         }
         limitSwitchA = new DigitalInput(RobotMap.HATCH_LIMIT_SWITCH_A);
         limitSwitchB = new DigitalInput(RobotMap.HATCH_LIMIT_SWITCH_B);
+
+        configTalons();
     }
 
     public void updateDashboard() {
@@ -108,6 +113,25 @@ public class HatchCollector extends Subsystem {
         } else {
             return mArticulator.get();
         }   
+    }
+
+    public void configTalons() {
+        if (Robot.robotID == RobotID.FINAL){
+            mArticulatorTalon.configNominalOutputForward(0, Constants.kTimeoutMs);
+            mArticulatorTalon.configNominalOutputReverse(0, Constants.kTimeoutMs);
+            mArticulatorTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
+            mArticulatorTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
+            mRollerTalon.configNominalOutputForward(0, Constants.kTimeoutMs);
+            mRollerTalon.configNominalOutputReverse(0, Constants.kTimeoutMs);
+            mRollerTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
+            mRollerTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
+            mArticulatorTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
+            Constants.kTimeoutMs);       
+            
+            mArticulatorTalon.setNeutralMode(NeutralMode.Coast);
+        }
     }
 
     @Override

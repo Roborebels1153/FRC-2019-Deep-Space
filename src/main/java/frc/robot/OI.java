@@ -67,9 +67,11 @@ public class OI {
 		opTriggerR.whenPressed(new CargoCollectForwardCommand());
 		opTriggerR.whenReleased(new CargoCollectStopCommand());
 
-		opTriggerL.whenPressed(new CargoCollectReverseCommand());
+		opTriggerL.whenPressed(new CargoCollectReverseCommand(false));
 		opTriggerL.whenReleased(new CargoCollectStopCommand());
-		
+
+		opButtonA.whenPressed(new CargoCollectReverseCommand(true));
+		opButtonA.whenReleased(new CargoCollectStopCommand());
 
 		opBumperR.whenPressed(new HatchCollectForwardCommand());
 		opBumperR.whenReleased(new HatchCollectStopCommand());

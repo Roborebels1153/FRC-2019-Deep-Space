@@ -11,15 +11,24 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class CargoCollectReverseCommand extends Command {
-  public CargoCollectReverseCommand() {
+
+  private boolean mFullPower;
+
+  public CargoCollectReverseCommand(boolean fullPower) {
     requires(Robot.cargoCollector);
+
+    mFullPower = fullPower;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     System.out.println("Cargo Spit");
-    Robot.cargoCollector.collectReverse();
+    if (!mFullPower) {
+      Robot.cargoCollector.collectReverse();
+    } else {
+      Robot.cargoCollector.collectReverseFull();
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run

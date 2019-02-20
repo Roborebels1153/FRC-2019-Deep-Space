@@ -19,6 +19,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.Robot.RobotID;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
 
 public class CargoCollector extends Subsystem {
 
@@ -29,8 +31,9 @@ public class CargoCollector extends Subsystem {
 
     private DigitalInput cargoLightSensor;
 
-    private static final double kCollectPowerForward = 0.75;
-    private static final double kCollectPowerReverse = -0.45;
+    private static final double kCollectPowerForward = 1;
+    private static final double kCollectPowerReverse = -0.55;
+    private static final double kCollectPowerReverseFull = -1;
     private static final double kCollectPowerStop = 0;
 
     public CargoCollector() {
@@ -77,6 +80,10 @@ public class CargoCollector extends Subsystem {
         setRollerPower(kCollectPowerReverse);
     }
 
+    public void collectReverseFull() {
+        setRollerPower(kCollectPowerReverseFull);
+    }
+
     public void collectStop() {
         setRollerPower(kCollectPowerStop);
     }
@@ -111,6 +118,11 @@ public class CargoCollector extends Subsystem {
         }
         
         setBrakeMode();
+    }
+
+    public void configTalonFeedback() {
+        mArticulatorA.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
+        Constants.kTimeoutMs);
     }
 
     public void setBrakeMode () {
