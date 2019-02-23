@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
     PROTO, FINAL
   }
 
-  public static final RobotID robotID = RobotID.FINAL;
+  public static final RobotID robotID = RobotID.PROTO;
 
   private boolean mLastToggleState = false;
   private boolean isAutoKilled = false;
@@ -134,6 +134,7 @@ public class Robot extends TimedRobot {
     int position = mPositionChooser.getSelected();
     autoCommand = new LimelightCommandGroup(level, position);
     autoCommand.start();
+    drive.resetGyro();
   }
 
   /**
@@ -159,6 +160,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     if(autoCommand != null) autoCommand.cancel();
+    drive.resetGyro();
   }
 
   /**

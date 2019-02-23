@@ -77,7 +77,7 @@ public class OI {
 		opBumperR.whenReleased(new HatchCollectStopCommand());
 
 		opBumperL.whenPressed(new HatchCollectReverseCommand());
-		opBumperL.whenReleased(new HatchCollectStopCommand());
+		opBumperL.whenReleased(new HatchCollectStopCommand());		
 	}
 	
 

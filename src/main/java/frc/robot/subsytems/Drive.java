@@ -115,6 +115,10 @@ public class Drive extends Subsystem {
     return gyro.getAngle();
   }
 
+  public void resetGyro() {
+    gyro.reset();
+  }
+
   public void stopSubystem() {
     rightMaster.set(ControlMode.PercentOutput, 0);
     leftMaster.set(ControlMode.PercentOutput, 0);
