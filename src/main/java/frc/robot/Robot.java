@@ -188,7 +188,7 @@ public class Robot extends TimedRobot {
      * When both bumper buttons of the drive controllers are pressed, inverse the
      * tele-op drive control.
      */
-    boolean bothPressed = oi.getDriverStick().getRawButton(5) && oi.getDriverStick().getRawButton(6);
+    boolean bothPressed = oi.getDriverStick().getRawButton(6);
     if (bothPressed && !mLastToggleState) {
       drive.teleOpDriveSide = (drive.teleOpDriveSide > 0 ? -1 : 1);
     }
@@ -198,7 +198,7 @@ public class Robot extends TimedRobot {
     drive.createHybridDriveSignal(true);
 
     cargoCollector.setArticulatorPower(0.75 * oi.getOpStick().getY());
-    hatchCollector.setArticulatorPower(-0.5 * oi.getOpStick().getRawAxis(5));
+    hatchCollector.setArticulatorPower(0.5 * oi.getOpStick().getRawAxis(5));
 
     //rumble controllers when cargo Light Sensor detects cargo
     if (mLastLightSensorValue && !cargoCollector.getLightSensor()) {
