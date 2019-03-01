@@ -35,14 +35,16 @@ public class VisionDrive extends Command {
 	int limelightCounter = 1;
 	int lidarCounter  = 1;
 
+	double targetArea;
+
 	
-    public VisionDrive(int pipelineNumber, int stopDistance, double time) {
+    public VisionDrive(int pipelineNumber, double targetArea, double time) {
         requires(Robot.drive);
 		requires(Robot.vision);
 		
 		pipeLine = pipelineNumber;
-		lidarStopDistance = stopDistance;
 		driveTime = time;
+		this.targetArea = targetArea;
     }
 
     protected void initialize() {
@@ -61,7 +63,7 @@ public class VisionDrive extends Command {
 			Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
 		} else {
 			if (target != null) {
-				Robot.drive.cheesyDriveWithoutJoysticks(-0.3, Robot.vision.getHorizontalAlignOutput() * 1);
+				Robot.drive.cheesyDriveWithoutJoysticks(0.4, Robot.vision.getHorizontalAlignOutput() * 1);
 				System.out.println("Executing Limelight vision");
 
 				//System.out.println("targety: " + target.y);
@@ -74,14 +76,7 @@ public class VisionDrive extends Command {
 					Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
 			}
 
-			if (Robot.drive.getLidarDistance() < lidarStopDistance) {
-				lidarCounter++;
-				if (lidarCounter == 50) {
-					lidarWithinDistance = true;
-				}
-			} else {
-				lidarCounter = 0;
-			}
+			
 		}
 
     }
@@ -103,12 +98,9 @@ public class VisionDrive extends Command {
 		}
 		*/
 
-		boolean isFinished = canFinishCommand || ((System.currentTimeMillis() - startTime) > (driveTime*1000) && lidarWithinDistance);
-		if (isFinished) {
-			System.out.println("Ended Command");
-		}
+		
 
-		return isFinished;
+		return Robot.vision.getTargetArea() >= targetArea;
     }
 
     protected void end() {

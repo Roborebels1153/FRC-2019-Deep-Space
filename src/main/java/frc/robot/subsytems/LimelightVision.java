@@ -110,6 +110,10 @@ public class LimelightVision extends Subsystem {
 			return false;
 		}
 	}
+
+	public double getTargetArea(){
+		return table.getEntry("ta").getDouble(0);
+	}
     
     public static class Target {
     	public double x;

@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
     PROTO, FINAL
   }
 
-  public static final RobotID robotID = RobotID.PROTO;
+  public static final RobotID robotID = RobotID.FINAL;
 
   private boolean mLastToggleState = false;
   private boolean isAutoKilled = false;
@@ -197,8 +197,8 @@ public class Robot extends TimedRobot {
     // tele-op driving method
     drive.createHybridDriveSignal(true);
 
-    cargoCollector.setArticulatorPower(0.75 * oi.getOpStick().getY());
-    hatchCollector.setArticulatorPower(0.5 * oi.getOpStick().getRawAxis(5));
+    cargoCollector.setArticulatorPower(-0.75 * oi.getOpStick().getY());
+    hatchCollector.setArticulatorPower(-0.5 * oi.getOpStick().getRawAxis(5));
 
     //rumble controllers when cargo Light Sensor detects cargo
     if (mLastLightSensorValue && !cargoCollector.getLightSensor()) {

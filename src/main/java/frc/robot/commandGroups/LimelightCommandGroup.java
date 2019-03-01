@@ -36,7 +36,7 @@ public class LimelightCommandGroup extends CommandGroup {
         pipeline = 7;
         break;
     }
-    addSequential(new VisionDrive(pipeline, 70, 5));
-    addSequential(new HatchDownTimedCommand(1, 0.4));
+    addSequential(new VisionDrive(6, 12, 5));
+    //addSequential(new HatchDownTimedCommand(1, 0.4));
   }
 }
