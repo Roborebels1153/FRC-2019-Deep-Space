@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
     drive.updateDashboard();
     hatchCollector.updateDashboard();
     cargoCollector.updateDashboard();
-    
+    SmartDashboard.putNumber("Limelight Area", vision.getTargetArea());
   }
 
   /**
@@ -197,7 +197,11 @@ public class Robot extends TimedRobot {
     // tele-op driving method
     drive.createHybridDriveSignal(true);
 
-    cargoCollector.setArticulatorPower(-0.75 * oi.getOpStick().getY());
+    if (Math.abs(oi.getOpStick().getY()) > 0.1) {
+      cargoCollector.setArticulatorPower(-0.75 * oi.getOpStick().getY());
+    } else {
+      cargoCollector.setArticulatorPower(0);
+    }
     hatchCollector.setArticulatorPower(-0.5 * oi.getOpStick().getRawAxis(5));
 
     //rumble controllers when cargo Light Sensor detects cargo

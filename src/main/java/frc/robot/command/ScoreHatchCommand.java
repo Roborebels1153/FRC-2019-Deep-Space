@@ -10,15 +10,18 @@ package frc.robot.command;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class HatchDownTimedCommand extends Command {
+public class ScoreHatchCommand extends Command {
   long startTime;
-  private double time;
+  private double armDownTime;
+  private double commandFinishTime;
   private double speed;
 
-  public HatchDownTimedCommand(double driveTime, double driveSpeed) {
+  public ScoreHatchCommand(double armDownTimme, double finishTime,  double driveSpeed) {
     requires(Robot.hatchCollector);
-    time = driveTime;
+    requires(Robot.drive);
+    armDownTime = armDownTimme;
     speed = driveSpeed;
+    commandFinishTime = finishTime;
   }
 
   // Called just before this Command runs the first time
@@ -31,12 +34,22 @@ public class HatchDownTimedCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.hatchCollector.setArticulatorPower(speed);  }
+    //Robot.drive.cheesyDriveWithoutJoysticks(0.3, 0);
+     if  (System.currentTimeMillis() - this.startTime < (armDownTime * 1000)) {
+      Robot.hatchCollector.setArticulatorPower(speed);  
+    } else {
+        if ((System.currentTimeMillis() - startTime) > (commandFinishTime * 1000)) {
+
+        } else {
+          Robot.hatchCollector.collectReverse();
+        }
+    }
+  }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (System.currentTimeMillis() - startTime) > (time*1000);
+    return (System.currentTimeMillis() - startTime) > (commandFinishTime * 1000);
   }
 
   // Called once after isFinished returns true
@@ -44,6 +57,7 @@ public class HatchDownTimedCommand extends Command {
   protected void end() {
     System.out.println("Command Ended");
     Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
+    Robot.cargoCollector.collectStop();
   }
 
   // Called when another command which requires one or more of the same

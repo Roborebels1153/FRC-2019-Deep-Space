@@ -41,6 +41,7 @@ public class VisionDrive extends Command {
     public VisionDrive(int pipelineNumber, double targetArea, double time) {
         requires(Robot.drive);
 		requires(Robot.vision);
+		requires (Robot.hatchCollector);
 		
 		pipeLine = pipelineNumber;
 		driveTime = time;
@@ -65,9 +66,9 @@ public class VisionDrive extends Command {
 			if (target != null) {
 				Robot.drive.cheesyDriveWithoutJoysticks(0.4, Robot.vision.getHorizontalAlignOutput() * 1);
 				System.out.println("Executing Limelight vision");
-
+				Robot.hatchCollector.setArticulatorPower(0.3);
 				//System.out.println("targety: " + target.y);
-
+				
 				} else {
 					if (limelightCounter % 20 == 0) {
 						canFinishCommand = true;
@@ -100,7 +101,8 @@ public class VisionDrive extends Command {
 
 		
 
-		return Robot.vision.getTargetArea() >= targetArea;
+		return Robot.vision.getTargetArea() >= targetArea || 
+									((System.currentTimeMillis() - startTime) > driveTime * 1000);
     }
 
     protected void end() {

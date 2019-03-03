@@ -31,7 +31,9 @@ public class DriveDistanceTimeCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.drive.cheesyDriveWithoutJoysticks(-speed, 0);
+    Robot.drive.cheesyDriveWithoutJoysticks(speed, 0);
+    Robot.hatchCollector.setArticulatorPower(0.3);
+
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -10,7 +10,7 @@ package frc.robot.commandGroups;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.command.VisionDrive;
 import frc.robot.command.DriveDistanceTimeCommand;
-import frc.robot.command.HatchDownTimedCommand;
+import frc.robot.command.ScoreHatchCommand;
 import frc.robot.command.WaitCommand;
 
 public class LimelightCommandGroup extends CommandGroup {
@@ -36,7 +36,12 @@ public class LimelightCommandGroup extends CommandGroup {
         pipeline = 7;
         break;
     }
-    addSequential(new VisionDrive(6, 12, 5));
-    //addSequential(new HatchDownTimedCommand(1, 0.4));
+    
+    addSequential(new DriveDistanceTimeCommand(0.5,0.5));
+    addSequential (new WaitCommand(1));
+    addSequential(new VisionDrive(7, 20, 5));
+
+    
+    addSequential(new ScoreHatchCommand(1, 1.25, -0.4));
   }
 }
