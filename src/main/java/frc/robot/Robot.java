@@ -25,6 +25,7 @@ import frc.robot.commandGroups.LimelightCommandGroup;
 import frc.robot.lib.LidarLitePWM;
 import frc.robot.lib.RebelRumble;
 import frc.robot.subsytems.CargoCollector;
+import frc.robot.subsytems.Climber;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -49,6 +50,7 @@ public class Robot extends TimedRobot {
   public static Drive drive;
   public static CargoCollector cargoCollector;
   public static HatchCollector hatchCollector;
+  public static Climber climber;
   public static LimelightVision vision;
 
   public static enum RobotID {
@@ -78,6 +80,7 @@ public class Robot extends TimedRobot {
     drive = new Drive();
     cargoCollector = new CargoCollector();
     hatchCollector = new HatchCollector();
+    climber = new Climber();
     vision = new LimelightVision();
     oi = new OI();
 
@@ -219,6 +222,12 @@ public class Robot extends TimedRobot {
       mLastLightSensorValue = cargoCollector.getLightSensor();
 
     mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitchA();
+
+    if (oi.getOpStick().getRawButton(4)) {
+      climber.climb(0.3);
+    } else {
+      climber.climb(0);
+    }
   }
 
 }
