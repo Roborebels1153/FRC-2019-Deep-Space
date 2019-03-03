@@ -22,7 +22,9 @@ public class Climber extends Subsystem {
     public Climber() {
       climbA = new WPI_TalonSRX(12);
       climbB = new WPI_TalonSRX(13);
-    }
+
+      configTalons();
+  }
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
@@ -42,6 +44,7 @@ public class Climber extends Subsystem {
     climbB.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
     climbB.follow(climbA);
+    climbB.setInverted(true);
   }
 
   public void climb(double in) {

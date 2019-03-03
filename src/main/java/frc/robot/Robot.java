@@ -223,9 +223,11 @@ public class Robot extends TimedRobot {
 
     mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitchA();
 
-    if (oi.getOpStick().getRawButton(4)) {
-      climber.climb(0.3);
-    } else {
+    if (oi.getOpStick().getRawButtonPressed(4)) {
+      climber.climb(0.5);
+    } else if (oi.getOpStick().getRawButtonPressed(3)) {
+      climber.climb(-0.5);
+    } else if (oi.getOpStick().getRawButtonReleased(4) || oi.getOpStick().getRawButtonReleased(3)) {
       climber.climb(0);
     }
   }
