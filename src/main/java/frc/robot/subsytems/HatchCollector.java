@@ -31,7 +31,7 @@ public class HatchCollector extends Subsystem {
     private DigitalInput limitSwitchB;
 
     private static final double kCollectPowerForward = 1;
-    private static final double kCollectPowerReverse = -1;
+    private static final double kCollectPowerReverse = -0.5;
     private static final double kCollectPowerStop = 0;
 
     public HatchCollector() {

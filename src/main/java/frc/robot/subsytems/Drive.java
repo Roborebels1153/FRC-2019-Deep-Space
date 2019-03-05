@@ -246,6 +246,12 @@ public class Drive extends Subsystem {
     Robot.drive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
   }
 
+  public void tankDriveNoJoystick(double left, double right){
+    DriveSignal driveSignal = driveHelper.tankDrive(teleOpDriveSide * Constants.k_drive_coefficient * (teleOpDriveSide == -1 ? right : left),
+        teleOpDriveSide * Constants.k_drive_coefficient * (teleOpDriveSide == -1 ? left : right));
+    Robot.drive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
+  }
+
   public void driveWithHelper(ControlMode controlMode, DriveSignal driveSignal) {
     this.configDrive(controlMode, driveSignal.getLeft(), driveSignal.getRight());
   }

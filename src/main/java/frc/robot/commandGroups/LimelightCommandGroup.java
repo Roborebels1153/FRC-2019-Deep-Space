@@ -12,6 +12,7 @@ import frc.robot.command.VisionDrive;
 import frc.robot.command.DriveDistanceTimeCommand;
 import frc.robot.command.ScoreHatchCommand;
 import frc.robot.command.WaitCommand;
+import frc.robot.command.TankDriveCommand;;
 
 public class LimelightCommandGroup extends CommandGroup {
   
@@ -37,9 +38,10 @@ public class LimelightCommandGroup extends CommandGroup {
         break;
     }
     
-    addSequential(new DriveDistanceTimeCommand(0.5,0.5));
-    addSequential (new WaitCommand(1));
+    //addSequential(new DriveDistanceTimeCommand(0.5,0.5));
+    //addSequential (new WaitCommand(1));
     addSequential(new VisionDrive(7, 20, 5));
+    addSequential(new TankDriveCommand(-0.25, 0, 0.25));
 
     
     addSequential(new ScoreHatchCommand(1, 1.25, -0.4));
