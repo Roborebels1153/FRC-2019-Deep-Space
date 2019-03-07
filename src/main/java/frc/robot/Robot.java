@@ -93,6 +93,7 @@ public class Robot extends TimedRobot {
     drive.updateDashboard();
     hatchCollector.updateDashboard();
     cargoCollector.updateDashboard();
+    //climber.updateDashboard();
     SmartDashboard.putNumber("Limelight Area", vision.getTargetArea());
   }
 
@@ -164,6 +165,8 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     if(autoCommand != null) autoCommand.cancel();
     drive.resetGyro();
+    cargoCollector.resetEncoders();
+    climber.resetEncoders();
   }
 
   /**

@@ -18,6 +18,7 @@ import frc.robot.command.CargoCollectStopCommand;
 import frc.robot.command.HatchCollectForwardCommand;
 import frc.robot.command.HatchCollectReverseCommand;
 import frc.robot.command.HatchCollectStopCommand;
+import frc.robot.commandGroups.AutomatedClimbCommand;
 import frc.robot.lib.RebelTrigger;
 
 /**

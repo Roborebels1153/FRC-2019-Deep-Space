@@ -49,12 +49,17 @@ public class CargoCollector extends Subsystem {
         cargoLightSensor = new DigitalInput(RobotMap.CARGO_LIGHT_SENSOR);
 
         configCollectorMotorOutput();
+        configTalonFeedback();
     }
 
     public void updateDashboard() {
         SmartDashboard.putNumber("Cargo Roller Power", getRollerPower());
         SmartDashboard.putNumber("Cargo Articulator Power", getArticulatorPower());
         SmartDashboard.putBoolean("Cargo Light Sensor Status", getLightSensor());
+        /*
+        SmartDashboard.putNumber("Cargo Articulator A Encoder Value", getArticulatorAEncoder());
+        SmartDashboard.putNumber("Cargo Articulator B Encoder Value", getArticulatorBEncoder());
+        */
     }
 
     public void stopSubsystem() {
@@ -123,6 +128,22 @@ public class CargoCollector extends Subsystem {
     public void configTalonFeedback() {
         mArticulatorA.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
         Constants.kTimeoutMs);
+        mArticulatorB.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
+        Constants.kTimeoutMs);
+    }
+
+    public double getArticulatorAEncoder() {
+        return mArticulatorA.getSelectedSensorPosition();
+    }
+
+    public double getArticulatorBEncoder() {
+        return mArticulatorB.getSelectedSensorPosition();
+    }
+
+    public void resetEncoders() {
+        mArticulatorA.setSelectedSensorPosition(0);
+        mArticulatorB.setSelectedSensorPosition(0);
+
     }
 
     public void setBrakeMode () {
