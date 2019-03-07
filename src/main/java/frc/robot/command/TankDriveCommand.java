@@ -10,54 +10,40 @@ package frc.robot.command;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ScoreHatchCommand extends Command {
+public class TankDriveCommand extends Command {
+  private double right;
+  private double left;
+  private double time;
   long startTime;
-  private double armDownTime;
-  private double commandFinishTime;
-  private double speed;
 
-  public ScoreHatchCommand(double armDownTimme, double finishTime,  double driveSpeed) {
-    requires(Robot.hatchCollector);
+  public TankDriveCommand(double rightValue, double leftValue, double driveTime) {
     requires(Robot.drive);
-    armDownTime = armDownTimme;
-    speed = driveSpeed;
-    commandFinishTime = finishTime;
+    right = rightValue;
+    left = leftValue;
+    time = driveTime;
   }
-
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.out.println("Starting robot drive");
     startTime = System.currentTimeMillis();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //Robot.drive.cheesyDriveWithoutJoysticks(0.3, 0);
-     if  (System.currentTimeMillis() - this.startTime < (armDownTime * 1000)) {
-      Robot.hatchCollector.setArticulatorPower(speed);  
-    } else {
-        if ((System.currentTimeMillis() - startTime) > (commandFinishTime * 1000)) {
-
-        } else {
-          Robot.hatchCollector.setRollerPower(-0.5);
-        }
-    }
+    Robot.drive.tankDriveNoJoystick(right, left);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (System.currentTimeMillis() - startTime) > (commandFinishTime * 1000);
+    return (System.currentTimeMillis() - startTime) > (time*1000);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    System.out.println("Command Ended");
-    Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
-    Robot.cargoCollector.collectStop();
+    Robot.drive.stopMotion();
   }
 
   // Called when another command which requires one or more of the same
