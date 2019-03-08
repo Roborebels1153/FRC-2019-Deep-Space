@@ -56,10 +56,10 @@ public class CargoCollector extends Subsystem {
         SmartDashboard.putNumber("Cargo Roller Power", getRollerPower());
         SmartDashboard.putNumber("Cargo Articulator Power", getArticulatorPower());
         SmartDashboard.putBoolean("Cargo Light Sensor Status", getLightSensor());
-        /*
+        
         SmartDashboard.putNumber("Cargo Articulator A Encoder Value", getArticulatorAEncoder());
         SmartDashboard.putNumber("Cargo Articulator B Encoder Value", getArticulatorBEncoder());
-        */
+    
     }
 
     public void stopSubsystem() {

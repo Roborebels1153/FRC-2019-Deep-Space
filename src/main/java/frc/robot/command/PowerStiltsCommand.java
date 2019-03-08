@@ -10,38 +10,36 @@ package frc.robot.command;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class BringArmDownCommand extends Command {
-
-  double encoderThreshold;
-  public BringArmDownCommand(double in) {
+public class PowerStiltsCommand extends Command {
+  public PowerStiltsCommand() {
     requires(Robot.cargoCollector);
-    encoderThreshold = in;
+    requires(Robot.climber);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.cargoCollector.resetEncoders();
-    System.out.println("Running Auto Arm Down Command at threshold of " + encoderThreshold);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     Robot.cargoCollector.setArticulatorPower(-0.5);
+    Robot.climber.climb(0.5);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (Robot.cargoCollector.getArticulatorAEncoder() < encoderThreshold) && (Robot.cargoCollector.getArticulatorBEncoder() < encoderThreshold);
+    return Robot.climber.canStopClimbing();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    System.out.println("Stopped Power Stilt Command");
     Robot.cargoCollector.setArticulatorPower(0);
-    System.out.println("Ended auto Bring Arm Down Command");
+    Robot.climber.climb(0);
   }
 
   // Called when another command which requires one or more of the same

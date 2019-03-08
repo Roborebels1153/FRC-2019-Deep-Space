@@ -18,6 +18,7 @@ import frc.robot.command.CargoCollectStopCommand;
 import frc.robot.command.HatchCollectForwardCommand;
 import frc.robot.command.HatchCollectReverseCommand;
 import frc.robot.command.HatchCollectStopCommand;
+import frc.robot.command.StopMotionCommand;
 import frc.robot.commandGroups.AutomatedClimbCommand;
 import frc.robot.lib.RebelTrigger;
 
@@ -78,7 +79,10 @@ public class OI {
 		opBumperR.whenReleased(new HatchCollectStopCommand());
 
 		opBumperL.whenPressed(new HatchCollectReverseCommand());
-		opBumperL.whenReleased(new HatchCollectStopCommand());		
+		opBumperL.whenReleased(new HatchCollectStopCommand());
+		
+		opButtonB.whenPressed(new AutomatedClimbCommand());
+		opButtonB.whenReleased(new StopMotionCommand());
 	}
 	
 

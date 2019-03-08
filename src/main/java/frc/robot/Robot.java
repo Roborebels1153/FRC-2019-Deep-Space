@@ -22,6 +22,7 @@ import frc.robot.OI;
 import frc.robot.command.StopRobotCommand;
 import frc.robot.command.VisionDrive;
 import frc.robot.commandGroups.LimelightCommandGroup;
+import frc.robot.commandGroups.AutomatedClimbCommand;
 import frc.robot.lib.LidarLitePWM;
 import frc.robot.lib.RebelRumble;
 import frc.robot.subsytems.CargoCollector;
@@ -36,6 +37,10 @@ import frc.robot.subsytems.Climber;
  */
 public class Robot extends TimedRobot {
   
+  private static final int SANDSTORM_RUN_AUTO = 0;
+  private static final int SANDSTORM_DRIVER_CONTROL = 1;
+
+  private final SendableChooser<Integer> mSandstormMode = new SendableChooser<>();
   private final SendableChooser<Integer> mLevelChooser = new SendableChooser<>();
   private final SendableChooser<Integer> mPositionChooser = new SendableChooser<>();
 
@@ -68,6 +73,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    mSandstormMode.setDefaultOption("Run Auto", SANDSTORM_RUN_AUTO);
+    mSandstormMode.addOption("Driver Control", SANDSTORM_DRIVER_CONTROL);
+    SmartDashboard.putData("Sandstorm Mode", mSandstormMode);
+
     mLevelChooser.setDefaultOption("Level 1", LimelightCommandGroup.L1);
     mLevelChooser.addOption("Level 2", LimelightCommandGroup.L2);
     SmartDashboard.putData("Level", mLevelChooser);
@@ -93,7 +102,7 @@ public class Robot extends TimedRobot {
     drive.updateDashboard();
     hatchCollector.updateDashboard();
     cargoCollector.updateDashboard();
-    //climber.updateDashboard();
+    climber.updateDashboard();
     SmartDashboard.putNumber("Limelight Area", vision.getTargetArea());
   }
 
@@ -134,10 +143,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    int mode = mSandstormMode.getSelected();
     int level = mLevelChooser.getSelected();
     int position = mPositionChooser.getSelected();
-    autoCommand = new LimelightCommandGroup(level, position);
-    autoCommand.start();
+    if (mode == SANDSTORM_RUN_AUTO) {
+      autoCommand = new LimelightCommandGroup(level, position);
+      //autoCommand = new AutomatedClimbCommand();
+      autoCommand.start();
+    }
     drive.resetGyro();
   }
 
@@ -150,15 +163,18 @@ public class Robot extends TimedRobot {
     updateDashboard();
     vision.updateLimelightData();
 
+    int mode = mSandstormMode.getSelected();
+
     if (oi.getDriverStick().getRawButton(6)) {
-      autoCommand.cancel();
+      if (autoCommand != null) {
+        autoCommand.cancel();
+      }
       isAutoKilled = true;
     }
 
-    if (isAutoKilled) {
+    if (isAutoKilled || mode == SANDSTORM_DRIVER_CONTROL) {
       driverControl();
     }
-    
   }
 
   @Override

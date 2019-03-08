@@ -9,6 +9,7 @@ package frc.robot.commandGroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.command.BringArmDownCommand;
+import frc.robot.command.PowerStiltsCommand;
 
 public class AutomatedClimbCommand extends CommandGroup {
   /**
@@ -16,6 +17,7 @@ public class AutomatedClimbCommand extends CommandGroup {
    */
   public AutomatedClimbCommand() {
     addSequential(new BringArmDownCommand(-2500));
+    addSequential(new PowerStiltsCommand());
 
     // To run multiple commands at the same time,
     // use addParallel()
