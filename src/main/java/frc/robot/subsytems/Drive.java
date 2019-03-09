@@ -47,7 +47,7 @@ public class Drive extends Subsystem {
   // Rebel Drive Helper (Cheesy Drive)
   private RebelDriveHelper driveHelper;
 
-  private ADXRS450_Gyro gyro;
+  //private ADXRS450_Gyro gyro;
 
   private LidarLitePWM mLidar;
 
@@ -68,7 +68,7 @@ public class Drive extends Subsystem {
     driveHelper = new RebelDriveHelper();
     // robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
-    gyro = new ADXRS450_Gyro();
+    //gyro = new ADXRS450_Gyro();
     
     if(Robot.robotID == RobotID.PROTO){
       mLidar = new LidarLitePWM(new DigitalInput(RobotMap.LIDAR));
@@ -108,15 +108,15 @@ public class Drive extends Subsystem {
   }
 
   public void calibrateGyro() {
-    gyro.calibrate();
+   // gyro.calibrate();
   }
 
   public double getGyro() {
-    return gyro.getAngle();
+    return 0;//gyro.getAngle();
   }
 
   public void resetGyro() {
-    gyro.reset();
+    //gyro.reset();
   }
 
   public void stopSubystem() {

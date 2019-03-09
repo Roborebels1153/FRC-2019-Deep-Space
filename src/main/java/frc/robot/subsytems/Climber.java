@@ -30,8 +30,8 @@ public class Climber extends Subsystem {
       climbA = new WPI_TalonSRX(12);
       climbB = new WPI_TalonSRX(13);
 
-      limitSwitchA = new DigitalInput(4);
-      limitSwitchB = new DigitalInput(5);
+      //limitSwitchA = new DigitalInput(4);
+      //limitSwitchB = new DigitalInput(5);
 
       configTalons();
   }
@@ -45,8 +45,8 @@ public class Climber extends Subsystem {
     SmartDashboard.putNumber("Climb A Encoder Value", getClimbAEncoder());
     SmartDashboard.putNumber("Climb B Encoder Value", getClimbBEncoder());
 
-    SmartDashboard.putBoolean("Climb Limit Switch A", getClimbALimitSwitch());
-    SmartDashboard.putBoolean("Climb Limit Switch B", getClimbBLimitSwitch());
+   // SmartDashboard.putBoolean("Climb Limit Switch A", getClimbALimitSwitch());
+    //SmartDashboard.putBoolean("Climb Limit Switch B", getClimbBLimitSwitch());
   }
 
   public void configTalons() {
@@ -76,6 +76,7 @@ public class Climber extends Subsystem {
     Constants.kTimeoutMs);
 }
 
+/** 
 public boolean canStopClimbing() {
   return (!limitSwitchA.get() && !limitSwitchB.get());
 }
@@ -87,6 +88,8 @@ public boolean getClimbALimitSwitch() {
 public boolean getClimbBLimitSwitch() {
   return limitSwitchB.get();
 }
+
+*/
 
 public double getClimbAEncoder() {
     return climbA.getSelectedSensorPosition();

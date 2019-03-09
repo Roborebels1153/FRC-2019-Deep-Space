@@ -168,6 +168,7 @@ public class Robot extends TimedRobot {
     if (oi.getDriverStick().getRawButton(6)) {
       if (autoCommand != null) {
         autoCommand.cancel();
+        vision.setPipeline(0);
       }
       isAutoKilled = true;
     }
@@ -180,6 +181,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     if(autoCommand != null) autoCommand.cancel();
+    vision.setPipeline(0);
     drive.resetGyro();
     cargoCollector.resetEncoders();
     climber.resetEncoders();

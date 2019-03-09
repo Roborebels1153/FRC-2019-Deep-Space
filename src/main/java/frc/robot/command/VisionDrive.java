@@ -112,6 +112,8 @@ public class VisionDrive extends Command {
 
 
     protected void interrupted() {
+		Robot.vision.setPipeline(0);
+		Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
 	}
 	
 	/**
