@@ -61,12 +61,12 @@ public class Climber extends Subsystem {
     climbB.configPeakOutputForward(1, Constants.kTimeoutMs);
     climbB.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-    climbB.follow(climbA);
     climbB.setInverted(true);
   }
 
-  public void climb(double in) {
-    climbA.set(ControlMode.PercentOutput, in);
+  public void climb(double inA, double inB) {
+    climbA.set(ControlMode.PercentOutput, inA);
+    climbB.set(ControlMode.PercentOutput, inB);
   }
 
   public void configTalonFeedback() {

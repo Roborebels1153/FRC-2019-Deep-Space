@@ -170,10 +170,12 @@ public class Robot extends TimedRobot {
         autoCommand.cancel();
         vision.setPipeline(0);
       }
+      vision.setPipeline(0);
       isAutoKilled = true;
     }
 
     if (isAutoKilled || mode == SANDSTORM_DRIVER_CONTROL) {
+      vision.setPipeline(0);
       driverControl();
     }
   }
@@ -182,6 +184,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     if(autoCommand != null) autoCommand.cancel();
     vision.setPipeline(0);
+    vision.turnOffLight();
     drive.resetGyro();
     cargoCollector.resetEncoders();
     climber.resetEncoders();
@@ -245,11 +248,11 @@ public class Robot extends TimedRobot {
     mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitchA();
 
     if (oi.getOpStick().getRawButtonPressed(4)) {
-      climber.climb(0.5);
+      climber.climb(0.5, 0.5);
     } else if (oi.getOpStick().getRawButtonPressed(3)) {
-      climber.climb(-0.5);
+      climber.climb(-0.5, -0.5);
     } else if (oi.getOpStick().getRawButtonReleased(4) || oi.getOpStick().getRawButtonReleased(3)) {
-      climber.climb(0);
+      climber.climb(0, 0);
     }
   }
 

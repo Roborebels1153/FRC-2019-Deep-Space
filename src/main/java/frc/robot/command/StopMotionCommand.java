@@ -20,7 +20,7 @@ public class StopMotionCommand extends Command {
   @Override
   protected void initialize() {
     Robot.cargoCollector.stopSubsystem();
-    Robot.climber.climb(0);
+    Robot.climber.climb(0, 0);
 
   }
 
