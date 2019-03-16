@@ -25,13 +25,13 @@ public class PowerStiltsCommand extends Command {
   @Override
   protected void execute() {
     Robot.cargoCollector.setArticulatorPower(-0.5);
-    Robot.climber.climb(0.5);
+    Robot.climber.climb(0.5, 0.6);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.climber.canStopClimbing();
+    return true;// return Robot.climber.canStopClimbing();
   }
 
   // Called once after isFinished returns true
@@ -39,7 +39,7 @@ public class PowerStiltsCommand extends Command {
   protected void end() {
     System.out.println("Stopped Power Stilt Command");
     Robot.cargoCollector.setArticulatorPower(0);
-    Robot.climber.climb(0);
+    Robot.climber.climb(0, 0);
   }
 
   // Called when another command which requires one or more of the same

@@ -27,6 +27,8 @@ import frc.robot.lib.LidarLitePWM;
 import frc.robot.lib.RebelRumble;
 import frc.robot.subsytems.CargoCollector;
 import frc.robot.subsytems.Climber;
+import frc.robot.subsytems.LimelightVision.Target;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -47,6 +49,8 @@ public class Robot extends TimedRobot {
   private boolean mLastLightSensorValue = false;
   private boolean mLastLimitSwitchValue = false;
   private Command autoCommand;
+
+  public Target target;
 
   private RebelRumble mDriverVibrate;
   private RebelRumble mOpVibrate;
@@ -168,11 +172,14 @@ public class Robot extends TimedRobot {
     if (oi.getDriverStick().getRawButton(6)) {
       if (autoCommand != null) {
         autoCommand.cancel();
+        vision.setPipeline(0);
       }
+      vision.setPipeline(0);
       isAutoKilled = true;
     }
 
     if (isAutoKilled || mode == SANDSTORM_DRIVER_CONTROL) {
+      vision.setPipeline(0);
       driverControl();
     }
   }
@@ -180,6 +187,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     if(autoCommand != null) autoCommand.cancel();
+    vision.setPipeline(0);
+    vision.turnOffLight();
     drive.resetGyro();
     cargoCollector.resetEncoders();
     climber.resetEncoders();
@@ -216,15 +225,26 @@ public class Robot extends TimedRobot {
     }
     mLastToggleState = bothPressed;
 
-    // tele-op driving method
+    
+    if (oi.getDriverStick().getRawButton(2) && !(vision.getTargetArea() > 20)){
+      vision.updateLimelightData();
+      vision.setPipeline(1);
+      vision.turnOnLight();
+      System.out.println("Starting limleight vision");
+      target = Robot.vision.getTargetValues();
+      Robot.drive.cheesyDriveWithoutJoysticks(drive.teleOpDriveSide * Constants.k_drive_coefficient * 
+       Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), Robot.vision.getHorizontalAlignOutput() * 1);
+    } else {
+    vision.setPipeline(0);
     drive.createHybridDriveSignal(true);
-
+    }
+    
     if (Math.abs(oi.getOpStick().getY()) > 0.1) {
       cargoCollector.setArticulatorPower(-0.75 * oi.getOpStick().getY());
     } else {
       cargoCollector.setArticulatorPower(0);
     }
-    hatchCollector.setArticulatorPower(-0.5 * oi.getOpStick().getRawAxis(5));
+    hatchCollector.setArticulatorPower(-1 * oi.getOpStick().getRawAxis(5));
 
     //rumble controllers when cargo Light Sensor detects cargo
     if (mLastLightSensorValue && !cargoCollector.getLightSensor()) {
@@ -243,11 +263,11 @@ public class Robot extends TimedRobot {
     mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitchA();
 
     if (oi.getOpStick().getRawButtonPressed(4)) {
-      climber.climb(0.5);
+      climber.climb(0.5, 0.5);
     } else if (oi.getOpStick().getRawButtonPressed(3)) {
-      climber.climb(-0.5);
+      climber.climb(-0.5, -0.5);
     } else if (oi.getOpStick().getRawButtonReleased(4) || oi.getOpStick().getRawButtonReleased(3)) {
-      climber.climb(0);
+      climber.climb(0, 0);
     }
   }
 

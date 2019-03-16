@@ -41,9 +41,9 @@ public class LimelightCommandGroup extends CommandGroup {
     //addSequential(new DriveDistanceTimeCommand(0.5,0.5));
     //addSequential (new WaitCommand(1));
     addSequential(new VisionDrive(7, 20, 5));
-    addSequential(new TankDriveCommand(-0.25, 0, 0.25));
+    //addSequential(new TankDriveCommand(-0.25, 0, 0.25));
 
     
-    addSequential(new ScoreHatchCommand(1, 1.25, -0.4));
+    //addSequential(new ScoreHatchCommand(1, 1.25, -0.4));
   }
 }

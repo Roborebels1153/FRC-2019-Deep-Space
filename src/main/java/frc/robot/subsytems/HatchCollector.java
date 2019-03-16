@@ -130,7 +130,7 @@ public class HatchCollector extends Subsystem {
             mArticulatorTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
             Constants.kTimeoutMs);       
             
-            mArticulatorTalon.setNeutralMode(NeutralMode.Coast);
+            mArticulatorTalon.setNeutralMode(NeutralMode.Brake);
         }
     }
 

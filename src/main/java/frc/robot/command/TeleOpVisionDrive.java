@@ -1,21 +1,21 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package frc.robot.command;
 
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsytems.LimelightVision.Target;
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
-public class VisionDrive extends Command {
+
+public class TeleOpVisionDrive extends Command {
 
 
-
-	private static final double H1 = 24;   //camera height
-	private static final double H2 = 28.5;   //target height
-	private static final double A1 = 0;   //camera angle
-
-	private double lidarStopDistance;
 
 	private Target target;
 	
@@ -23,50 +23,38 @@ public class VisionDrive extends Command {
 	long startTime;
 	double driveTime;
 
-	static int  pipeLine = 1; 
-
-	double distanceToSwitch;
-	double distanceFromSwitch;
-	double distance;
+	static int pipeLine = 1; 
 
 	boolean canFinishCommand = false;
-	boolean lidarWithinDistance = false;
 
 	int limelightCounter = 1;
-	int lidarCounter  = 1;
 
 	double targetArea;
 
 	
-    public VisionDrive(int pipelineNumber, double targetArea, double time) {
-        requires(Robot.drive);
-		requires(Robot.vision);
-		requires (Robot.hatchCollector);
-		
-		pipeLine = pipelineNumber;
-		driveTime = time;
-		this.targetArea = targetArea;
+    public TeleOpVisionDrive(int pipelineNumber, double targetArea, double time) {
+      requires(Robot.drive);
+      requires(Robot.vision);
+      requires(Robot.hatchCollector);
+      
+      pipeLine = pipelineNumber;
+      driveTime = time;
+      this.targetArea = targetArea;
     }
 
     protected void initialize() {
     	System.out.println("Vision ENABLED");
     	startTime = System.currentTimeMillis();
-		Robot.vision.turnOnLight();
+		  Robot.vision.turnOnLight();
     	Robot.vision.setPipeline(pipeLine);
     }
     
 
     protected void execute() {
-		target = Robot.vision.getTargetValues();
-		System.out.println(Robot.vision.getTargetV());
-		System.out.println(target);
-		if(Robot.drive.stopMotion()){
-			Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
-		} else {
+      target = Robot.vision.getTargetValues();
+
 			if (target != null) {
 				Robot.drive.cheesyDriveWithoutJoysticks(0.4, Robot.vision.getHorizontalAlignOutput() * 1);
-				System.out.println("Executing Limelight vision");
-				Robot.hatchCollector.setArticulatorPower(0.3);
 				//System.out.println("targety: " + target.y);
 				
 				} else {
@@ -75,10 +63,9 @@ public class VisionDrive extends Command {
 					}
 					limelightCounter++;
 					Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
-			}
 
 			
-		}
+		  }
 
     }
 
