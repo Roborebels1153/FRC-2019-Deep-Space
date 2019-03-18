@@ -10,11 +10,9 @@ package frc.robot.commandGroups;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.command.VisionDrive;
 import frc.robot.command.DriveDistanceTimeCommand;
-import frc.robot.command.ScoreHatchCommand;
 import frc.robot.command.WaitCommand;
-import frc.robot.command.TankDriveCommand;;
 
-public class LimelightCommandGroup extends CommandGroup {
+public class LimelightCargoShipCommandGroup extends CommandGroup {
   
   public static final int L1 = 0;
   public static final int L2 = 1;
@@ -23,7 +21,7 @@ public class LimelightCommandGroup extends CommandGroup {
   public static final int CENTER = 1;
   public static final int RIGHT = 2;
 
-  public LimelightCommandGroup(int level, int position) {
+  public LimelightCargoShipCommandGroup(int level, int position) {
     if (level == L2 && position != CENTER) {
       addSequential(new DriveDistanceTimeCommand(0.5, 0.5, 0));
       addSequential(new WaitCommand(1));

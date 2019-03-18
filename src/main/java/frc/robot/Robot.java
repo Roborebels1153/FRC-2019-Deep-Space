@@ -7,24 +7,16 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.subsytems.Drive;
 import frc.robot.subsytems.HatchCollector;
 import frc.robot.subsytems.LimelightVision;
 import frc.robot.OI;
-import frc.robot.command.StopRobotCommand;
-import frc.robot.command.VisionDrive;
-import frc.robot.commandGroups.LimelightCommandGroup;
-import frc.robot.commandGroups.SideHatchAuto;
-import frc.robot.commandGroups.AutomatedClimbCommand;
-import frc.robot.lib.LidarLitePWM;
+import frc.robot.commandGroups.LimelightCargoShipCommandGroup;
 import frc.robot.lib.RebelRumble;
 import frc.robot.subsytems.CargoCollector;
 import frc.robot.subsytems.Climber;
@@ -39,13 +31,19 @@ import frc.robot.subsytems.LimelightVision.Target;
  * project.
  */
 public class Robot extends TimedRobot {
-  
-  private static final int SANDSTORM_RUN_AUTO = 0;
-  private static final int SANDSTORM_DRIVER_CONTROL = 1;
 
-  private final SendableChooser<Integer> mSandstormMode = new SendableChooser<>();
+  private static enum SandstormMode {
+    RUN_AUTO, DRIVER_CONTROL
+  }
+
+  private static enum SandstormStrategy {
+    CARGO_SHIP, ROCKET
+  }
+
+  private final SendableChooser<SandstormMode> mSandstormMode = new SendableChooser<>();
   private final SendableChooser<Integer> mLevelChooser = new SendableChooser<>();
   private final SendableChooser<Integer> mPositionChooser = new SendableChooser<>();
+  private final SendableChooser<SandstormStrategy> mSandstormStrategyChooser = new SendableChooser<>();
 
   private boolean mLastLightSensorValue = false;
   private boolean mLastLimitSwitchValue = false;
@@ -78,18 +76,22 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    mSandstormMode.setDefaultOption("Run Auto", SANDSTORM_RUN_AUTO);
-    mSandstormMode.addOption("Driver Control", SANDSTORM_DRIVER_CONTROL);
+    mSandstormMode.setDefaultOption("Run Auto", SandstormMode.RUN_AUTO);
+    mSandstormMode.addOption("Driver Control", SandstormMode.DRIVER_CONTROL);
     SmartDashboard.putData("Sandstorm Mode", mSandstormMode);
 
-    mLevelChooser.setDefaultOption("Level 1", LimelightCommandGroup.L1);
-    mLevelChooser.addOption("Level 2", LimelightCommandGroup.L2);
+    mLevelChooser.setDefaultOption("Level 1", LimelightCargoShipCommandGroup.L1);
+    mLevelChooser.addOption("Level 2", LimelightCargoShipCommandGroup.L2);
     SmartDashboard.putData("Level", mLevelChooser);
 
-    mPositionChooser.setDefaultOption("Right", LimelightCommandGroup.RIGHT);
-    mPositionChooser.addOption("Center", LimelightCommandGroup.CENTER);
-    mPositionChooser.addOption("Left", LimelightCommandGroup.LEFT);
+    mPositionChooser.setDefaultOption("Right", LimelightCargoShipCommandGroup.RIGHT);
+    mPositionChooser.addOption("Center", LimelightCargoShipCommandGroup.CENTER);
+    mPositionChooser.addOption("Left", LimelightCargoShipCommandGroup.LEFT);
     SmartDashboard.putData("Position", mPositionChooser);
+
+    mSandstormStrategyChooser.setDefaultOption("Rocket", SandstormStrategy.ROCKET);
+    mSandstormStrategyChooser.addOption("Cargo Ship", SandstormStrategy.CARGO_SHIP);
+    SmartDashboard.putData("Strategy", mSandstormStrategyChooser);
 
     drive = new Drive();
     cargoCollector = new CargoCollector();
@@ -148,11 +150,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    int mode = mSandstormMode.getSelected();
+    SandstormMode mode = mSandstormMode.getSelected();
     int level = mLevelChooser.getSelected();
     int position = mPositionChooser.getSelected();
-    if (mode == SANDSTORM_RUN_AUTO) {
-      autoCommand = new LimelightCommandGroup(level, position);
+    SandstormStrategy strategy = mSandstormStrategyChooser.getSelected();
+
+    if (mode == SandstormMode.RUN_AUTO) {
+      if (strategy == SandstormStrategy.CARGO_SHIP) {
+        autoCommand = new LimelightCargoShipCommandGroup(level, position);
+      } else if (strategy == SandstormStrategy.ROCKET) {
+
+      }
       //autoCommand = new AutomatedClimbCommand();
       autoCommand.start();
     }
@@ -170,7 +178,7 @@ public class Robot extends TimedRobot {
     updateDashboard();
     vision.updateLimelightData();
 
-    int mode = mSandstormMode.getSelected();
+    SandstormMode mode = mSandstormMode.getSelected();
 
     if (oi.getDriverStick().getRawButton(6)) {
       if (autoCommand != null) {
@@ -181,7 +189,7 @@ public class Robot extends TimedRobot {
       isAutoKilled = true;
     }
 
-    if (isAutoKilled || mode == SANDSTORM_DRIVER_CONTROL) {
+    if (isAutoKilled || mode == SandstormMode.DRIVER_CONTROL) {
       vision.setPipeline(0);
       driverControl();
     }
