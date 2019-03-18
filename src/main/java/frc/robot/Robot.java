@@ -22,6 +22,7 @@ import frc.robot.OI;
 import frc.robot.command.StopRobotCommand;
 import frc.robot.command.VisionDrive;
 import frc.robot.commandGroups.LimelightCommandGroup;
+import frc.robot.commandGroups.SideHatchAuto;
 import frc.robot.commandGroups.AutomatedClimbCommand;
 import frc.robot.lib.LidarLitePWM;
 import frc.robot.lib.RebelRumble;
@@ -155,6 +156,8 @@ public class Robot extends TimedRobot {
       //autoCommand = new AutomatedClimbCommand();
       autoCommand.start();
     }
+    //autoCommand = new SideHatchAuto();
+    //autoCommand.start();
     drive.resetGyro();
   }
 
@@ -234,9 +237,13 @@ public class Robot extends TimedRobot {
       target = Robot.vision.getTargetValues();
       Robot.drive.cheesyDriveWithoutJoysticks(drive.teleOpDriveSide * Constants.k_drive_coefficient * 
        Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), Robot.vision.getHorizontalAlignOutput() * 1);
+    } else if (oi.getOpStick().getRawButton(2)) {
+      hatchCollector.setArticulatorPower(-1);
+      drive.tankDriveNoJoystick(0.125, 0);
     } else {
-    vision.setPipeline(0);
-    drive.createHybridDriveSignal(true);
+      vision.setPipeline(0);
+      hatchCollector.setArticulatorPower(-1 * oi.getOpStick().getRawAxis(5));
+      drive.createHybridDriveSignal(true);
     }
     
     if (Math.abs(oi.getOpStick().getY()) > 0.1) {
@@ -244,7 +251,6 @@ public class Robot extends TimedRobot {
     } else {
       cargoCollector.setArticulatorPower(0);
     }
-    hatchCollector.setArticulatorPower(-1 * oi.getOpStick().getRawAxis(5));
 
     //rumble controllers when cargo Light Sensor detects cargo
     if (mLastLightSensorValue && !cargoCollector.getLightSensor()) {

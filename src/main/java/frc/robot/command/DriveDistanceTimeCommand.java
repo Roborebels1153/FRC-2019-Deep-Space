@@ -14,11 +14,13 @@ public class DriveDistanceTimeCommand extends Command {
   long startTime;
   private double time;
   private double speed;
+  private double turnSpeedA;
 
-  public DriveDistanceTimeCommand(double driveTime, double driveSpeed) {
+  public DriveDistanceTimeCommand(double driveTime, double driveSpeed, double turnSpeed) {
     requires(Robot.drive);
     time = driveTime;
     speed = driveSpeed;
+    turnSpeedA = turnSpeed;
   }
 
   // Called just before this Command runs the first time
@@ -31,7 +33,7 @@ public class DriveDistanceTimeCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.drive.cheesyDriveWithoutJoysticks(speed, 0);
+    Robot.drive.cheesyDriveWithoutJoysticks(speed, turnSpeedA);
     Robot.hatchCollector.setArticulatorPower(0.3);
 
   }

@@ -25,7 +25,7 @@ public class LimelightCommandGroup extends CommandGroup {
 
   public LimelightCommandGroup(int level, int position) {
     if (level == L2 && position != CENTER) {
-      addSequential(new DriveDistanceTimeCommand(0.5, 0.5));
+      addSequential(new DriveDistanceTimeCommand(0.5, 0.5, 0));
       addSequential(new WaitCommand(1));
     }
     int pipeline;

@@ -81,8 +81,8 @@ public class OI {
 		opBumperL.whenPressed(new HatchCollectReverseCommand());
 		opBumperL.whenReleased(new HatchCollectStopCommand());
 		
-		opButtonB.whenPressed(new AutomatedClimbCommand());
-		opButtonB.whenReleased(new StopMotionCommand());
+		//opButtonB.whenPressed(new AutomatedClimbCommand());
+		//opButtonB.whenReleased(new StopMotionCommand());
 	}
 	
 
