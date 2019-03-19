@@ -100,6 +100,7 @@ public class Robot extends TimedRobot {
     vision = new LimelightVision();
     oi = new OI();
 
+    vision.setPipeline(0);
     mDriverVibrate = new RebelRumble(oi.getDriverStick());
     mOpVibrate = new RebelRumble(oi.getOpStick());
     drive.calibrateGyro();
@@ -183,7 +184,6 @@ public class Robot extends TimedRobot {
     if (oi.getDriverStick().getRawButton(6)) {
       if (autoCommand != null) {
         autoCommand.cancel();
-        vision.setPipeline(0);
       }
       vision.setPipeline(0);
       isAutoKilled = true;
@@ -199,7 +199,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     if(autoCommand != null) autoCommand.cancel();
     vision.setPipeline(0);
-    vision.turnOffLight();
+    //vision.turnOffLight();
     drive.resetGyro();
     cargoCollector.resetEncoders();
     climber.resetEncoders();
@@ -240,7 +240,7 @@ public class Robot extends TimedRobot {
     if (oi.getDriverStick().getRawButton(2) && !(vision.getTargetArea() > 20)){
       vision.updateLimelightData();
       vision.setPipeline(1);
-      vision.turnOnLight();
+      //vision.turnOnLight();
       System.out.println("Starting limleight vision");
       target = Robot.vision.getTargetValues();
       Robot.drive.cheesyDriveWithoutJoysticks(-1*drive.teleOpDriveSide * Constants.k_drive_coefficient * 

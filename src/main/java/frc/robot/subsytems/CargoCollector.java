@@ -26,7 +26,6 @@ public class CargoCollector extends Subsystem {
 
     private WPI_TalonSRX mArticulatorA;
     private WPI_TalonSRX mArticulatorB;
-    private Victor mRollerVictor;
     private WPI_TalonSRX mRollerTalon;
 
     private DigitalInput cargoLightSensor;
@@ -40,11 +39,7 @@ public class CargoCollector extends Subsystem {
         mArticulatorA = new WPI_TalonSRX(RobotMap.CARGO_TALON_A);
         mArticulatorB = new WPI_TalonSRX(RobotMap.CARGO_TALON_B);
         
-       if(Robot.robotID == RobotID.FINAL){
         mRollerTalon = new WPI_TalonSRX(RobotMap.CARGO_ROLLER_TALON);  
-       }else{
-        mRollerVictor = new Victor(RobotMap.CARGO_ROLLER);  
-       }
         
         cargoLightSensor = new DigitalInput(RobotMap.CARGO_LIGHT_SENSOR);
 
@@ -63,11 +58,7 @@ public class CargoCollector extends Subsystem {
     }
 
     public void stopSubsystem() {
-        if(Robot.robotID == RobotID.FINAL){
-            mRollerTalon.set(0); 
-        }else{
-            mRollerVictor.set(0); 
-        }
+        mRollerTalon.set(0); 
         
         mArticulatorA.set(ControlMode.PercentOutput, 0);
         mArticulatorB.set(ControlMode.PercentOutput, 0);
@@ -94,11 +85,7 @@ public class CargoCollector extends Subsystem {
     }
 
     public void setRollerPower(double b) {
-        if(Robot.robotID == RobotID.FINAL){
-            mRollerTalon.set(ControlMode.PercentOutput, b); 
-        }else{
-            mRollerVictor.set(b); 
-        }
+        mRollerTalon.set(ControlMode.PercentOutput, b); 
     }
 
     public void configCollectorMotorOutput() {
@@ -116,11 +103,8 @@ public class CargoCollector extends Subsystem {
 
         mArticulatorB.follow(mArticulatorA);
         mArticulatorB.setInverted(true);
-        if(Robot.robotID == RobotID.FINAL){
-            mRollerTalon.set(ControlMode.PercentOutput, 0);  
-        }else{
-            mRollerVictor.set(0);  
-        }
+
+        mRollerTalon.set(ControlMode.PercentOutput, 0);    
         
         setBrakeMode();
     }
@@ -162,11 +146,8 @@ public class CargoCollector extends Subsystem {
     }
 
     public double getRollerPower() {
-        if(Robot.robotID == RobotID.FINAL){
-            return mRollerTalon.get();  
-        }else{
-            return mRollerVictor.get();  
-        }
+        return mRollerTalon.get();  
+    
     }
 
     public double getArticulatorPower() {

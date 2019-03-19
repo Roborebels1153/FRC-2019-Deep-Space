@@ -49,7 +49,6 @@ public class Drive extends Subsystem {
 
   //private ADXRS450_Gyro gyro;
 
-  private LidarLitePWM mLidar;
 
 
   // private DifferentialDrive robotDrive;
@@ -70,11 +69,8 @@ public class Drive extends Subsystem {
 
     //gyro = new ADXRS450_Gyro();
     
-    if(Robot.robotID == RobotID.PROTO){
-      mLidar = new LidarLitePWM(new DigitalInput(RobotMap.LIDAR));
-    }
 
-    teleOpDriveSide = (Robot.robotID == RobotID.PROTO ? -1 : 1); // at the start of the match, set one side to be the
+    teleOpDriveSide = 1; // at the start of the match, set one side to be the
                                                                  // front
 
     configMasterTalons();
@@ -99,12 +95,7 @@ public class Drive extends Subsystem {
   }
 
   public double getLidarDistance() {
-    if(Robot.robotID == RobotID.PROTO){
-      return mLidar.getDistance();
-    }else{
-      return 0;
-    }
-    
+    return 0;
   }
 
   public void calibrateGyro() {

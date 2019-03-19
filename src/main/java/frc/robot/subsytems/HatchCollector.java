@@ -23,8 +23,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 public class HatchCollector extends Subsystem {
 
-    private Victor mRoller;
-    private Victor mArticulator;
+   
     private WPI_TalonSRX mRollerTalon;
     private WPI_TalonSRX mArticulatorTalon;
     private DigitalInput limitSwitchA;
@@ -35,17 +34,11 @@ public class HatchCollector extends Subsystem {
     private static final double kCollectPowerStop = 0;
 
     public HatchCollector() {
-        if (Robot.robotID  == RobotID.FINAL) {
             mRollerTalon = new WPI_TalonSRX(RobotMap.HATCH_ROLLER_TALON);
             mArticulatorTalon = new WPI_TalonSRX(RobotMap.HATCH_ARTICULATOR_TALON);
             mRollerTalon.setInverted(true);
             mArticulatorTalon.setInverted(true);
-        } else {
-            mRoller = new Victor(RobotMap.HATCH_ROLLER);
-            mArticulator = new Victor(RobotMap.HATCH_ARTICULATOR);
-            mRoller.setInverted(true);
-            mArticulator.setInverted(true);
-        }
+        
         limitSwitchA = new DigitalInput(RobotMap.HATCH_LIMIT_SWITCH_A);
         limitSwitchB = new DigitalInput(RobotMap.HATCH_LIMIT_SWITCH_B);
 
@@ -72,19 +65,11 @@ public class HatchCollector extends Subsystem {
     }
 
     public void setArticulatorPower(double value) {
-        if (Robot.robotID == RobotID.FINAL) {
-            mArticulatorTalon.set(ControlMode.PercentOutput, value);
-        } else {
-            mArticulator.set(value);
-        }
+        mArticulatorTalon.set(ControlMode.PercentOutput, value);
     }
 
     public void setRollerPower(double value) {
-        if (Robot.robotID == RobotID.FINAL) {
-            mRollerTalon.set(ControlMode.PercentOutput, value);
-        } else {
-            mRoller.set(value);
-        }   
+         mRollerTalon.set(ControlMode.PercentOutput, value);
     }
 
     public void collectForward() {
@@ -100,38 +85,30 @@ public class HatchCollector extends Subsystem {
     }
 
     public double getRollerPower() {
-        if (Robot.robotID == RobotID.FINAL) {
-            return mRollerTalon.getMotorOutputPercent();
-        } else {
-            return mRoller.get();
-        }   
+        return mRollerTalon.getMotorOutputPercent();
     }
 
     public double getArticulatorPower() {
-        if (Robot.robotID == RobotID.FINAL) {
-            return mArticulatorTalon.getMotorOutputPercent();
-        } else {
-            return mArticulator.get();
-        }   
+        return mArticulatorTalon.getMotorOutputPercent();
     }
 
     public void configTalons() {
-        if (Robot.robotID == RobotID.FINAL){
-            mArticulatorTalon.configNominalOutputForward(0, Constants.kTimeoutMs);
-            mArticulatorTalon.configNominalOutputReverse(0, Constants.kTimeoutMs);
-            mArticulatorTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
-            mArticulatorTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+ 
+        mArticulatorTalon.configNominalOutputForward(0, Constants.kTimeoutMs);
+        mArticulatorTalon.configNominalOutputReverse(0, Constants.kTimeoutMs);
+        mArticulatorTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
+        mArticulatorTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-            mRollerTalon.configNominalOutputForward(0, Constants.kTimeoutMs);
-            mRollerTalon.configNominalOutputReverse(0, Constants.kTimeoutMs);
-            mRollerTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
-            mRollerTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+        mRollerTalon.configNominalOutputForward(0, Constants.kTimeoutMs);
+        mRollerTalon.configNominalOutputReverse(0, Constants.kTimeoutMs);
+        mRollerTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
+        mRollerTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-            mArticulatorTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
+        mArticulatorTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
             Constants.kTimeoutMs);       
             
-            mArticulatorTalon.setNeutralMode(NeutralMode.Brake);
-        }
+        mArticulatorTalon.setNeutralMode(NeutralMode.Brake);
+
     }
 
     @Override
