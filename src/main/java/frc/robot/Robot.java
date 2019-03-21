@@ -247,7 +247,7 @@ public class Robot extends TimedRobot {
        Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), Robot.vision.getHorizontalAlignOutput() * .8);
     } else if (oi.getOpStick().getRawButton(2)) {
       hatchCollector.setArticulatorPower(-1);
-      drive.tankDriveNoJoystick(0.125, 0);
+      drive.tankDriveNoJoystick(0.125, 0.125);
     } else {
       vision.setPipeline(0);
       hatchCollector.setArticulatorPower(-1 * oi.getOpStick().getRawAxis(5));
@@ -277,9 +277,9 @@ public class Robot extends TimedRobot {
     mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitchA();
 
     if (oi.getOpStick().getRawButtonPressed(4)) {
-      climber.climb(0.5, 0.5);
+      climber.climb(1, 1);
     } else if (oi.getOpStick().getRawButtonPressed(3)) {
-      climber.climb(-0.5, -0.5);
+      climber.climb(-1, -1);
     } else if (oi.getOpStick().getRawButtonReleased(4) || oi.getOpStick().getRawButtonReleased(3)) {
       climber.climb(0, 0);
     }
