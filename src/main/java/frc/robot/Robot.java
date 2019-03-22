@@ -222,6 +222,8 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
   }
 
+  private boolean mAutoEndFlag;
+
   public void driverControl() {
     mDriverVibrate.loop();
     mOpVibrate.loop();
@@ -236,10 +238,17 @@ public class Robot extends TimedRobot {
     }
     mLastToggleState = bothPressed;
 
-    
-    if (oi.getDriverStick().getRawButton(2) && !(vision.getTargetArea() > 20)){
+    if (oi.getDriverStick().getRawButton(2)) {
       vision.updateLimelightData();
       vision.setPipeline(1);
+      if (vision.getTargetY() >= 19) {
+        mAutoEndFlag = true;
+      }
+    } else {
+      mAutoEndFlag = false;
+    }
+    
+    if (oi.getDriverStick().getRawButton(2) && !mAutoEndFlag) {
       //vision.turnOnLight();
       System.out.println("Starting limleight vision");
       target = Robot.vision.getTargetValues();
@@ -277,9 +286,9 @@ public class Robot extends TimedRobot {
     mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitchA();
 
     if (oi.getOpStick().getRawButtonPressed(4)) {
-      climber.climb(1, 1);
+      climber.climb(0.75, 0.75);
     } else if (oi.getOpStick().getRawButtonPressed(3)) {
-      climber.climb(-1, -1);
+      climber.climb(-0.75, -0.75);
     } else if (oi.getOpStick().getRawButtonReleased(4) || oi.getOpStick().getRawButtonReleased(3)) {
       climber.climb(0, 0);
     }

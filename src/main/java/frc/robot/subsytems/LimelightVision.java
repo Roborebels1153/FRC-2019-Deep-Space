@@ -111,6 +111,10 @@ public class LimelightVision extends Subsystem {
 		}
 	}
 
+	public double getTargetY(){
+		return table.getEntry("ty").getDouble(0);
+	}
+
 	public double getTargetArea(){
 		return table.getEntry("ta").getDouble(0);
 	}
