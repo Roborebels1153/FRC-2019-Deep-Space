@@ -30,7 +30,7 @@ public class Climber extends Subsystem {
       climbA = new WPI_TalonSRX(12);
       climbB = new WPI_TalonSRX(13);
 
-      //lightSensorA = new DigitalInput(4);
+      lightSensorA = new DigitalInput(4);
       lightSensorB = new DigitalInput(5);
 
       configTalons();
@@ -45,7 +45,7 @@ public class Climber extends Subsystem {
     SmartDashboard.putNumber("Climb A Encoder Value", getClimbAEncoder());
     SmartDashboard.putNumber("Climb B Encoder Value", getClimbBEncoder());
 
-    //SmartDashboard.putBoolean("Climb Light Sensor A", getClimbLightSensorA());
+    SmartDashboard.putBoolean("Climb Light Sensor A", getClimbLightSensorA());
     SmartDashboard.putBoolean("Climb Light Sensor B", getClimbLightSensorB());
   }
 
@@ -78,7 +78,7 @@ public class Climber extends Subsystem {
 
 
 public boolean getClimbLightSensorA() {
-  return false;//lightSensorA.get();
+  return lightSensorA.get();
 }
 
 public boolean getClimbLightSensorB() {

@@ -21,14 +21,14 @@ public class BringArmDownCommand extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.cargoCollector.resetEncoders();
+    //Robot.cargoCollector.resetEncoders();
     System.out.println("Running Auto Arm Down Command at threshold of " + encoderThreshold);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.cargoCollector.setArticulatorPower(-0.5);
+    Robot.cargoCollector.setArticulatorPower(-1);
   }
 
   // Make this return true when this Command no longer needs to run execute()

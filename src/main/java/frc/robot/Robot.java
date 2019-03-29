@@ -65,7 +65,12 @@ public class Robot extends TimedRobot {
     PROTO, FINAL
   }
 
+  private static enum DriveState {
+    MANUAL, CLIMB
+  }
+
   public static final RobotID robotID = RobotID.FINAL;
+  public static DriveState driveState = DriveState.MANUAL;
 
   private boolean mLastToggleState = false;
   private boolean isAutoKilled = false;
@@ -228,70 +233,116 @@ public class Robot extends TimedRobot {
     mDriverVibrate.loop();
     mOpVibrate.loop();
 
-    /**
-     * When both bumper buttons of the drive controllers are pressed, inverse the
-     * tele-op drive control.
-     */
-    boolean bothPressed = oi.getDriverStick().getRawButton(6);
-    if (bothPressed && !mLastToggleState) {
-      drive.teleOpDriveSide = (drive.teleOpDriveSide > 0 ? -1 : 1);
+    if(oi.getOpStick().getRawButton(7)) {
+      this.driveState = DriveState.CLIMB;
+    } else {
+      this.driveState = DriveState.MANUAL;
     }
-    mLastToggleState = bothPressed;
 
-    if (oi.getDriverStick().getRawButton(2)) {
-      vision.updateLimelightData();
-      vision.setPipeline(1);
-      if (vision.getTargetY() >= 19) {
-        mAutoEndFlag = true;
+    if (DriveState.CLIMB.equals(this.driveState)) {
+      double armSpeed = 0;
+      double driveSpeed = 0;
+      double climbSpeed = 0;
+
+      if (oi.getOpStick().getRawButton(7)) {
+        if (!isArmAtHab()) {
+          //arm is not touching the hab yet, move arm don't drive
+          armSpeed = -.6;
+          driveSpeed = 0;
+        } else if (isArmAtHab() && !isArmAtAngle()) {
+          //arm is touching the hab, start driving forward and start the stilts
+          armSpeed = -.55;
+          driveSpeed = -.4;
+          climbSpeed = 0;
+        } else if (isArmAtAngle()) {
+          //arm has reached the angle, continue to move the wheels and stilts
+          armSpeed = 0;
+          driveSpeed = -.4;
+          climbSpeed = -0.75; 
+        }
+      } else {
+        armSpeed = 0;
+        driveSpeed = 0;
+        climbSpeed = 0;
       }
+      cargoCollector.setArticulatorPower(armSpeed);
+      drive.cheesyDriveWithoutJoysticks(driveSpeed, 0);
+      climber.climb(climbSpeed, climbSpeed);
     } else {
-      mAutoEndFlag = false;
-    }
+
+      /**
+       * When both bumper buttons of the drive controllers are pressed, inverse the
+       * tele-op drive control.
+       */
+      boolean bothPressed = oi.getDriverStick().getRawButton(6);
+      if (bothPressed && !mLastToggleState) {
+        drive.teleOpDriveSide = (drive.teleOpDriveSide > 0 ? -1 : 1);
+      }
+      mLastToggleState = bothPressed;
+
+      if (oi.getDriverStick().getRawButton(2)) {
+        vision.updateLimelightData();
+        vision.setPipeline(1);
+        if (vision.getTargetY() >= 19) {
+          mAutoEndFlag = true;
+        }
+      } else {
+        mAutoEndFlag = false;
+      }
+      
+      if (oi.getDriverStick().getRawButton(2) && !mAutoEndFlag) {
+        //vision.turnOnLight();
+        System.out.println("Starting limleight vision");
+        target = Robot.vision.getTargetValues();
+        Robot.drive.cheesyDriveWithoutJoysticks(-1*drive.teleOpDriveSide * Constants.k_drive_coefficient * 
+        Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), Robot.vision.getHorizontalAlignOutput() * .8);
+      } else if (oi.getOpStick().getRawButton(2)) {
+        hatchCollector.setArticulatorPower(-1);
+        drive.tankDriveNoJoystick(0.125, 0.125);
+      } else {
+        vision.setPipeline(0);
+        hatchCollector.setArticulatorPower(-1 * oi.getOpStick().getRawAxis(5));
+        drive.createHybridDriveSignal(true);
+      }
+
+      //rumble controllers when cargo Light Sensor detects cargo
+      if (mLastLightSensorValue && !cargoCollector.getLightSensor()) {
+        mDriverVibrate.rumble(RebelRumble.PATTERN_RIGHT_TO_LEFT);
+        mOpVibrate.rumble(RebelRumble.PATTERN_RIGHT_TO_LEFT);
+      }
     
-    if (oi.getDriverStick().getRawButton(2) && !mAutoEndFlag) {
-      //vision.turnOnLight();
-      System.out.println("Starting limleight vision");
-      target = Robot.vision.getTargetValues();
-      Robot.drive.cheesyDriveWithoutJoysticks(-1*drive.teleOpDriveSide * Constants.k_drive_coefficient * 
-       Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), Robot.vision.getHorizontalAlignOutput() * .8);
-    } else if (oi.getOpStick().getRawButton(2)) {
-      hatchCollector.setArticulatorPower(-1);
-      drive.tankDriveNoJoystick(0.125, 0.125);
-    } else {
-      vision.setPipeline(0);
-      hatchCollector.setArticulatorPower(-1 * oi.getOpStick().getRawAxis(5));
-      drive.createHybridDriveSignal(true);
-    }
-    
-    if (Math.abs(oi.getOpStick().getY()) > 0.1) {
-      cargoCollector.setArticulatorPower(-0.75 * oi.getOpStick().getY());
-    } else {
-      cargoCollector.setArticulatorPower(0);
-    }
 
-    //rumble controllers when cargo Light Sensor detects cargo
-    if (mLastLightSensorValue && !cargoCollector.getLightSensor()) {
-      mDriverVibrate.rumble(RebelRumble.PATTERN_RIGHT_TO_LEFT);
-      mOpVibrate.rumble(RebelRumble.PATTERN_RIGHT_TO_LEFT);
-    }
-  
+      if (mLastLimitSwitchValue && !hatchCollector.getHatchLimitSwitchA()) {
+        mDriverVibrate.rumble(RebelRumble.PATTERN_LEFT_TO_RIGHT);
+        mOpVibrate.rumble(RebelRumble.PATTERN_LEFT_TO_RIGHT);
+      }
 
-    if (mLastLimitSwitchValue && !hatchCollector.getHatchLimitSwitchA()) {
-      mDriverVibrate.rumble(RebelRumble.PATTERN_LEFT_TO_RIGHT);
-      mOpVibrate.rumble(RebelRumble.PATTERN_LEFT_TO_RIGHT);
-    }
+        mLastLightSensorValue = cargoCollector.getLightSensor();
 
-      mLastLightSensorValue = cargoCollector.getLightSensor();
+      mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitchA();
 
-    mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitchA();
+      if (oi.getOpStick().getRawButtonPressed(4)) {
+        climber.climb(0.75, 0.75);
+      } else if (oi.getOpStick().getRawButtonPressed(3)) {
+        climber.climb(-0.75, -0.75);
+      } else if (oi.getOpStick().getRawButtonReleased(4) || oi.getOpStick().getRawButtonReleased(3)) {
+        climber.climb(0, 0);
+      }
 
-    if (oi.getOpStick().getRawButtonPressed(4)) {
-      climber.climb(0.75, 0.75);
-    } else if (oi.getOpStick().getRawButtonPressed(3)) {
-      climber.climb(-0.75, -0.75);
-    } else if (oi.getOpStick().getRawButtonReleased(4) || oi.getOpStick().getRawButtonReleased(3)) {
-      climber.climb(0, 0);
+      if (Math.abs(oi.getOpStick().getY()) > 0.1) {
+        cargoCollector.setArticulatorPower(-0.75 * oi.getOpStick().getY());
+      } else {
+        cargoCollector.setArticulatorPower(0);
+      }
     }
   }
 
+  private boolean isArmAtHab(){
+    return !(cargoCollector.getArticulatorAEncoder() > -3500 ||
+    cargoCollector.getArticulatorBEncoder() > -3500);
+  }
+  private boolean isArmAtAngle(){
+    return !(cargoCollector.getArticulatorAEncoder() > -5000 ||
+    cargoCollector.getArticulatorBEncoder() > -5000);
+  }
 }

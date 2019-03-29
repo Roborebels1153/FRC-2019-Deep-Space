@@ -21,6 +21,7 @@ import frc.robot.command.HatchCollectStopCommand;
 import frc.robot.command.StopMotionCommand;
 import frc.robot.commandGroups.AutomatedClimbCommand;
 import frc.robot.lib.RebelTrigger;
+import frc.robot.command.BringArmDownCommand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -80,9 +81,9 @@ public class OI {
 
 		opBumperL.whenPressed(new HatchCollectReverseCommand());
 		opBumperL.whenReleased(new HatchCollectStopCommand());
-		
-		//opButtonB.whenPressed(new AutomatedClimbCommand());
-		//opButtonB.whenReleased(new StopMotionCommand());
+	
+		//opBack.whenPressed(new BringArmDownCommand(-3500));
+		//opBack.whenReleased(new StopMotionCommand());
 	}
 	
 
