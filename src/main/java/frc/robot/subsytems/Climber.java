@@ -10,6 +10,8 @@ package frc.robot.subsytems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -55,11 +57,13 @@ public class Climber extends Subsystem {
     climbA.configNominalOutputReverse(0, Constants.kTimeoutMs);
     climbA.configPeakOutputForward(1, Constants.kTimeoutMs);
     climbA.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+    climbA.setNeutralMode(NeutralMode.Brake);
 
     climbB.configNominalOutputForward(0, Constants.kTimeoutMs);
     climbB.configNominalOutputReverse(0, Constants.kTimeoutMs);
     climbB.configPeakOutputForward(1, Constants.kTimeoutMs);
     climbB.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+    climbB.setNeutralMode(NeutralMode.Brake);
 
     climbB.setInverted(true);
   }

@@ -46,4 +46,14 @@ public class RobotMap {
 	public static final int CARGO_LIGHT_SENSOR = 3;
 	public static final int HATCH_LIMIT_SWITCH_A = 1;
 	public static final int HATCH_LIMIT_SWITCH_B = 2;
+
+	//PDP ports to talons
+
+	public static final int DRIVE_ONE = 15;
+	public static final int DRIVE_TWO = 14;
+	public static final int DRIVE_THREE = 13;
+	public static final int DRIVE_FOUR = 2;
+	public static final int DRIVE_FIVE = 1;
+	public static final int DRIVE_SIX = 0;
+
 }

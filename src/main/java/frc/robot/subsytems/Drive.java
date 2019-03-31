@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -47,9 +48,8 @@ public class Drive extends Subsystem {
   // Rebel Drive Helper (Cheesy Drive)
   private RebelDriveHelper driveHelper;
 
+  private double currentDriveMultiplier;
   //private ADXRS450_Gyro gyro;
-
-
 
   // private DifferentialDrive robotDrive;
 
@@ -72,8 +72,8 @@ public class Drive extends Subsystem {
 
     teleOpDriveSide = 1; // at the start of the match, set one side to be the
                                                                  // front
-    leftMaster.configOpenloopRamp(0);
-    rightMaster.configOpenloopRamp(0);
+    leftMaster.configOpenloopRamp(0.05);
+    rightMaster.configOpenloopRamp(0.05);
 
     configMasterTalons();
     setFollowers();
@@ -157,6 +157,20 @@ public class Drive extends Subsystem {
     rightFollower1.setNeutralMode(NeutralMode.Coast);
   }
 
+  public double findHighestMotorCurrent() {
+    double lowValue  = Integer.MIN_VALUE;
+
+    int[] currentArray = {RobotMap.DRIVE_ONE, RobotMap.DRIVE_TWO, RobotMap.DRIVE_THREE, 
+                          RobotMap.DRIVE_FOUR, RobotMap.DRIVE_FIVE, RobotMap.DRIVE_SIX};
+    for (int i = 0; i < currentArray.length; i ++) {
+      if (Robot.pdp.getCurrent(currentArray[i]) > lowValue) {
+        lowValue = Robot.pdp.getCurrent(currentArray[i]);
+      }
+      
+    }
+    return lowValue;
+  }
+
   /**
    * Below is drive code which is used in the cheesy Drive Command
    */
@@ -200,9 +214,14 @@ public class Drive extends Subsystem {
       rawMoveValue = moveValue;
       rotateValue = rawRotateValue;
     }
-
+   
+    /*if (this.findHighestMotorCurrent() > 20) {
+      currentDriveMultiplier = 0.9;
+    } else {
+      currentDriveMultiplier = 1;
+    }*/
     DriveSignal driveSignal = driveHelper.rebelDrive(teleOpDriveSide * Constants.k_drive_coefficient * moveValue,
-        Constants.k_turn_coefficient * rotateValue, quickTurn, false);
+                    Constants.k_turn_coefficient * rotateValue, quickTurn, false);
     Robot.drive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
 
   }

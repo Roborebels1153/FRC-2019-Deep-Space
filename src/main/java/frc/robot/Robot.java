@@ -21,6 +21,7 @@ import frc.robot.lib.RebelRumble;
 import frc.robot.subsytems.CargoCollector;
 import frc.robot.subsytems.Climber;
 import frc.robot.subsytems.LimelightVision.Target;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 
 /**
@@ -60,6 +61,8 @@ public class Robot extends TimedRobot {
   public static HatchCollector hatchCollector;
   public static Climber climber;
   public static LimelightVision vision;
+
+  public static PowerDistributionPanel pdp;
 
   public static enum RobotID {
     PROTO, FINAL
@@ -105,6 +108,7 @@ public class Robot extends TimedRobot {
     vision = new LimelightVision();
     oi = new OI();
 
+    pdp = new PowerDistributionPanel();
     vision.setPipeline(0);
     mDriverVibrate = new RebelRumble(oi.getDriverStick());
     mOpVibrate = new RebelRumble(oi.getOpStick());
@@ -321,11 +325,18 @@ public class Robot extends TimedRobot {
 
       mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitchA();
 
+      /** 
       if (oi.getOpStick().getRawButtonPressed(4)) {
         climber.climb(0.75, 0.75);
       } else if (oi.getOpStick().getRawButtonPressed(3)) {
         climber.climb(-0.75, -0.75);
       } else if (oi.getOpStick().getRawButtonReleased(4) || oi.getOpStick().getRawButtonReleased(3)) {
+        climber.climb(0, 0);
+      }
+      */
+      if (Math.abs(oi.getTestStick().getY()) > 0.1) {
+        climber.climb(oi.getTestStick().getY(), oi.getTestStick().getY());
+      } else {
         climber.climb(0, 0);
       }
 

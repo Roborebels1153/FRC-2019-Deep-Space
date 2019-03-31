@@ -40,6 +40,7 @@ public class OI {
 
 	private Joystick opStick = new Joystick(OPERATOR_STICK);
 	private Joystick driverStick = new Joystick(DRIVER_JOYSTICK);
+	private Joystick testStick = new Joystick(2);
 
 	public Button drTriggerL = new RebelTrigger(driverStick, 2);
 	public Button drTriggerR = new RebelTrigger(driverStick, 3);
@@ -93,5 +94,9 @@ public class OI {
 
 	public Joystick getDriverStick() {
 		return driverStick;
+	}
+
+	public Joystick getTestStick() {
+		return testStick;
 	}
 }
