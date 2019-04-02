@@ -72,8 +72,8 @@ public class Drive extends Subsystem {
 
     teleOpDriveSide = 1; // at the start of the match, set one side to be the
                                                                  // front
-    leftMaster.configOpenloopRamp(0.05);
-    rightMaster.configOpenloopRamp(0.05);
+    leftMaster.configOpenloopRamp(0);
+    rightMaster.configOpenloopRamp(0);
 
     configMasterTalons();
     setFollowers();
