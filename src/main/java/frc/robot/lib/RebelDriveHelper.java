@@ -99,7 +99,7 @@ public class RebelDriveHelper {
             overPower = 1.0;
             angularPower = wheel;
         } else {
-            overPower = 0.0;
+            overPower = 0.0; 
             angularPower = Math.abs(throttle) * wheel * sensitivity - mQuickStopAccumlator;
             if (mQuickStopAccumlator > 1) {
                 mQuickStopAccumlator -= 1;
