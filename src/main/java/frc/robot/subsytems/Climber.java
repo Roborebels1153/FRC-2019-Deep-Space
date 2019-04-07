@@ -16,6 +16,7 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.*;
 
 /**
  * Add your docs here.
@@ -81,6 +82,36 @@ public class Climber extends Subsystem {
   public void climbA(double in) {
     climbA.set(ControlMode.PercentOutput, in);
 
+  }
+  public void autoClimbDownA(){
+    if (getClimbLightSensorA()){
+      climbA(0);
+    } else {
+      climbA(-0.95);
+    }
+  }
+  public void autoClimbUpA() {
+    if (getClimbAEncoder() > -300){
+      climbA(0);
+    }
+    else {
+      climbA(0.95);
+    }
+  }
+  public void autoClimbDownB(){
+    if (getClimbLightSensorB()){
+      climbB(0);
+    } else {
+      climbB(-1);
+    }
+  }
+  public void autoClimbUpB(){
+    if (getClimbBEncoder() > -300){
+      climbB(0);
+    }
+    else {
+      climbB(1);
+    }
   }
 
   public void climbWithLimitSwitch(double inA, double inB){  

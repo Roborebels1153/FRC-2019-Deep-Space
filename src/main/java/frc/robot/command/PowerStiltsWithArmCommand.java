@@ -8,11 +8,14 @@
 package frc.robot.command;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.*;
+import frc.robot.Robot;
 
-public class PowerStiltsCommand extends Command {
-  public PowerStiltsCommand() {
+public class PowerStiltsWithArmCommand extends Command {
+  private double encoderThreshold;
+  public PowerStiltsWithArmCommand(double encoderThreshold) {
+    requires(Robot.cargoCollector);
     requires(Robot.climber);
+    this.encoderThreshold = encoderThreshold;
   }
 
   // Called just before this Command runs the first time
@@ -23,6 +26,8 @@ public class PowerStiltsCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    System.out.println("Running Power Stilts with Arm");
+    Robot.cargoCollector.setArticulatorPower(-0.6);
     Robot.climber.autoClimbDownA();
     Robot.climber.autoClimbDownB();
   }
@@ -30,13 +35,15 @@ public class PowerStiltsCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (Robot.climber.getClimbLightSensorA() && Robot.climber.getClimbLightSensorB());
+    return (Robot.cargoCollector.getArticulatorAEncoder() < encoderThreshold) || (Robot.cargoCollector.getArticulatorBEncoder() < encoderThreshold);// return Robot.climber.canStopClimbing();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.climber.climb(0, 0);
+    System.out.println("Stopped Power Stilt Command");
+    Robot.cargoCollector.setArticulatorPower(0);
+    Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
   }
 
   // Called when another command which requires one or more of the same

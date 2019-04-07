@@ -34,7 +34,6 @@ public class DriveDistanceTimeCommand extends Command {
   @Override
   protected void execute() {
     Robot.drive.cheesyDriveWithoutJoysticks(speed, turnSpeedA);
-    Robot.hatchCollector.setArticulatorPower(0.3);
 
   }
 

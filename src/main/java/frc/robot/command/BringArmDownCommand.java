@@ -28,13 +28,14 @@ public class BringArmDownCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.cargoCollector.setArticulatorPower(-1);
+    Robot.cargoCollector.setArticulatorPower(-0.3);
+    Robot.drive.cheesyDriveWithoutJoysticks(-0.6, 0);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (Robot.cargoCollector.getArticulatorAEncoder() < encoderThreshold) && (Robot.cargoCollector.getArticulatorBEncoder() < encoderThreshold);
+    return (Robot.cargoCollector.getArticulatorAEncoder() < encoderThreshold) || (Robot.cargoCollector.getArticulatorBEncoder() < encoderThreshold);
   }
 
   // Called once after isFinished returns true

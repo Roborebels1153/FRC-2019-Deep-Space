@@ -22,6 +22,7 @@ import frc.robot.subsytems.CargoCollector;
 import frc.robot.subsytems.Climber;
 import frc.robot.subsytems.LimelightVision.Target;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import frc.robot.commandGroups.*;
 
 
 /**
@@ -160,6 +161,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    cargoCollector.resetEncoders();
+
     SandstormMode mode = mSandstormMode.getSelected();
     int level = mLevelChooser.getSelected();
     int position = mPositionChooser.getSelected();
@@ -171,7 +174,7 @@ public class Robot extends TimedRobot {
       } else if (strategy == SandstormStrategy.ROCKET) {
 
       }
-      //autoCommand = new AutomatedClimbCommand();
+      autoCommand = new AutomatedClimbCommand();
       autoCommand.start();
     }
     //autoCommand = new SideHatchAuto();
@@ -341,46 +344,47 @@ public class Robot extends TimedRobot {
         climber.climb(0, 0);
       }
       */
-      
-      if (oi.getOpStick().getRawButton(3)){
-        if (climber.getClimbLightSensorB()){
-          climber.climbB(0);
+      if(!oi.getOpStick().getRawButton(8)){
+        if (oi.getOpStick().getRawButton(3)){
+          if (climber.getClimbLightSensorB()){
+            climber.climbB(0);
+          } else {
+            climber.climbB(-1);
+          }
+        } else if (oi.getOpStick().getRawButton(4)) {
+         // if (climber.getClimbBEncoder() > -300){
+           // climber.climbB(0);
+          //}
+          //else {
+            climber.climbB(1);
+          //}
         } else {
-          climber.climbB(-1);
-        }
-      } else if (oi.getOpStick().getRawButton(4)) {
-        if (climber.getClimbBEncoder() > -300){
           climber.climbB(0);
         }
-        else {
-          climber.climbB(1);
-        }
-      } else {
-        climber.climbB(0);
-      }
-      
+        
 
-      if (oi.getOpStick().getRawButton(3)){
-        if (climber.getClimbLightSensorA()){
-          climber.climbA(0);
+        if (oi.getOpStick().getRawButton(3)){
+          if (climber.getClimbLightSensorA()){
+            climber.climbA(0);
+          } else {
+            climber.climbA(-1);
+          }
+        } else if (oi.getOpStick().getRawButton(4)){
+          //if (climber.getClimbAEncoder() > -300){
+            //climber.climbA(0);
+          //}
+          //else {
+            climber.climbA(1);
+          //}
         } else {
-          climber.climbA(-1);
-        }
-      } else if (oi.getOpStick().getRawButton(4)){
-        if (climber.getClimbAEncoder() > -300){
           climber.climbA(0);
         }
-        else {
-          climber.climbA(1);
-        }
-      } else {
-        climber.climbA(0);
-      }
 
-      if (Math.abs(oi.getOpStick().getY()) > 0.1) {
-        cargoCollector.setArticulatorPower(-1 * oi.getOpStick().getY());
-      } else {
-        cargoCollector.setArticulatorPower(0);
+        if (Math.abs(oi.getOpStick().getY()) > 0.1) {
+          cargoCollector.setArticulatorPower(-1 * oi.getOpStick().getY());
+        } else {
+          cargoCollector.setArticulatorPower(0);
+        }
       }
     }
   }
