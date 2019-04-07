@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.Robot.RobotID;
 import frc.robot.lib.RebelTrigger;
+import frc.robot.commandGroups.*;
 
 
 import frc.robot.command.*;
@@ -76,6 +77,9 @@ public class OI {
 
 		opBumperL.whenPressed(new HatchCollectReverseCommand());
 		opBumperL.whenReleased(new HatchCollectStopCommand());
+
+		opStart.whileHeld(new AutomatedClimbCommand());
+		opStart.whenReleased(new EmptyCommand());
 
 		/** 
 		opButtonX.whenPressed(new ClimberDownCommand(true));

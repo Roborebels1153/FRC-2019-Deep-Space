@@ -297,20 +297,7 @@ public class Robot extends TimedRobot {
         mAutoEndFlag = false;
       }
       
-      if (oi.getDriverStick().getRawButton(2) && !mAutoEndFlag) {
-        //vision.turnOnLight();
-        System.out.println("Starting limleight vision");
-        target = Robot.vision.getTargetValues();
-        Robot.drive.cheesyDriveWithoutJoysticks(-1*drive.teleOpDriveSide * Constants.k_drive_coefficient * 
-        Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), Robot.vision.getHorizontalAlignOutput() * .8);
-      } else if (oi.getOpStick().getRawButton(2)) {
-        hatchCollector.setArticulatorPower(-1);
-        drive.tankDriveNoJoystick(0.125, 0.125);
-      } else {
-        vision.setPipeline(0);
-        hatchCollector.setArticulatorPower(-1 * oi.getOpStick().getRawAxis(5));
-        drive.createHybridDriveSignal(true);
-      }
+     
 
       //rumble controllers when cargo Light Sensor detects cargo
       if (mLastLightSensorValue && !cargoCollector.getLightSensor()) {
@@ -345,6 +332,22 @@ public class Robot extends TimedRobot {
       }
       */
       if(!oi.getOpStick().getRawButton(8)){
+
+        if (oi.getDriverStick().getRawButton(2) && !mAutoEndFlag) {
+          //vision.turnOnLight();
+          System.out.println("Starting limleight vision");
+          target = Robot.vision.getTargetValues();
+          Robot.drive.cheesyDriveWithoutJoysticks(-1*drive.teleOpDriveSide * Constants.k_drive_coefficient * 
+          Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), Robot.vision.getHorizontalAlignOutput() * .8);
+        } else if (oi.getOpStick().getRawButton(2)) {
+          hatchCollector.setArticulatorPower(-1);
+          drive.tankDriveNoJoystick(0.125, 0.125);
+        } else {
+          vision.setPipeline(0);
+          hatchCollector.setArticulatorPower(-1 * oi.getOpStick().getRawAxis(5));
+          drive.createHybridDriveSignal(true);
+        }
+
         if (oi.getOpStick().getRawButton(3)){
           if (climber.getClimbLightSensorB()){
             climber.climbB(0);
@@ -352,12 +355,12 @@ public class Robot extends TimedRobot {
             climber.climbB(-1);
           }
         } else if (oi.getOpStick().getRawButton(4)) {
-         // if (climber.getClimbBEncoder() > -300){
-           // climber.climbB(0);
-          //}
-          //else {
+          if (climber.getClimbBEncoder() > -300){
+            climber.climbB(0);
+          }
+          else {
             climber.climbB(1);
-          //}
+          }
         } else {
           climber.climbB(0);
         }
@@ -370,12 +373,12 @@ public class Robot extends TimedRobot {
             climber.climbA(-1);
           }
         } else if (oi.getOpStick().getRawButton(4)){
-          //if (climber.getClimbAEncoder() > -300){
-            //climber.climbA(0);
-          //}
-          //else {
+          if (climber.getClimbAEncoder() > -300){
+            climber.climbA(0);
+          }
+          else {
             climber.climbA(1);
-          //}
+          }
         } else {
           climber.climbA(0);
         }
