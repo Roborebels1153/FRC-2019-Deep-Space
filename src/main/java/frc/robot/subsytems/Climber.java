@@ -73,6 +73,24 @@ public class Climber extends Subsystem {
     climbB.set(ControlMode.PercentOutput, inB);
   }
 
+  public void climbB(double in) {
+    climbB.set(ControlMode.PercentOutput, in);
+
+  }
+
+  public void climbA(double in) {
+    climbA.set(ControlMode.PercentOutput, in);
+
+  }
+
+  public void climbWithLimitSwitch(double inA, double inB){  
+    if (getClimbLightSensorA() == false && getClimbLightSensorB() == false) {
+      climb(inA, inB);
+    } else {
+      climb(0,0);
+    }
+  }
+
   public void configTalonFeedback() {
     climbA.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
     Constants.kTimeoutMs);

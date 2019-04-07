@@ -326,22 +326,59 @@ public class Robot extends TimedRobot {
       mLastLimitSwitchValue = hatchCollector.getHatchLimitSwitchA();
 
       /** 
-      if (oi.getOpStick().getRawButtonPressed(4)) {
+      if (oi.getOpStick().getRawButton(4)) {
         climber.climb(0.75, 0.75);
-      } else if (oi.getOpStick().getRawButtonPressed(3)) {
+      } else if (oi.getOpStick().getRawButton(3)) {
         climber.climb(-0.75, -0.75);
-      } else if (oi.getOpStick().getRawButtonReleased(4) || oi.getOpStick().getRawButtonReleased(3)) {
+      } else {//if (oi.getOpStick().getRawButtonReleased(4) || oi.getOpStick().getRawButtonReleased(3)) {
         climber.climb(0, 0);
       }
       */
+      /** 
       if (Math.abs(oi.getTestStick().getY()) > 0.1) {
         climber.climb(oi.getTestStick().getY(), oi.getTestStick().getY());
       } else {
         climber.climb(0, 0);
       }
+      */
+      
+      if (oi.getOpStick().getRawButton(3)){
+        if (climber.getClimbLightSensorB()){
+          climber.climbB(0);
+        } else {
+          climber.climbB(-1);
+        }
+      } else if (oi.getOpStick().getRawButton(4)) {
+        if (climber.getClimbBEncoder() > -300){
+          climber.climbB(0);
+        }
+        else {
+          climber.climbB(1);
+        }
+      } else {
+        climber.climbB(0);
+      }
+      
+
+      if (oi.getOpStick().getRawButton(3)){
+        if (climber.getClimbLightSensorA()){
+          climber.climbA(0);
+        } else {
+          climber.climbA(-1);
+        }
+      } else if (oi.getOpStick().getRawButton(4)){
+        if (climber.getClimbAEncoder() > -300){
+          climber.climbA(0);
+        }
+        else {
+          climber.climbA(1);
+        }
+      } else {
+        climber.climbA(0);
+      }
 
       if (Math.abs(oi.getOpStick().getY()) > 0.1) {
-        cargoCollector.setArticulatorPower(-0.75 * oi.getOpStick().getY());
+        cargoCollector.setArticulatorPower(-1 * oi.getOpStick().getY());
       } else {
         cargoCollector.setArticulatorPower(0);
       }

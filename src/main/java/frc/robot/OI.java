@@ -12,16 +12,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.Robot.RobotID;
-import frc.robot.command.CargoCollectForwardCommand;
-import frc.robot.command.CargoCollectReverseCommand;
-import frc.robot.command.CargoCollectStopCommand;
-import frc.robot.command.HatchCollectForwardCommand;
-import frc.robot.command.HatchCollectReverseCommand;
-import frc.robot.command.HatchCollectStopCommand;
-import frc.robot.command.StopMotionCommand;
-import frc.robot.commandGroups.AutomatedClimbCommand;
 import frc.robot.lib.RebelTrigger;
-import frc.robot.command.BringArmDownCommand;
+
+
+import frc.robot.command.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -82,7 +76,15 @@ public class OI {
 
 		opBumperL.whenPressed(new HatchCollectReverseCommand());
 		opBumperL.whenReleased(new HatchCollectStopCommand());
-	
+
+		/** 
+		opButtonX.whenPressed(new ClimberDownCommand(true));
+		opButtonX.whenReleased(new StopClimbCommand());
+
+		opButtonY.whenPressed(new ClimbUpCommand());
+		opButtonY.whenReleased(new StopClimbCommand());
+		*/
+		
 		//opBack.whenPressed(new BringArmDownCommand(-3500));
 		//opBack.whenReleased(new StopMotionCommand());
 	}
