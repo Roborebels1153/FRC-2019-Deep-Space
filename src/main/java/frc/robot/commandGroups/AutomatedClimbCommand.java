@@ -8,8 +8,6 @@
 package frc.robot.commandGroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.command.BringArmDownCommand;
-import frc.robot.command.PowerStiltsWithArmCommand;
 import frc.robot.command.*;
 
 public class AutomatedClimbCommand extends CommandGroup {
@@ -17,10 +15,21 @@ public class AutomatedClimbCommand extends CommandGroup {
    * Add your docs here.
    */
   public AutomatedClimbCommand() {
-    addSequential(new BringArmDownCommand(-3050));
+    //Old auto-climb
+    /*
+    addSequential(new BringArmDownCommand(-3050, -0.3));
     addSequential(new PowerStiltsWithArmCommand(-6500));
     addSequential(new PowerStiltsCommand());
     addSequential(new DriveDistanceTimeCommand(1, -0.4, 0));
+    //addSequential(new PowerStiltsCommand());
+    */
+    //New and improved auto-climb
+    addSequential(new BringArmDownCommand(-3050, -0.3));
+    addSequential(new BringArmDownCommand(-3700, -0.7));
+    addSequential(new PowerStiltsStopDrivingCommand(-100));
+    addSequential(new PowerStiltsCommand());
+    addSequential(new DriveDistanceTimeCommand(1, -0.4, 0));
+    
     //addSequential(new PowerStiltsCommand());
 
     // To run multiple commands at the same time,

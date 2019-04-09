@@ -8,43 +8,41 @@
 package frc.robot.command;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
+import frc.robot.*;
 
-public class BringArmDownCommand extends Command {
+public class PowerStiltsStopDrivingCommand extends Command {
 
   double encoderThreshold;
-  double armSpeed;
-  public BringArmDownCommand(double in, double armSpeed) {
+  public PowerStiltsStopDrivingCommand(double encoderThreshold) {
     requires(Robot.cargoCollector);
-    encoderThreshold = in;
-    this.armSpeed = armSpeed;
+    requires(Robot.climber);
+    this.encoderThreshold = encoderThreshold;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.cargoCollector.resetEncoders();
-    System.out.println("Running Auto Arm Down Command at threshold of " + encoderThreshold);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.cargoCollector.setArticulatorPower(armSpeed);
     Robot.drive.cheesyDriveWithoutJoysticks(-0.6, 0);
+    Robot.climber.autoClimbDownA();
+    Robot.climber.autoClimbDownB();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (Robot.cargoCollector.getArticulatorAEncoder() < encoderThreshold) || (Robot.cargoCollector.getArticulatorBEncoder() < encoderThreshold);
+    return (Robot.climber.getClimbAEncoder() < encoderThreshold || Robot.climber.getClimbBEncoder() < encoderThreshold);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.cargoCollector.setArticulatorPower(0);
-    System.out.println("Ended auto Bring Arm Down Command");
+    System.out.println("Stopping driving");
+    Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
   }
 
   // Called when another command which requires one or more of the same

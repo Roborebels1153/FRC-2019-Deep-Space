@@ -287,15 +287,7 @@ public class Robot extends TimedRobot {
       }
       mLastToggleState = bothPressed;
 
-      if (oi.getDriverStick().getRawButton(2)) {
-        vision.updateLimelightData();
-        vision.setPipeline(1);
-        if (vision.getTargetY() >= 19) {
-          mAutoEndFlag = true;
-        }
-      } else {
-        mAutoEndFlag = false;
-      }
+      
       
      
 
@@ -332,6 +324,16 @@ public class Robot extends TimedRobot {
       }
       */
       if(!oi.getOpStick().getRawButton(8)){
+
+        if (oi.getDriverStick().getRawButton(2)) {
+          vision.updateLimelightData();
+          vision.setPipeline(1);
+          if (vision.getTargetY() >= 22) {
+            mAutoEndFlag = true;
+          }
+        } else {
+          mAutoEndFlag = false;
+        }
 
         if (oi.getDriverStick().getRawButton(2) && !mAutoEndFlag) {
           //vision.turnOnLight();
