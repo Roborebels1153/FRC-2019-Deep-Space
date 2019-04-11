@@ -340,7 +340,7 @@ public class Robot extends TimedRobot {
           System.out.println("Starting limleight vision");
           target = Robot.vision.getTargetValues();
           Robot.drive.cheesyDriveWithoutJoysticks(-1*drive.teleOpDriveSide * Constants.k_drive_coefficient * 
-          Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), Robot.vision.getHorizontalAlignOutput() * .8);
+          Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), Robot.vision.getHorizontalAlignOutput() * .6);
         } else if (oi.getOpStick().getRawButton(2)) {
           hatchCollector.setArticulatorPower(-1);
           drive.tankDriveNoJoystick(0.125, 0.125);
