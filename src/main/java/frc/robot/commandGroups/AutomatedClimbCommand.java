@@ -25,7 +25,7 @@ public class AutomatedClimbCommand extends CommandGroup {
     */
     //New and improved auto-climb
     addSequential(new BringArmDownCommand(-2950, -0.3));
-    addSequential(new BringArmDownCommand(-3500, -0.7));
+    addSequential(new BringArmDownCommand(-3450, -0.7));
     addSequential(new PowerStiltsStopDrivingCommand(-100));
     addSequential(new PowerStiltsCommand());
     addSequential(new DriveDistanceTimeCommand(2, -0.4, 0));
