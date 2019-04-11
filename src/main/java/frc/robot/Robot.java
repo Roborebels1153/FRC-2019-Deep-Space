@@ -386,7 +386,7 @@ public class Robot extends TimedRobot {
         }
 
         if (Math.abs(oi.getOpStick().getY()) > 0.1) {
-          cargoCollector.setArticulatorPower(-1 * oi.getOpStick().getY());
+          cargoCollector.setArticulatorPower(-0.75 * oi.getOpStick().getY());
         } else {
           cargoCollector.setArticulatorPower(0);
         }
@@ -395,11 +395,9 @@ public class Robot extends TimedRobot {
   }
 
   private boolean isArmAtHab(){
-    return !(cargoCollector.getArticulatorAEncoder() > -3500 ||
-    cargoCollector.getArticulatorBEncoder() > -3500);
+    return false;
   }
   private boolean isArmAtAngle(){
-    return !(cargoCollector.getArticulatorAEncoder() > -5000 ||
-    cargoCollector.getArticulatorBEncoder() > -5000);
+    return false;
   }
 }

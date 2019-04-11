@@ -28,6 +28,7 @@ public class PowerStiltsStopDrivingCommand extends Command {
   @Override
   protected void execute() {
     Robot.drive.cheesyDriveWithoutJoysticks(-0.6, 0);
+    Robot.cargoCollector.setArticulatorPower(-0.2);
     Robot.climber.autoClimbDownA();
     Robot.climber.autoClimbDownB();
   }

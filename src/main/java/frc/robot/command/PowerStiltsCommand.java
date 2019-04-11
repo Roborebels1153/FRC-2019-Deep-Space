@@ -23,6 +23,7 @@ public class PowerStiltsCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Robot.cargoCollector.setArticulatorPower(-0.2);
     Robot.climber.autoClimbDownA();
     Robot.climber.autoClimbDownB();
   }
@@ -37,6 +38,7 @@ public class PowerStiltsCommand extends Command {
   @Override
   protected void end() {
     Robot.climber.climb(0, 0);
+    Robot.cargoCollector.setArticulatorPower(0);
   }
 
   // Called when another command which requires one or more of the same

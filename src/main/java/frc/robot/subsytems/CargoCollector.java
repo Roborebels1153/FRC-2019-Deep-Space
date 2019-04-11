@@ -53,7 +53,7 @@ public class CargoCollector extends Subsystem {
         //SmartDashboard.putBoolean("Cargo Light Sensor Status", getLightSensor());
         
         SmartDashboard.putNumber("Cargo Articulator A Encoder Value", getArticulatorAEncoder());
-        SmartDashboard.putNumber("Cargo Articulator B Encoder Value", getArticulatorBEncoder());
+        //SmartDashboard.putNumber("Cargo Articulator B Encoder Value", getArticulatorBEncoder());
     
     }
 
@@ -112,8 +112,8 @@ public class CargoCollector extends Subsystem {
     public void configTalonFeedback() {
         mArticulatorA.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
         Constants.kTimeoutMs);
-        mArticulatorB.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
-        Constants.kTimeoutMs);
+        //mArticulatorB.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kPIDLoopIdx,
+        //Constants.kTimeoutMs);
     }
 
     public double getArticulatorAEncoder() {
