@@ -38,7 +38,7 @@ public class PowerStiltsCommand extends Command {
   @Override
   protected void end() {
     Robot.climber.climb(0, 0);
-    Robot.cargoCollector.setArticulatorPower(0);
+    Robot.cargoCollector.setArticulatorPower(0.2);
   }
 
   // Called when another command which requires one or more of the same
