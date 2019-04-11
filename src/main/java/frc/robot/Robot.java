@@ -326,8 +326,8 @@ public class Robot extends TimedRobot {
       if(!oi.getOpStick().getRawButton(8)){
 
         if (oi.getDriverStick().getRawButton(2)) {
-          vision.updateLimelightData();
           vision.setPipeline(1);
+          vision.updateLimelightData();
           if (vision.getTargetY() >= 22) {
             mAutoEndFlag = true;
           }
