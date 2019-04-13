@@ -326,8 +326,8 @@ public class Robot extends TimedRobot {
       if(!oi.getOpStick().getRawButton(8)){
 
         if (oi.getDriverStick().getRawButton(2)) {
+          vision.setPipeline(9);
           vision.updateLimelightData();
-          vision.setPipeline(1);
           if (vision.getTargetY() >= 22) {
             mAutoEndFlag = true;
           }
@@ -340,7 +340,7 @@ public class Robot extends TimedRobot {
           System.out.println("Starting limleight vision");
           target = Robot.vision.getTargetValues();
           Robot.drive.cheesyDriveWithoutJoysticks(-1*drive.teleOpDriveSide * Constants.k_drive_coefficient * 
-          Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), Robot.vision.getHorizontalAlignOutput() * .8);
+          Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y), Robot.vision.getHorizontalAlignOutput() * .6);
         } else if (oi.getOpStick().getRawButton(2)) {
           hatchCollector.setArticulatorPower(-1);
           drive.tankDriveNoJoystick(0.125, 0.125);
@@ -386,7 +386,7 @@ public class Robot extends TimedRobot {
         }
 
         if (Math.abs(oi.getOpStick().getY()) > 0.1) {
-          cargoCollector.setArticulatorPower(-1 * oi.getOpStick().getY());
+          cargoCollector.setArticulatorPower(-0.75 * oi.getOpStick().getY());
         } else {
           cargoCollector.setArticulatorPower(0);
         }
@@ -395,11 +395,9 @@ public class Robot extends TimedRobot {
   }
 
   private boolean isArmAtHab(){
-    return !(cargoCollector.getArticulatorAEncoder() > -3500 ||
-    cargoCollector.getArticulatorBEncoder() > -3500);
+    return false;
   }
   private boolean isArmAtAngle(){
-    return !(cargoCollector.getArticulatorAEncoder() > -5000 ||
-    cargoCollector.getArticulatorBEncoder() > -5000);
+    return false;
   }
 }

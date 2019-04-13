@@ -35,7 +35,7 @@ public class PowerStiltsWithArmCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (Robot.cargoCollector.getArticulatorAEncoder() < encoderThreshold) || (Robot.cargoCollector.getArticulatorBEncoder() < encoderThreshold);// return Robot.climber.canStopClimbing();
+    return (Robot.cargoCollector.getArticulatorAEncoder() < encoderThreshold); //|| (Robot.cargoCollector.getArticulatorBEncoder() < encoderThreshold);// return Robot.climber.canStopClimbing();
   }
 
   // Called once after isFinished returns true
