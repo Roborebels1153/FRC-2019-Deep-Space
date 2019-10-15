@@ -57,7 +57,7 @@ public class ScoreHatchCommand extends Command {
   protected void end() {
     System.out.println("Command Ended");
     Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
-    Robot.cargoCollector.collectStop();
+    Robot.hatchCollector.collectStop();
   }
 
   // Called when another command which requires one or more of the same

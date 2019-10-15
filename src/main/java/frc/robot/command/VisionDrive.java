@@ -23,7 +23,7 @@ public class VisionDrive extends Command {
 	long startTime;
 	double driveTime;
 
-	static int  pipeLine = 1; 
+	static int pipeLine = 1; 
 
 	double distanceToSwitch;
 	double distanceFromSwitch;
@@ -49,7 +49,8 @@ public class VisionDrive extends Command {
     }
 
     protected void initialize() {
-    	System.out.println("Vision ENABLED");
+		System.out.println("Vision ENABLED");
+		System.out.println("Pipeline: " + pipeLine);
     	startTime = System.currentTimeMillis();
 		Robot.vision.turnOnLight();
     	Robot.vision.setPipeline(pipeLine);
@@ -125,5 +126,7 @@ public class VisionDrive extends Command {
 	public static double findDistance(double h1, double h2, double a1, double a2)  {
 		return ((h2-h1) / (Math.tan(Math.toRadians(a1+a2))));
 	}
+
+	
 
 }

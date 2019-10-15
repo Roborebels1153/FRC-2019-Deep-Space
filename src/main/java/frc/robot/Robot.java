@@ -16,7 +16,6 @@ import frc.robot.subsytems.Drive;
 import frc.robot.subsytems.HatchCollector;
 import frc.robot.subsytems.LimelightVision;
 import frc.robot.OI;
-import frc.robot.commandGroups.LimelightCargoShipCommandGroup;
 import frc.robot.lib.RebelRumble;
 import frc.robot.subsytems.CargoCollector;
 import frc.robot.subsytems.Climber;
@@ -172,9 +171,10 @@ public class Robot extends TimedRobot {
       if (strategy == SandstormStrategy.CARGO_SHIP) {
         autoCommand = new LimelightCargoShipCommandGroup(level, position);
       } else if (strategy == SandstormStrategy.ROCKET) {
-
+        autoCommand = new LimelightRocketCommandGroup();
+        
       }
-      autoCommand = new AutomatedClimbCommand();
+      //autoCommand = new AutomatedClimbCommand();
       autoCommand.start();
     }
     //autoCommand = new SideHatchAuto();

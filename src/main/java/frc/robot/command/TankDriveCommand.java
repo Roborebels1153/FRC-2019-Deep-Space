@@ -44,6 +44,7 @@ public class TankDriveCommand extends Command {
   @Override
   protected void end() {
     Robot.drive.stopMotion();
+    Robot.drive.cheesyDriveWithoutJoysticks(0, 0);
   }
 
   // Called when another command which requires one or more of the same
